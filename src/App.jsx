@@ -1,22 +1,29 @@
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
+import { Link, Route, BrowserRouter as Router, Routes } from 'react-router-dom'
+import { lazy, Suspense } from 'react'
 import './App.css'
-import About from './components/About'
-// import Contact from './components/Contact'
-import Home from './components/Home'
-import NavBar from './components/NavBar'
-import Services from './components/Services'
+
+// Lazy-loaded components
+const About = lazy(() => import('./components/About'))
+const Contact = lazy(() => import('./components/Contact'))
+const Home = lazy(() => import('./components/Home'))
 
 function App() {
   return (
     <Router>
       <div className="app">
-        <NavBar />
+        <nav className="navbar">
+          <ul>
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/about">About</Link></li>
+            <li><Link to="/contact">Contact</Link></li>
+          </ul>
+        </nav>
+
         <div className="content">
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/services" element={<Services />} />
-            {/* <Route path="/contact" element={<Contact />} /> */}
+            <Route path="/" element={<Suspense fallback={<div>Loading...</div>}><Home /></Suspense>} />
+            <Route path="/about" element={<Suspense fallback={<div>Loading...</div>}><About /></Suspense>} />
+            <Route path="/contact" element={<Suspense fallback={<div>Loading...</div>}><Contact /></Suspense>} />
           </Routes>
         </div>
       </div>
