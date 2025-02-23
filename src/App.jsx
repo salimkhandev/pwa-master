@@ -68,7 +68,7 @@ function App() {
         </div>
 
         {/* Install button section */}
-        {isAndroid && deferredPrompt && (
+        {deferredPrompt && (
           <button onClick={handleInstallClick} className="install-button">
             Install App
           </button>
