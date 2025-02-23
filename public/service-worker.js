@@ -1,4 +1,4 @@
-const CACHE_NAME = 'vite-react-cache-v5';
+const CACHE_NAME = 'vite-react-cache-v6';
 const FILES_TO_CACHE = [
     '/',
     '/about',

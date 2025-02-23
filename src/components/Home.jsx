@@ -2,7 +2,7 @@ function Home() {
   return (
     <div>
       <h1>Welcome to Home</h1>
-      <p>version 5</p>
+      <p>version 6</p>
     </div>
   );
 }
