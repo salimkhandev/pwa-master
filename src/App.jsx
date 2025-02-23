@@ -9,8 +9,17 @@ const Home = lazy(() => import('./components/Home'))
 
 function App() {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [isIOSDevice, setIsIOSDevice] = useState(false);
+  const [isAndroid, setIsAndroid] = useState(false);
 
   useEffect(() => {
+    // Check device types
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    const isAndroidDevice = /Android/.test(navigator.userAgent);
+    
+    setIsIOSDevice(isIOS);
+    setIsAndroid(isAndroidDevice);
+
     const handleBeforeInstallPrompt = (e) => {
       // Prevent Chrome 67 and earlier from automatically showing the prompt
       e.preventDefault();
@@ -58,11 +67,27 @@ function App() {
           </Routes>
         </div>
 
-        {/* Show install button when prompt is available */}
-        {deferredPrompt && (
-          <button onClick={handleInstallClick}>
-            Install App
-          </button>
+        {/* Replace the existing install button section */}
+        {isIOSDevice ? (
+          <div className="install-instructions">
+            To install: tap the share button <span className="icon">⎙</span> and select "Add to Home Screen"
+          </div>
+        ) : isAndroid ? (
+          deferredPrompt ? (
+            <button onClick={handleInstallClick} className="install-button">
+              Install App
+            </button>
+          ) : (
+            <div className="install-instructions">
+              To install: tap the menu button <span className="icon">⋮</span> and select "Install App" or "Add to Home Screen"
+            </div>
+          )
+        ) : (
+          deferredPrompt && (
+            <button onClick={handleInstallClick} className="install-button">
+              Install App
+            </button>
+          )
         )}
       </div>
     </Router>
