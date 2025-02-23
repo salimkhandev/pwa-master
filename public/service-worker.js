@@ -17,7 +17,7 @@ const FILES_TO_CACHE = [
     '/manifest.json',
     '/screenshots/desktop.png',
     '/assets/main-DIGfgnAx.css',
-
+    '/assets/main-DlGfgnAx.css',
 ];
 
 // Install event: Cache assets
