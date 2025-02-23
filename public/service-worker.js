@@ -15,7 +15,9 @@ const FILES_TO_CACHE = [
     '/icons-pwa/favicon-32x32.png',
     '/icons-pwa/favicon.ico',
     '/manifest.json',
-    '/screenshots/desktop.png'
+    '/screenshots/desktop.png',
+    '/assets/main-DIGfgnAx.css',
+    '/assets/main-DlGfgnAx.css',
 ];
 
 // Install event: Cache assets
