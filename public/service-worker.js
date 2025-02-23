@@ -34,16 +34,17 @@ const FILES_TO_CACHE = [
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_NAME).then(async (cache) => {
-            console.log('Cache opened');
+            console.log('🚀 Service Worker: Installation Started');
             // Cache files one by one to handle failures gracefully
             for (const file of FILES_TO_CACHE) {
                 try {
                     await cache.add(new Request(file, { cache: 'reload' }));
-                    console.log('Cached:', file);
+                    console.log('✅ Cached Successfully:', file);
                 } catch (error) {
-                    console.warn('Failed to cache:', file, error);
+                    console.warn('❌ Cache Failed:', file, error);
                 }
             }
+            console.log('🎉 Service Worker: Installation Complete');
         })
     );
     self.skipWaiting();
@@ -56,13 +57,14 @@ self.addEventListener('activate', (event) => {
             return Promise.all(
                 cacheNames.map((cacheName) => {
                     if (cacheName !== CACHE_NAME) {
-                        console.log('Deleting old cache:', cacheName);
+                        console.log('🧹 Deleting old cache:', cacheName);
                         return caches.delete(cacheName);
                     }
                 })
             );
         })
     );
+    console.log('💪 Service Worker: Activated');
     return self.clients.claim();
 });
 
@@ -86,25 +88,22 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(
         fetch(event.request)
             .then((response) => {
-                // Clone the response
                 const responseToCache = response.clone();
-
-                // Only cache successful responses
                 if (response.status === 200) {
                     caches.open(CACHE_NAME)
                         .then((cache) => {
                             // Only cache same-origin responses
                             if (event.request.url.startsWith(self.location.origin)) {
                                 cache.put(event.request, responseToCache);
-                                console.log('Cached:😂', event.request.url);
+                                console.log('📥 Network Response Cached:', event.request.url);
                             }
                         });
                 }
-
+                console.log('🌐 Fetched from Network:', event.request.url);
                 return response;
             })
             .catch(() => {
-                // If network fails, try to get from cache
+                console.log('📦 Falling back to Cache:', event.request.url);
                 return caches.match(event.request);
             })
     );
