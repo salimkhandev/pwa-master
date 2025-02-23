@@ -67,29 +67,11 @@ function App() {
           </Routes>
         </div>
 
-        {/* Install button/loader section */}
-        {isIOSDevice ? (
-          <div className="loader-container">
-            <div className="loader"></div>
-            <span className="icon">⎙</span>
-          </div>
-        ) : isAndroid ? (
-          deferredPrompt ? (
-            <button onClick={handleInstallClick} className="install-button">
-              Install App
-            </button>
-          ) : (
-            <div className="loader-container">
-              <div className="loader"></div>
-              <span className="icon">⋮</span>
-            </div>
-          )
-        ) : (
-          deferredPrompt && (
-            <button onClick={handleInstallClick} className="install-button">
-              Install App
-            </button>
-          )
+        {/* Install button section */}
+        {isAndroid && deferredPrompt && (
+          <button onClick={handleInstallClick} className="install-button">
+            Install App
+          </button>
         )}
       </div>
     </Router>
