@@ -67,10 +67,11 @@ function App() {
           </Routes>
         </div>
 
-        {/* Replace the existing install button section */}
+        {/* Install button/loader section */}
         {isIOSDevice ? (
-          <div className="install-instructions">
-            To install: tap the share button <span className="icon">⎙</span> and select "Add to Home Screen"
+          <div className="loader-container">
+            <div className="loader"></div>
+            <span className="icon">⎙</span>
           </div>
         ) : isAndroid ? (
           deferredPrompt ? (
@@ -78,8 +79,9 @@ function App() {
               Install App
             </button>
           ) : (
-            <div className="install-instructions">
-              To install: tap the menu button <span className="icon">⋮</span> and select "Install App" or "Add to Home Screen"
+            <div className="loader-container">
+              <div className="loader"></div>
+              <span className="icon">⋮</span>
             </div>
           )
         ) : (
