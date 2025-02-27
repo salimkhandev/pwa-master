@@ -3,7 +3,9 @@ import { precacheAndRoute } from 'workbox-precaching';
 import { registerRoute } from "workbox-routing";
 import { CacheFirst, NetworkOnly, StaleWhileRevalidate } from "workbox-strategies";
 
-console.log('🔧 Service Worker Loading...');
+// Add version tracking
+const VERSION = '1.0.0';
+console.log('🔧 Service Worker Loading... Version:', VERSION);
 
 // Precache assets from the manifest
 precacheAndRoute(self.__WB_MANIFEST);
@@ -43,7 +45,7 @@ registerRoute(
         return isImage;
     },
     new CacheFirst({
-        cacheName: "images",
+        cacheName: `images-${VERSION}`,
         plugins: [
             new ExpirationPlugin({
                 maxEntries: 60,
@@ -77,7 +79,7 @@ registerRoute(
         return isStatic;
     },
     new StaleWhileRevalidate({
-        cacheName: "static-resources",
+        cacheName: `static-resources-${VERSION}`,
         plugins: [
             new ExpirationPlugin({
                 maxEntries: 60,
@@ -114,7 +116,7 @@ registerRoute(
         return isNavigationRoute;
     },
     new StaleWhileRevalidate({
-        cacheName: "pages",
+        cacheName: `pages-${VERSION}`,
         plugins: [
             new ExpirationPlugin({
                 maxEntries: 30,
@@ -131,24 +133,28 @@ registerRoute(
 
 // Service Worker Lifecycle Events
 self.addEventListener("install", () => {
-    console.log('🚀 Service Worker installing...');
+    console.log('🚀 Service Worker installing... Version:', VERSION);
+    console.log('⏩ Skipping waiting phase...');
     self.skipWaiting();
 });
 
 self.addEventListener("activate", (event) => {
-    console.log('✨ Service Worker activating...');
+    console.log('✨ Service Worker activating... Version:', VERSION);
+    
     event.waitUntil(
         Promise.all([
-            // Clean up old caches
+            // Clean up old caches from previous versions
             caches.keys().then(cacheNames => {
-                console.log('🧹 Checking caches:', cacheNames);
+                console.log('🧹 Checking for outdated caches...');
                 return Promise.all(
                     cacheNames.map(cacheName => {
-                        if (cacheName.startsWith('workbox-') || 
-                            cacheName.startsWith('static-resources') || 
-                            cacheName.startsWith('images') || 
-                            cacheName.startsWith('pages')) {
-                            console.log('🗑️ Deleting old cache:', cacheName);
+                        // Delete caches that don't match current version
+                        if (!cacheName.includes(VERSION) && 
+                            (cacheName.startsWith('workbox-') || 
+                             cacheName.startsWith('static-resources') || 
+                             cacheName.startsWith('images') || 
+                             cacheName.startsWith('pages'))) {
+                            console.log('🗑️ Deleting outdated cache:', cacheName);
                             return caches.delete(cacheName);
                         }
                     })
@@ -156,7 +162,7 @@ self.addEventListener("activate", (event) => {
             }),
             // Take control of all clients
             self.clients.claim().then(() => {
-                console.log('👑 Service Worker is now controlling pages');
+                console.log('👑 Service Worker Version', VERSION, 'is now active');
             })
         ])
     );
