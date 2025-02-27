@@ -100,7 +100,9 @@ registerRoute(
         
         const isNavigationRoute = pathname === '/' || 
                                 pathname.includes('about') || 
-                                pathname.includes('/assets/about-')
+                                pathname.includes('/assets/about') ||
+                                pathname.includes('contact') ||
+                                pathname.includes('/assets/contact');
         
         if (isNavigationRoute) {
             console.log('🏠 Handling navigation route:', pathname);
