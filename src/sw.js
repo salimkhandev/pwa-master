@@ -98,6 +98,7 @@ registerRoute(
 registerRoute(
     ({ request, url }) => {
       console.log('🧭 Navigation Check:', request.url);
+      return true;
     },
     new StaleWhileRevalidate({
         cacheName: `pages-${VERSION}`,
