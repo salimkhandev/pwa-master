@@ -2,25 +2,34 @@ import { ExpirationPlugin } from "workbox-expiration";
 import { registerRoute } from "workbox-routing";
 import { CacheFirst, NetworkOnly, StaleWhileRevalidate } from "workbox-strategies";
 
-// 🔹 Precache assets generated during build
-
+// 🚫 Disabled precaching for custom control
 //precacheAndRoute(self.__WB_MANIFEST || []);
 
-// Contact pages and assets - Always network (MUST BE FIRST)
+// 📞 Contact Route Strategy
 registerRoute(
-    ({ url, request }) => {
+    ({ url }) => {
         const pathname = url.pathname.toLowerCase();
-        console.log(pathname,'pathname✅✅✅✅');
+        console.log('📞 Contact Route Check:', pathname);
         // Match both the page and its assets
-        return pathname.includes('contact') || 
-               pathname.includes('/assets/contact-');
+        const isContact = pathname.includes('contact') || 
+                         pathname.includes('/assets/contact-');
+        if (isContact) {
+            console.log('🚫 Contact route detected - Using Network Only');
+        }
+        return isContact;
     },
     new NetworkOnly()
 );
 
-// Cache images
+// 🖼️ Image Caching Strategy
 registerRoute(
-    ({ request }) => request.destination === "image",
+    ({ request }) => {
+        const isImage = request.destination === "image";
+        if (isImage) {
+            console.log('🖼️ Image request detected:', request.url);
+        }
+        return isImage;
+    },
     new CacheFirst({
         cacheName: "images",
         plugins: [
@@ -32,16 +41,23 @@ registerRoute(
     })
 );
 
-// Cache static assets (CSS, JS, Fonts) EXCEPT contact
+// 📦 Static Assets Strategy
 registerRoute(
     ({ request, url }) => {
         const pathname = url.pathname.toLowerCase();
+        console.log('📦 Static Asset Check:', pathname);
+        
         // Don't cache contact-related files
         if (pathname.includes('contact')) {
+            console.log('⏭️ Skipping contact asset:', pathname);
             return false;
         }
-        // Cache other static assets
-        return ["style", "script", "font"].includes(request.destination);
+        
+        const isStatic = ["style", "script", "font"].includes(request.destination);
+        if (isStatic) {
+            console.log('💾 Caching static asset:', pathname);
+        }
+        return isStatic;
     },
     new StaleWhileRevalidate({
         cacheName: "static-resources",
@@ -54,16 +70,22 @@ registerRoute(
     })
 );
 
-// Handle navigation routes EXCEPT contact
+// 🧭 Navigation Routes Strategy
 registerRoute(
     ({ url }) => {
         const pathname = url.pathname.toLowerCase();
-        // Cache home, about routes and their assets
-        return pathname === '/' || 
-               pathname.includes('about') || 
-               pathname.includes('/assets/about-') ||
-               pathname.includes('home') ||
-               pathname.includes('/assets/home-');
+        console.log('🧭 Navigation Check:', pathname);
+        
+        const isNavigationRoute = pathname === '/' || 
+                                pathname.includes('about') || 
+                                pathname.includes('/assets/about-') ||
+                                pathname.includes('home') ||
+                                pathname.includes('/assets/home-');
+        
+        if (isNavigationRoute) {
+            console.log('🏠 Handling navigation route:', pathname);
+        }
+        return isNavigationRoute;
     },
     new StaleWhileRevalidate({
         cacheName: "pages",
@@ -76,30 +98,35 @@ registerRoute(
     })
 );
 
-// 🔹 Activate new SW immediately (skip waiting)
+// Service Worker Lifecycle Events
 self.addEventListener("install", () => {
+    console.log('🚀 Service Worker installing...');
     self.skipWaiting();
 });
 
 self.addEventListener("activate", (event) => {
+    console.log('🧹 Service Worker activating...');
     event.waitUntil(
         Promise.all([
             // Clean up old caches
             caches.keys().then(cacheNames => {
+                console.log('🗑️ Cleaning old caches:', cacheNames);
                 return Promise.all(
                     cacheNames.map(cacheName => {
-                        // Delete old caches if needed
                         if (cacheName.startsWith('workbox-') || 
                             cacheName.startsWith('static-resources') || 
                             cacheName.startsWith('images') || 
                             cacheName.startsWith('pages')) {
+                            console.log('🗑️ Deleting cache:', cacheName);
                             return caches.delete(cacheName);
                         }
                     })
                 );
             }),
             // Take control of all clients
-            self.clients.claim()
+            self.clients.claim().then(() => {
+                console.log('👑 Service Worker now controlling all clients');
+            })
         ])
     );
 });
