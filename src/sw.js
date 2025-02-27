@@ -2,6 +2,8 @@ import { ExpirationPlugin } from "workbox-expiration";
 import { registerRoute } from "workbox-routing";
 import { CacheFirst, NetworkOnly, StaleWhileRevalidate } from "workbox-strategies";
 
+console.log('🔧 Service Worker Loading...');
+
 // 🚫 Disabled precaching for custom control
 //precacheAndRoute(self.__WB_MANIFEST || []);
 
@@ -9,7 +11,7 @@ import { CacheFirst, NetworkOnly, StaleWhileRevalidate } from "workbox-strategie
 registerRoute(
     ({ url }) => {
         const pathname = url.pathname.toLowerCase();
-        console.log('📞 Contact Route Check:', pathname);
+        console.log('🔍 Checking route:', pathname);
         // Match both the page and its assets
         const isContact = pathname.includes('contact') || 
                          pathname.includes('/assets/contact-');
@@ -18,7 +20,16 @@ registerRoute(
         }
         return isContact;
     },
-    new NetworkOnly()
+    new NetworkOnly({
+        plugins: [
+            {
+                requestWillFetch: async ({ request }) => {
+                    console.log('🌐 Network request for contact:', request.url);
+                    return request;
+                }
+            }
+        ]
+    })
 );
 
 // 🖼️ Image Caching Strategy
@@ -26,7 +37,7 @@ registerRoute(
     ({ request }) => {
         const isImage = request.destination === "image";
         if (isImage) {
-            console.log('🖼️ Image request detected:', request.url);
+            console.log('🖼️ Caching image:', request.url);
         }
         return isImage;
     },
@@ -36,7 +47,12 @@ registerRoute(
             new ExpirationPlugin({
                 maxEntries: 60,
                 maxAgeSeconds: 30 * 24 * 60 * 60 // 30 days
-            })
+            }),
+            {
+                cacheDidUpdate: async ({ cacheName, request }) => {
+                    console.log('💾 Updated image cache:', request.url);
+                }
+            }
         ]
     })
 );
@@ -55,7 +71,7 @@ registerRoute(
         
         const isStatic = ["style", "script", "font"].includes(request.destination);
         if (isStatic) {
-            console.log('💾 Caching static asset:', pathname);
+            console.log('📦 Handling static asset:', pathname);
         }
         return isStatic;
     },
@@ -65,7 +81,12 @@ registerRoute(
             new ExpirationPlugin({
                 maxEntries: 60,
                 maxAgeSeconds: 30 * 24 * 60 * 60 // 30 days
-            })
+            }),
+            {
+                cacheDidUpdate: async ({ cacheName, request }) => {
+                    console.log('🔄 Updated static cache:', request.url);
+                }
+            }
         ]
     })
 );
@@ -93,7 +114,12 @@ registerRoute(
             new ExpirationPlugin({
                 maxEntries: 30,
                 maxAgeSeconds: 7 * 24 * 60 * 60 // 7 days
-            })
+            }),
+            {
+                cacheDidUpdate: async ({ cacheName, request }) => {
+                    console.log('📄 Updated page cache:', request.url);
+                }
+            }
         ]
     })
 );
@@ -105,19 +131,19 @@ self.addEventListener("install", () => {
 });
 
 self.addEventListener("activate", (event) => {
-    console.log('🧹 Service Worker activating...');
+    console.log('✨ Service Worker activating...');
     event.waitUntil(
         Promise.all([
             // Clean up old caches
             caches.keys().then(cacheNames => {
-                console.log('🗑️ Cleaning old caches:', cacheNames);
+                console.log('🧹 Checking caches:', cacheNames);
                 return Promise.all(
                     cacheNames.map(cacheName => {
                         if (cacheName.startsWith('workbox-') || 
                             cacheName.startsWith('static-resources') || 
                             cacheName.startsWith('images') || 
                             cacheName.startsWith('pages')) {
-                            console.log('🗑️ Deleting cache:', cacheName);
+                            console.log('🗑️ Deleting old cache:', cacheName);
                             return caches.delete(cacheName);
                         }
                     })
@@ -125,7 +151,7 @@ self.addEventListener("activate", (event) => {
             }),
             // Take control of all clients
             self.clients.claim().then(() => {
-                console.log('👑 Service Worker now controlling all clients');
+                console.log('👑 Service Worker is now controlling pages');
             })
         ])
     );

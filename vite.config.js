@@ -6,9 +6,9 @@ export default defineConfig({
     plugins: [
         react(),
         VitePWA({
+            injectRegister: null, // Disable automatic registration
             strategies: 'injectManifest',
-            registerType: "autoUpdate",
-            srcDir: "src", // Use custom service worker
+            srcDir: "src",
             filename: "sw.js",
             manifest: {
                 name: "Vite React PWA",
@@ -69,13 +69,10 @@ export default defineConfig({
                     }
                 ]
             },
-            workbox: {
-                globPatterns: ['**/*.{js,css,html,ico,png,svg}']
+            devOptions: {
+                enabled: true,
+                type: 'module'
             }
         }),
     ],
-});
-
-
-
 });
