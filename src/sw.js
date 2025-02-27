@@ -63,19 +63,19 @@ registerRoute(
 // 📦 Static Assets Strategy
 registerRoute(
     ({ request, url }) => {
-        const pathname = url.pathname.toLowerCase();
-        console.log('📦 Static Asset Check:', pathname);
+        // const pathname = url.pathname.toLowerCase();
+        // console.log('📦 Static Asset Check:', pathname);
         
-        // Don't cache contact-related files
-        if (pathname.includes('contact')) {
-            console.log('⏭️ Skipping contact asset:', pathname);
-            return false;
-        }
+        // // Don't cache contact-related files
+        // if (pathname.includes('contact')) {
+        //     console.log('⏭️ Skipping contact asset:', pathname);
+        //     return false;
+        // }
         
         const isStatic = ["style", "script", "font"].includes(request.destination);
-        if (isStatic) {
-            console.log('📦 Handling static asset:', pathname);
-        }
+        // if (isStatic) {
+        //     console.log('📦 Handling static asset:', pathname);
+        // }
         return isStatic;
     },
     new StaleWhileRevalidate({
