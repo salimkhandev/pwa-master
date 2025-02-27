@@ -6,6 +6,7 @@ export default defineConfig({
     plugins: [
         react(),
         VitePWA({
+            strategies: 'injectManifest',
             registerType: "autoUpdate",
             srcDir: "src", // Use custom service worker
             filename: "sw.js",
@@ -73,4 +74,8 @@ export default defineConfig({
             }
         }),
     ],
+});
+
+
+
 });
