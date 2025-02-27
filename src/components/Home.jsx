@@ -1,5 +1,4 @@
 import React from 'react';
-import NetflixLogo from './icons/NetflixLogo';
 const Home = () => {
   const features = [
     {
@@ -47,7 +46,7 @@ const Home = () => {
             <div className="card-content">
               <h3>{feature.title}</h3>
               <p>{feature.description}</p>
-              <NetflixLogo />
+   
             </div>
           </div>
         ))}
