@@ -92,17 +92,21 @@ registerRoute(
     })
 );
 
-// 🧭 Navigation Routes Strategy
+// 🧭 Navigation Routes Strategy (excluding contact)
 registerRoute(
     ({ url }) => {
         const pathname = url.pathname.toLowerCase();
         console.log('🧭 Navigation Check:', pathname);
         
+        // Explicitly exclude contact routes
+        if (pathname.includes('contact')) {
+            return false;
+        }
+        
         const isNavigationRoute = pathname === '/' || 
                                 pathname.includes('about') || 
                                 pathname.includes('/assets/about') ||
-                                pathname.includes('contact') ||
-                                pathname.includes('/assets/contact');
+                                pathname.includes('home');
         
         if (isNavigationRoute) {
             console.log('🏠 Handling navigation route:', pathname);

@@ -6,10 +6,10 @@ export default defineConfig({
     plugins: [
         react(),
         VitePWA({
+            injectRegister: null, // Disable automatic registration
             strategies: 'injectManifest',
-            srcDir: 'src',
-            filename: 'sw.js',
-            injectRegister: 'auto',
+            srcDir: "src",
+            filename: "sw.js",
             manifest: {
                 name: "Vite React PWA",
                 short_name: "React PWA",
@@ -72,9 +72,6 @@ export default defineConfig({
             devOptions: {
                 enabled: true,
                 type: 'module'
-            },
-            injectManifest: {
-                injectionPoint: 'self.__WB_MANIFEST'
             }
         }),
     ],
