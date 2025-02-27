@@ -4,7 +4,7 @@ import App from './App.jsx';
 import './index.css';
 if ("serviceWorker" in navigator) {
     navigator.serviceWorker
-        .register("/sw.js")
+        .register("/src/sw.js")
         .then(() => console.log("Service Worker Registered!✅"))
         .catch((error) => console.log("Service Worker Registration Failed:", error));
 }
