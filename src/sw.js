@@ -96,29 +96,38 @@ registerRoute(
 
 // 🧭 Navigation Routes Strategy (excluding contact)
 registerRoute(
-    ({ url }) => {
+    ({ request, url }) => {
         const pathname = url.pathname.toLowerCase();
         console.log('🧭 Navigation Check:', pathname);
         
-        // Explicitly exclude contact routes
+        // Handle navigation requests
+        if (request.mode === 'navigate') {
+            console.log('📱 React Navigation detected:', pathname);
+            // Exclude contact routes
+            if (pathname.includes('contact')) {
+                console.log('⛔ Skipping contact navigation');
+                return false;
+            }
+            return true;
+        }
+
+        // For non-navigation requests (assets, etc)
+        // Explicitly exclude contact-related assets
         if (pathname.includes('contact')) {
             return false;
         }
         
-        // Handle both root path variations
-        const isRoot = pathname === '/' || pathname === '/index.html';
-        
-        // Handle other navigation routes
-        const isNavigationRoute = isRoot || 
-                                pathname.includes('/about') || 
-                                pathname.includes('/assets/about') ||
-                                pathname.includes('/home') ||
-                                pathname.includes('/assets/home');
-        
-        if (isNavigationRoute) {
-            console.log('🏠 Handling navigation route:', pathname);
+        // Handle asset routes for pages
+        const isPageAsset = pathname.includes('/assets/') && (
+            pathname.includes('about') ||
+            pathname.includes('home') ||
+            pathname.includes('index')
+        );
+
+        if (isPageAsset) {
+            console.log('🏠 Handling page asset:', pathname);
         }
-        return isNavigationRoute;
+        return isPageAsset;
     },
     new StaleWhileRevalidate({
         cacheName: `pages-${VERSION}`,
