@@ -94,48 +94,21 @@ registerRoute(
     })
 );
 
-// 🧭 Navigation Routes Strategy
+// 🧭 Navigation Routes Strategy (excluding contact)
 registerRoute(
     ({ request, url }) => {
-        console.log('🧭 Navigation Check:', request.url);
-        const pathname = url.pathname.toLowerCase();
-        // console.log('🧭 Asset Check:', pathname);
-
-        // First, check if it's an asset request
-        if (pathname.includes('/assets/')) {
-            // List of asset paths to exclude from caching
-            const excludedAssets = [
-                'contact',     // Don't cache contact page assets
-                'admin',       // Example: don't cache admin assets
-                'private'      // Example: don't cache private assets
-                // Add more exclusions here
-            ];
-
-            // Check if the asset should be excluded
-            const shouldExclude = excludedAssets.some(path => pathname.includes(path));
-            
-            if (shouldExclude) {
-                console.log('⛔ Excluding asset from cache:', pathname);
-                return false;
-            }
-
-            // Cache all other assets
-            console.log('💾 Caching asset:', pathname);
-            return true;
-        }
-
-        return false; // Don't handle non-asset requests here
+      console.log('🧭 Navigation Check:', request.url);
     },
     new StaleWhileRevalidate({
-        cacheName: `assets-${VERSION}`,
+        cacheName: `pages-${VERSION}`,
         plugins: [
             new ExpirationPlugin({
-                maxEntries: 60,
-                maxAgeSeconds: 30 * 24 * 60 * 60 // 30 days
+                maxEntries: 30,
+                maxAgeSeconds: 7 * 24 * 60 * 60 // 7 days
             }),
             {
                 cacheDidUpdate: async ({ request }) => {
-                    console.log('📦 Updated asset cache:', request.url);
+                    console.log('📄 Updated page cache:', request.url);
                 }
             }
         ]
