@@ -5,7 +5,7 @@ import { CacheFirst, NetworkOnly, StaleWhileRevalidate } from "workbox-strategie
 
 // 🔹 Precache assets generated during build
 
-precacheAndRoute(self.__WB_MANIFEST || []);
+//precacheAndRoute(self.__WB_MANIFEST || []);
 
 // 🔹 Cache static assets (CSS, JS, Fonts)
 registerRoute(
