@@ -38,14 +38,19 @@ registerRoute(
 // 🔹 Handle navigation routes
 registerRoute(
     ({ url }) => {
-        // Don't cache the contact page
-        if (url.pathname === '/contact') {
+        const pathname = url.pathname.toLowerCase();
+        
+        // Check for contact in both route and asset paths
+        if (pathname.includes('contact') || pathname.includes('/assets/contact-')) {
             return false;
         }
-        // Cache other navigation routes (home, about, etc.)
-        return url.pathname === '/' || 
-               url.pathname === '/about' || 
-               url.pathname.startsWith('/home');
+
+        // Cache home, about routes and their assets
+        return pathname === '/' || 
+               pathname.includes('about') || 
+               pathname.includes('/assets/about-') ||
+               pathname.includes('home') ||
+               pathname.includes('/assets/home-');
     },
     new StaleWhileRevalidate({
         cacheName: "pages",
@@ -60,7 +65,10 @@ registerRoute(
 
 // 🔹 Contact page - Always network
 registerRoute(
-    ({ url }) => url.pathname === '/contact',
+    ({ url }) => {
+        const pathname = url.pathname.toLowerCase();
+        return pathname.includes('contact') || pathname.includes('/assets/contact-');
+    },
     new NetworkOnly()
 );
 
