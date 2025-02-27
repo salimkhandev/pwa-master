@@ -16,10 +16,10 @@ async function registerSW() {
             
             registration.addEventListener('updatefound', () => {
                 const newWorker = registration.installing;
-                // console.log("🔄 New Service Worker state:", newWorker.state);
+                console.log("🔄 New Service Worker state:", newWorker.state);
                 
                 newWorker.addEventListener('statechange', () => {
-                    // console.log("👷 Service Worker state changed:", newWorker.state);
+                    console.log("👷 Service Worker state changed:", newWorker.state);
                 });
             });
 
