@@ -95,6 +95,8 @@ registerRoute(
     })
 );
 
+
+
 const isFromAssets = ({ referrer }) => {
     return referrer && referrer.includes('/assets/');
 };
@@ -103,8 +105,9 @@ const isFromAssets = ({ referrer }) => {
 registerRoute(
     ({ request }) => {
         // Get the referrer from request headers
+        console.log('❌❌❌❌❌❌❌❌❌ Checking referrer:', request);
         const referrer = request.referrer || request.headers.get("referer");
-
+        console.log('🔍 Checking referrer:', referrer);
         if (isFromAssets({ referrer })) {
             console.log('📌 Caching request from assets:', request.url);
             return true; // Allow caching
@@ -121,6 +124,22 @@ registerRoute(
         ],
     })
 );
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Service Worker Lifecycle Events
 self.addEventListener("install", () => {
