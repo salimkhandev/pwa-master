@@ -1,19 +1,8 @@
-import react from "@vitejs/plugin-react";
-import { defineConfig } from "vite";
-import { VitePWA } from "vite-plugin-pwa";
 
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    react(),
-    VitePWA({
-      strategies: 'injectManifest',
-      srcDir: "/public/service-worker.js",
-      filename: "service-worker.js",
-      manifest: false, // Use the existing manifest.json from public directory
-      devOptions: {
-        enabled: true,
-        type: 'module'
-      }
-    }),
-  ],
-});
+  plugins: [react()],
+})
