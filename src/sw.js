@@ -8,7 +8,7 @@ precacheAndRoute(self.__WB_MANIFEST || []);
 
 // 🔹 Cache API responses (NetworkFirst for dynamic data)
 registerRoute(
-    ({ url }) => url.origin === "http://localhost:5173/",
+    ({ url }) => url.origin === "https://pwa-testing-five.vercel.app",
     new StaleWhileRevalidate({
         cacheName: "api-cache",
         plugins: [
