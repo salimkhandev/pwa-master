@@ -12,9 +12,10 @@ precacheAndRoute(self.__WB_MANIFEST);
 
 // 📞 Contact Route Strategy
 registerRoute(
-    ({ url }) => {
+    ({ request, url }) => {
         const pathname = url.pathname.toLowerCase();
-        console.log('🔍 Checking route:', pathname);
+        console.log('🔍 Checking route:', request.url);
+        console.log('😂 Checking route:', request);
         // Match both the page and its assets
         const isContact = pathname.includes('contact') || 
                          pathname.includes('/assets/contact-');
@@ -94,27 +95,27 @@ registerRoute(
     })
 );
 
-// 🧭 Navigation Routes Strategy (excluding contact)
-registerRoute(
-    ({ request, url }) => {
-      console.log('🧭 Navigation Check:', request.url);
-      return true;
-    },
-    new StaleWhileRevalidate({
-        cacheName: `pages-${VERSION}`,
-        plugins: [
-            new ExpirationPlugin({
-                maxEntries: 30,
-                maxAgeSeconds: 7 * 24 * 60 * 60 // 7 days
-            }),
-            {
-                cacheDidUpdate: async ({ request }) => {
-                    console.log('📄 Updated page cache:', request.url);
-                }
-            }
-        ]
-    })
-);
+// // 🧭 Navigation Routes Strategy (excluding contact)
+// registerRoute(
+//     ({ request, url }) => {
+//       console.log('🧭 Navigation Check:', request.url);
+//       return true;
+//     },
+//     new StaleWhileRevalidate({
+//         cacheName: `pages-${VERSION}`,
+//         plugins: [
+//             new ExpirationPlugin({
+//                 maxEntries: 30,
+//                 maxAgeSeconds: 7 * 24 * 60 * 60 // 7 days
+//             }),
+//             {
+//                 cacheDidUpdate: async ({ request }) => {
+//                     console.log('📄 Updated page cache:', request.url);
+//                 }
+//             }
+//         ]
+//     })
+// );
 
 // Service Worker Lifecycle Events
 self.addEventListener("install", () => {
