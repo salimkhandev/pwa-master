@@ -105,10 +105,15 @@ registerRoute(
             return false;
         }
         
-        const isNavigationRoute = pathname === '/' || 
-                                pathname.includes('about') || 
+        // Handle both root path variations
+        const isRoot = pathname === '/' || pathname === '/index.html';
+        
+        // Handle other navigation routes
+        const isNavigationRoute = isRoot || 
+                                pathname.includes('/about') || 
                                 pathname.includes('/assets/about') ||
-                                pathname.includes('home');
+                                pathname.includes('/home') ||
+                                pathname.includes('/assets/home');
         
         if (isNavigationRoute) {
             console.log('🏠 Handling navigation route:', pathname);
