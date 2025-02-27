@@ -11,20 +11,20 @@ async function registerSW() {
                 type: 'module'
             });
             
-            console.log("🚀 Service Worker registered successfully");
-            console.log("📍 Scope:", registration.scope);
+            // console.log("🚀 Service Worker registered successfully");
+            // console.log("📍 Scope:", registration.scope);
             
             registration.addEventListener('updatefound', () => {
                 const newWorker = registration.installing;
-                console.log("🔄 New Service Worker state:", newWorker.state);
+                // console.log("🔄 New Service Worker state:", newWorker.state);
                 
                 newWorker.addEventListener('statechange', () => {
-                    console.log("👷 Service Worker state changed:", newWorker.state);
+                    // console.log("👷 Service Worker state changed:", newWorker.state);
                 });
             });
 
             await navigator.serviceWorker.ready;
-            console.log("✅ Service Worker is active and ready!");
+            // console.log("✅ Service Worker is active and ready!");
             
         } catch (error) {
             console.error("❌ Service Worker registration failed:", error);
