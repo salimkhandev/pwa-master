@@ -1,5 +1,5 @@
-import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import { defineConfig } from "vite";
 import { VitePWA } from "vite-plugin-pwa";
 
 export default defineConfig({
@@ -9,6 +9,84 @@ export default defineConfig({
             registerType: "autoUpdate",
             srcDir: "src", // Use custom service worker
             filename: "sw.js",
+            manifest: {
+                name: "Vite React PWA",
+                short_name: "React PWA",
+                description: "A Progressive Web App built with Vite and React",
+                start_url: "/",
+                display: "standalone",
+                background_color: "#ffffff",
+                theme_color: "#000000",
+                orientation: "any",
+                icons: [
+                    {
+                        src: "/icons-pwa/android-chrome-192x192.png",
+                        sizes: "192x192",
+                        type: "image/png",
+                        purpose: "any"
+                    },
+                    {
+                        src: "/icons-pwa/android-chrome-512x512.png",
+                        sizes: "512x512",
+                        type: "image/png",
+                        purpose: "any"
+                    },
+                    {
+                        src: "/icons-pwa/apple-touch-icon.png",
+                        sizes: "180x180",
+                        type: "image/png",
+                        purpose: "any"
+                    },
+                    {
+                        src: "/icons-pwa/favicon-32x32.png",
+                        sizes: "32x32",
+                        type: "image/png",
+                        purpose: "any"
+                    },
+                    {
+                        src: "/icons-pwa/favicon-16x16.png",
+                        sizes: "16x16",
+                        type: "image/png",
+                        purpose: "any"
+                    }
+                ],
+                screenshots: [
+                    {
+                        src: "/screenshots/desktop.png",
+                        sizes: "1920x1080",
+                        type: "image/png",
+                        form_factor: "wide",
+                        label: "Desktop View of Vite React PWA"
+                    },
+                    {
+                        src: "/screenshots/mobile.png",
+                        sizes: "390x844",
+                        type: "image/png",
+                        form_factor: "narrow",
+                        label: "Mobile View of Vite React PWA"
+                    }
+                ],
+                shortcuts: [
+                    {
+                        name: "Home",
+                        url: "/",
+                        icons: [{ src: "/icons-pwa/android-chrome-192x192.png", sizes: "192x192" }]
+                    },
+                    {
+                        name: "About",
+                        url: "/about",
+                        icons: [{ src: "/icons-pwa/android-chrome-192x192.png", sizes: "192x192" }]
+                    },
+                    {
+                        name: "Contact",
+                        url: "/contact",
+                        icons: [{ src: "/icons-pwa/android-chrome-192x192.png", sizes: "192x192" }]
+                    }
+                ]
+            },
+            workbox: {
+                globPatterns: ['**/*.{js,css,html,ico,png,svg}']
+            }
         }),
     ],
 });
