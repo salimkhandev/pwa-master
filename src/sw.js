@@ -1,11 +1,12 @@
 import { ExpirationPlugin } from "workbox-expiration";
+import { precacheAndRoute } from 'workbox-precaching';
 import { registerRoute } from "workbox-routing";
 import { CacheFirst, NetworkOnly, StaleWhileRevalidate } from "workbox-strategies";
 
 console.log('🔧 Service Worker Loading...');
 
-// 🚫 Disabled precaching for custom control
-//precacheAndRoute(self.__WB_MANIFEST || []);
+// Precache assets from the manifest
+precacheAndRoute(self.__WB_MANIFEST);
 
 // 📞 Contact Route Strategy
 registerRoute(
@@ -49,7 +50,7 @@ registerRoute(
                 maxAgeSeconds: 30 * 24 * 60 * 60 // 30 days
             }),
             {
-                cacheDidUpdate: async ({ cacheName, request }) => {
+                cacheDidUpdate: async ({ request }) => {
                     console.log('💾 Updated image cache:', request.url);
                 }
             }
@@ -83,7 +84,7 @@ registerRoute(
                 maxAgeSeconds: 30 * 24 * 60 * 60 // 30 days
             }),
             {
-                cacheDidUpdate: async ({ cacheName, request }) => {
+                cacheDidUpdate: async ({ request }) => {
                     console.log('🔄 Updated static cache:', request.url);
                 }
             }
@@ -116,7 +117,7 @@ registerRoute(
                 maxAgeSeconds: 7 * 24 * 60 * 60 // 7 days
             }),
             {
-                cacheDidUpdate: async ({ cacheName, request }) => {
+                cacheDidUpdate: async ({ request }) => {
                     console.log('📄 Updated page cache:', request.url);
                 }
             }
