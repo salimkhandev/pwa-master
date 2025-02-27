@@ -1,3 +1,5 @@
+import React from 'react';
+
 const Contact = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -14,7 +16,7 @@ const Contact = () => {
           marginBottom: '1rem',
           fontFamily: 'Montserrat, sans-serif'
         }}>
-          Contact Us
+          Contact Us please
         </h1>
         <p style={{ 
           fontSize: '1.1rem', 

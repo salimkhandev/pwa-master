@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useState } from 'react'
+import React, { lazy, Suspense, useEffect, useState } from 'react'
 import { Link, Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 import './App.css'
 
@@ -49,32 +49,34 @@ function App() {
   };
 
   return (
-    <Router>
-      <div className="app">
-        <nav className="navbar">
-          <ul>
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/about">About</Link></li>
-            <li><Link to="/contact">Contact</Link></li>
-          </ul>
-        </nav>
+    <React.Fragment>
+      <Router>
+        <div className="app">
+          <nav className="navbar">
+            <ul>
+              <li><Link to="/">Home</Link></li>
+              <li><Link to="/about">About</Link></li>
+              <li><Link to="/contact">Contact</Link></li>
+            </ul>
+          </nav>
 
-        <div className="content">
-          <Routes>
-            <Route path="/" element={<Suspense fallback={<div>Loading...</div>}><Home /></Suspense>} />
-            <Route path="/about" element={<Suspense fallback={<div>Loading...</div>}><About /></Suspense>} />
-            <Route path="/contact" element={<Suspense fallback={<div>Loading...</div>}><Contact /></Suspense>} />
-          </Routes>
+          <div className="content">
+            <Routes>
+              <Route path="/" element={<Suspense fallback={<div>Loading...</div>}><Home /></Suspense>} />
+              <Route path="/about" element={<Suspense fallback={<div>Loading...</div>}><About /></Suspense>} />
+              <Route path="/contact" element={<Suspense fallback={<div>Loading...</div>}><Contact /></Suspense>} />
+            </Routes>
+          </div>
+
+          {/* Install button section */}
+          {deferredPrompt && (
+            <button onClick={handleInstallClick} className="install-button">
+              Install App
+            </button>
+          )}
         </div>
-
-        {/* Install button section */}
-        {deferredPrompt && (
-          <button onClick={handleInstallClick} className="install-button">
-            Install App
-          </button>
-        )}
-      </div>
-    </Router>
+      </Router>
+    </React.Fragment>
   )
 }
 
