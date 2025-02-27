@@ -10,39 +10,13 @@ console.log('🔧 Service Worker Loading... Version:', VERSION);
 // Precache assets from the manifest
 precacheAndRoute(self.__WB_MANIFEST);
 
-// 📞 Contact Route Strategy
-registerRoute(
-    ({ request, url }) => {
-        const pathname = url.pathname.toLowerCase();
-        console.log('🔍 Checking route:', request.url);
-        console.log('😂 Checking route:', request);
-        // Match both the page and its assets
-        const isContact = pathname.includes('contact') || 
-                         pathname.includes('/assets/contact-');
-        if (isContact) {
-            console.log('🚫 Contact route detected - Using Network Only');
-        }
-        return isContact;
-    },
-    new NetworkOnly({
-        plugins: [
-            {
-                requestWillFetch: async ({ request }) => {
-                    console.log('🌐 Network request for contact:', request.url);
-                    return request;
-                }
-            }
-        ]
-    })
-);
+
 
 // 🖼️ Image Caching Strategy
 registerRoute(
     ({ request }) => {
         const isImage = request.destination === "image";
-        if (isImage) {
-            console.log('🖼️ Caching image:', request.url);
-        }
+      
         return isImage;
     },
     new CacheFirst({
@@ -97,33 +71,33 @@ registerRoute(
 
 
 
-const isFromAssets = ({ referrer }) => {
-    return referrer && referrer.includes('/assets/');
-};
+// const isFromAssets = ({ referrer }) => {
+//     return referrer && referrer.includes('/assets/');
+// };
 
-// Register route to cache only if the request referrer is from /assets/
-registerRoute(
-    ({ request }) => {
-        // Get the referrer from request headers
-        console.log('❌❌❌❌❌❌❌❌❌ Checking referrer:', request);
-        const referrer = request.referrer || request.headers.get("referer");
-        console.log('🔍 Checking referrer:', referrer);
-        if (isFromAssets({ referrer })) {
-            console.log('📌 Caching request from assets:', request.url);
-            return true; // Allow caching
-        }
-        return false;
-    },
-    new CacheFirst({
-        cacheName: "assets-referrer-cache",
-        plugins: [
-            new ExpirationPlugin({
-                maxEntries: 100, // Limit cache size
-                maxAgeSeconds: 7 * 24 * 60 * 60, // 7 days
-            }),
-        ],
-    })
-);
+// // Register route to cache only if the request referrer is from /assets/
+// registerRoute(
+//     ({ request }) => {
+//         // Get the referrer from request headers
+//         console.log('❌❌❌❌❌❌❌❌❌ Checking referrer:', request);
+//         const referrer = request.referrer || request.headers.get("referer");
+//         console.log('🔍 Checking referrer:', referrer);
+//         if (isFromAssets({ referrer })) {
+//             console.log('📌 Caching request from assets:', request.url);
+//             return true; // Allow caching
+//         }
+//         return false;
+//     },
+//     new CacheFirst({
+//         cacheName: "assets-referrer-cache",
+//         plugins: [
+//             new ExpirationPlugin({
+//                 maxEntries: 100, // Limit cache size
+//                 maxAgeSeconds: 7 * 24 * 60 * 60, // 7 days
+//             }),
+//         ],
+//     })
+// );
 
 
 

@@ -29,7 +29,7 @@ if ("serviceWorker" in navigator) {
                                 color: white;
                                 padding: 16px 24px;
                                 border-radius: 8px;
-                                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                                box-shadow: 0 4px 12px rgba(0,0,0,0y.1);
                                 display: flex;
                                 align-items: center;
                                 gap: 12px;
