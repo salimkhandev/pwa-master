@@ -4,7 +4,8 @@ import { registerRoute } from "workbox-routing";
 import { CacheFirst, StaleWhileRevalidate } from "workbox-strategies";
 
 // 🔹 Precache assets generated during build
-precacheAndRoute(self.__WB_MANIFEST || []);
+
+// precacheAndRoute(self.__WB_MANIFEST || []);
 
 // 🔹 Cache API responses (NetworkFirst for dynamic data)
 registerRoute(
