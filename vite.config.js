@@ -50,22 +50,6 @@ export default defineConfig({
                         purpose: "any"
                     }
                 ],
-                screenshots: [
-                    {
-                        src: "/screenshots/desktop.png",
-                        sizes: "1920x1080",
-                        type: "image/png",
-                        form_factor: "wide",
-                        label: "Desktop View of Vite React PWA"
-                    },
-                    {
-                        src: "/screenshots/mobile.png",
-                        sizes: "390x844",
-                        type: "image/png",
-                        form_factor: "narrow",
-                        label: "Mobile View of Vite React PWA"
-                    }
-                ],
                 shortcuts: [
                     {
                         name: "Home",
