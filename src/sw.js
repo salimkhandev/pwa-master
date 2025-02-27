@@ -97,50 +97,45 @@ registerRoute(
 // 🧭 Navigation Routes Strategy
 registerRoute(
     ({ request, url }) => {
+        console.log('🧭 Navigation Check:', request.url);
         const pathname = url.pathname.toLowerCase();
-        console.log('🧭 Navigation Check:', pathname);
-        
-        // List of paths to exclude from caching
-        const excludedPaths = [
-            'contact',    // Contact page and its assets
-            'api',        // If you have any API calls
-            'logout',     // Example: logout route
-            // Add more paths to exclude here
-        ];
-        
-        // Check if the path contains any excluded paths
-        const isExcluded = excludedPaths.some(path => pathname.includes(path));
-        
-        if (isExcluded) {
-            console.log('⛔ Excluding from cache:', pathname);
-            return false;
-        }
+        // console.log('🧭 Asset Check:', pathname);
 
-        // For navigation requests (page loads)
-        if (request.mode === 'navigate') {
-            console.log('🏠 Caching navigation route:', pathname);
-            return true;
-        }
-
-        // For page assets
+        // First, check if it's an asset request
         if (pathname.includes('/assets/')) {
-            console.log('📦 Caching page asset:', pathname);
+            // List of asset paths to exclude from caching
+            const excludedAssets = [
+                'contact',     // Don't cache contact page assets
+                'admin',       // Example: don't cache admin assets
+                'private'      // Example: don't cache private assets
+                // Add more exclusions here
+            ];
+
+            // Check if the asset should be excluded
+            const shouldExclude = excludedAssets.some(path => pathname.includes(path));
+            
+            if (shouldExclude) {
+                console.log('⛔ Excluding asset from cache:', pathname);
+                return false;
+            }
+
+            // Cache all other assets
+            console.log('💾 Caching asset:', pathname);
             return true;
         }
 
-        console.log('✅ Default caching for:', pathname);
-        return true;
+        return false; // Don't handle non-asset requests here
     },
     new StaleWhileRevalidate({
-        cacheName: `pages-${VERSION}`,
+        cacheName: `assets-${VERSION}`,
         plugins: [
             new ExpirationPlugin({
-                maxEntries: 30,
-                maxAgeSeconds: 7 * 24 * 60 * 60 // 7 days
+                maxEntries: 60,
+                maxAgeSeconds: 30 * 24 * 60 * 60 // 30 days
             }),
             {
                 cacheDidUpdate: async ({ request }) => {
-                    console.log('📄 Updated page cache:', request.url);
+                    console.log('📦 Updated asset cache:', request.url);
                 }
             }
         ]

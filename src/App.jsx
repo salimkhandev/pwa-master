@@ -11,6 +11,9 @@ function App() {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [isIOSDevice, setIsIOSDevice] = useState(false);
   const [isAndroid, setIsAndroid] = useState(false);
+  // Get the pathname of the current route
+  const pathname = url.pathname.toLowerCase();
+  console.log('🧭 Current pathname:', pathname);
 
   useEffect(() => {
     // Check device types
