@@ -95,27 +95,32 @@ registerRoute(
     })
 );
 
-// // 🧭 Navigation Routes Strategy (excluding contact)
-// registerRoute(
-//     ({ request, url }) => {
-//       console.log('🧭 Navigation Check:', request.url);
-//       return true;
-//     },
-//     new StaleWhileRevalidate({
-//         cacheName: `pages-${VERSION}`,
-//         plugins: [
-//             new ExpirationPlugin({
-//                 maxEntries: 30,
-//                 maxAgeSeconds: 7 * 24 * 60 * 60 // 7 days
-//             }),
-//             {
-//                 cacheDidUpdate: async ({ request }) => {
-//                     console.log('📄 Updated page cache:', request.url);
-//                 }
-//             }
-//         ]
-//     })
-// );
+const isFromAssets = ({ referrer }) => {
+    return referrer && referrer.includes('/assets/');
+};
+
+// Register route to cache only if the request referrer is from /assets/
+registerRoute(
+    ({ request }) => {
+        // Get the referrer from request headers
+        const referrer = request.referrer || request.headers.get("referer");
+
+        if (isFromAssets({ referrer })) {
+            console.log('📌 Caching request from assets:', request.url);
+            return true; // Allow caching
+        }
+        return false;
+    },
+    new CacheFirst({
+        cacheName: "assets-referrer-cache",
+        plugins: [
+            new ExpirationPlugin({
+                maxEntries: 100, // Limit cache size
+                maxAgeSeconds: 7 * 24 * 60 * 60, // 7 days
+            }),
+        ],
+    })
+);
 
 // Service Worker Lifecycle Events
 self.addEventListener("install", () => {
