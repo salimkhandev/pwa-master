@@ -1,5 +1,4 @@
 import { ExpirationPlugin } from "workbox-expiration";
-import { precacheAndRoute } from "workbox-precaching";
 import { registerRoute } from "workbox-routing";
 import { CacheFirst, NetworkOnly, StaleWhileRevalidate } from "workbox-strategies";
 
@@ -7,21 +6,18 @@ import { CacheFirst, NetworkOnly, StaleWhileRevalidate } from "workbox-strategie
 
 //precacheAndRoute(self.__WB_MANIFEST || []);
 
-// 🔹 Cache static assets (CSS, JS, Fonts)
+// Contact pages and assets - Always network (MUST BE FIRST)
 registerRoute(
-    ({ request }) => ["style", "script", "font"].includes(request.destination),
-    new StaleWhileRevalidate({
-        cacheName: "static-resources",
-        plugins: [
-            new ExpirationPlugin({
-                maxEntries: 60,
-                maxAgeSeconds: 30 * 24 * 60 * 60 // 30 days
-            })
-        ]
-    })
+    ({ url, request }) => {
+        const pathname = url.pathname.toLowerCase();
+        // Match both the page and its assets
+        return pathname.includes('contact') || 
+               pathname.includes('/assets/contact-');
+    },
+    new NetworkOnly()
 );
 
-// 🔹 Cache images
+// Cache images
 registerRoute(
     ({ request }) => request.destination === "image",
     new CacheFirst({
@@ -35,16 +31,32 @@ registerRoute(
     })
 );
 
-// 🔹 Handle navigation routes
+// Cache static assets (CSS, JS, Fonts) EXCEPT contact
+registerRoute(
+    ({ request, url }) => {
+        const pathname = url.pathname.toLowerCase();
+        // Don't cache contact-related files
+        if (pathname.includes('contact')) {
+            return false;
+        }
+        // Cache other static assets
+        return ["style", "script", "font"].includes(request.destination);
+    },
+    new StaleWhileRevalidate({
+        cacheName: "static-resources",
+        plugins: [
+            new ExpirationPlugin({
+                maxEntries: 60,
+                maxAgeSeconds: 30 * 24 * 60 * 60 // 30 days
+            })
+        ]
+    })
+);
+
+// Handle navigation routes EXCEPT contact
 registerRoute(
     ({ url }) => {
         const pathname = url.pathname.toLowerCase();
-        
-        // Check for contact in both route and asset paths
-        if (pathname.includes('contact') || pathname.includes('/assets/contact-')) {
-            return false;
-        }
-
         // Cache home, about routes and their assets
         return pathname === '/' || 
                pathname.includes('about') || 
@@ -61,15 +73,6 @@ registerRoute(
             })
         ]
     })
-);
-
-// 🔹 Contact page - Always network
-registerRoute(
-    ({ url }) => {
-        const pathname = url.pathname.toLowerCase();
-        return pathname.includes('contact') || pathname.includes('/assets/contact-');
-    },
-    new NetworkOnly()
 );
 
 // 🔹 Activate new SW immediately (skip waiting)
