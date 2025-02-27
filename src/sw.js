@@ -94,40 +94,42 @@ registerRoute(
     })
 );
 
-// 🧭 Navigation Routes Strategy (excluding contact)
+// 🧭 Navigation Routes Strategy
 registerRoute(
     ({ request, url }) => {
         const pathname = url.pathname.toLowerCase();
         console.log('🧭 Navigation Check:', pathname);
         
-        // Handle navigation requests
+        // List of paths to exclude from caching
+        const excludedPaths = [
+            'contact',    // Contact page and its assets
+            'api',        // If you have any API calls
+            'logout',     // Example: logout route
+            // Add more paths to exclude here
+        ];
+        
+        // Check if the path contains any excluded paths
+        const isExcluded = excludedPaths.some(path => pathname.includes(path));
+        
+        if (isExcluded) {
+            console.log('⛔ Excluding from cache:', pathname);
+            return false;
+        }
+
+        // For navigation requests (page loads)
         if (request.mode === 'navigate') {
-            console.log('📱 React Navigation detected:', pathname);
-            // Exclude contact routes
-            if (pathname.includes('contact')) {
-                console.log('⛔ Skipping contact navigation');
-                return false;
-            }
+            console.log('🏠 Caching navigation route:', pathname);
             return true;
         }
 
-        // For non-navigation requests (assets, etc)
-        // Explicitly exclude contact-related assets
-        if (pathname.includes('contact')) {
-            return false;
+        // For page assets
+        if (pathname.includes('/assets/')) {
+            console.log('📦 Caching page asset:', pathname);
+            return true;
         }
-        
-        // Handle asset routes for pages
-        const isPageAsset = pathname.includes('/assets/') && (
-            pathname.includes('about') ||
-            pathname.includes('home') ||
-            pathname.includes('index')
-        );
 
-        if (isPageAsset) {
-            console.log('🏠 Handling page asset:', pathname);
-        }
-        return isPageAsset;
+        console.log('✅ Default caching for:', pathname);
+        return true;
     },
     new StaleWhileRevalidate({
         cacheName: `pages-${VERSION}`,
