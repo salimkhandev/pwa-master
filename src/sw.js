@@ -10,6 +10,7 @@ import { CacheFirst, NetworkOnly, StaleWhileRevalidate } from "workbox-strategie
 registerRoute(
     ({ url, request }) => {
         const pathname = url.pathname.toLowerCase();
+        console.log(pathname,'pathname✅✅✅✅');
         // Match both the page and its assets
         return pathname.includes('contact') || 
                pathname.includes('/assets/contact-');
