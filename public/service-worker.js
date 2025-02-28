@@ -92,7 +92,7 @@ self.addEventListener('fetch', (event) => {
                     caches.open(CACHE_NAME).then((cache) => {
                         cache.put(event.request, responseToCache);
                         console.log('📥 Cached after Network Fetch:', event.request.url);
-                        console.log('🚀 Service Worker: Fetch event triggered', event);
+                        console.log('🚀 Service Worker: Fetch event trigger', event);
                     });
                 }
                 return response;
