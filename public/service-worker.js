@@ -8,7 +8,7 @@ const CACHE_NAME = 'pwa-cache1';
 const FILES_TO_CACHE = [
     '/',
     '/index.html',
-    '/fallback.html',
+    '/fallback',
 ];
 
 // Install event: Cache assets
