@@ -4,23 +4,16 @@ self.__WB_MANIFEST
 const CACHE_NAME = 'vite-react-cache-v7';
 const FILES_TO_CACHE = [
     // '/',
-    // '/about',
-    // '/contact',
-    // '/assets/About-YYOYwKwC.js',
-    // '/assets/Contact-cQmzpnLa.js',
-    // '/assets/Home-CM6lxlTi.js',
-    // '/assets/main-DlGfgnAx.css',
-    // '/assets/main-aZzdTF1E.js',
+    // '/index.html',
+    // '/src/index.css',
+    // '/src/App.css',
+    // '/manifest.json',
     // '/icons-pwa/android-chrome-192x192.png',
     // '/icons-pwa/android-chrome-512x512.png',
     // '/icons-pwa/apple-touch-icon.png',
     // '/icons-pwa/favicon-16x16.png',
     // '/icons-pwa/favicon-32x32.png',
-    // '/icons-pwa/favicon.ico',
-    // '/manifest.json',
-    // '/screenshots/desktop.png',
-    // '/assets/main-DIGfgnAx.css',
-    // '/assets/main-DlGfgnAx.css',
+    // '/icons-pwa/favicon.ico'
 ];
 
 // Install event: Cache assets
@@ -64,7 +57,7 @@ self.addEventListener('activate', (event) => {
 // Fetch event: Network first, then cache
 self.addEventListener('fetch', (event) => {
     // Only handle same-origin requests
-    console.log('🔍 Fetch event❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️😂😂😂😂😂😂😂😂:', event);
+    console.log('🔍 Fetch 😂:', event);
     if (!event.request.url.startsWith(self.location.origin)) {
         return;
     }
