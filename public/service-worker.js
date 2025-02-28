@@ -64,6 +64,7 @@ self.addEventListener('activate', (event) => {
 // Fetch event: Network first, then cache
 self.addEventListener('fetch', (event) => {
     // Only handle same-origin requests
+    console.log('🔍 Fetch event❤️❤️❤️❤️❤️❤️❤️❤️❤️❤️😂😂😂😂😂😂😂😂:', event);
     if (!event.request.url.startsWith(self.location.origin)) {
         return;
     }
