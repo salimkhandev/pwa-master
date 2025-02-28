@@ -55,9 +55,48 @@ self.addEventListener('activate', (event) => {
 });
 
 // Fetch event: Network first, then cache
+// self.addEventListener('fetch', (event) => {
+//     // Only handle same-origin requests
+//     console.log('🔍 Fetch 😂:', event);
+//     if (!event.request.url.startsWith(self.location.origin)) {
+//         return;
+//     }
+
+//     // Skip chrome-extension requests
+//     if (event.request.url.startsWith('chrome-extension://')) {
+//         return;
+//     }
+
+//     // Only handle GET requests
+//     if (event.request.method !== 'GET') {
+//         return;
+//     }
+
+//     event.respondWith(
+//         fetch(event.request)
+//             .then((response) => {
+//                 const responseToCache = response.clone();
+//                 if (response.status === 200) {
+//                     caches.open(CACHE_NAME)
+//                         .then((cache) => {
+//                             // Only cache same-origin responses
+//                             if (event.request.url.startsWith(self.location.origin)) {
+//                                 cache.put(event.request, responseToCache);
+//                                 console.log('📥 Network Response Cached:', event.request.url);
+//                             }
+//                         });
+//                 }
+//                 console.log('🌐 Fetched from Network:', event.request.url);
+//                 return response;
+//             })
+//             .catch(() => {
+//                 console.log('📦 Falling back to Cache:', event.request.url);
+//                 return caches.match(event.request);
+//             })
+//     );
+// });
 self.addEventListener('fetch', (event) => {
     // Only handle same-origin requests
-    console.log('🔍 Fetch 😂:', event);
     if (!event.request.url.startsWith(self.location.origin)) {
         return;
     }
@@ -73,25 +112,25 @@ self.addEventListener('fetch', (event) => {
     }
 
     event.respondWith(
-        fetch(event.request)
-            .then((response) => {
-                const responseToCache = response.clone();
+        caches.match(event.request).then((cachedResponse) => {
+            if (cachedResponse) {
+                console.log('✅ Serving from Cache:', event.request.url);
+                return cachedResponse;
+            }
+
+            // If not in cache, fetch from network and cache it
+            return fetch(event.request).then((response) => {
                 if (response.status === 200) {
-                    caches.open(CACHE_NAME)
-                        .then((cache) => {
-                            // Only cache same-origin responses
-                            if (event.request.url.startsWith(self.location.origin)) {
-                                cache.put(event.request, responseToCache);
-                                console.log('📥 Network Response Cached:', event.request.url);
-                            }
-                        });
+                    caches.open(CACHE_NAME).then((cache) => {
+                        cache.put(event.request, response.clone());
+                        console.log('📥 Cached after Network Fetch:', event.request.url);
+                    });
                 }
-                console.log('🌐 Fetched from Network:', event.request.url);
                 return response;
-            })
-            .catch(() => {
-                console.log('📦 Falling back to Cache:', event.request.url);
-                return caches.match(event.request);
-            })
+            }).catch(() => {
+                console.log('❌ Network failed & No Cache:', event.request.url);
+                return new Response('Offline & not cached', { status: 503 });
+            });
+        })
     );
 });
