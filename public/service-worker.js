@@ -87,7 +87,7 @@ self.addEventListener('fetch', (event) => {
 
                     // Redirect to home page
                     event.respondWith(fetch('/')); // Redirect user to home
-                    return;
+                    return response;
                 }
                 const responseToCache = response.clone();
                 
