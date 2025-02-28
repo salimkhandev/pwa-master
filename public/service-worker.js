@@ -4,6 +4,10 @@ self.__WB_MANIFEST
 
 const CACHE_NAME = 'pwa-cache';
 
+const images = 'images';
+const routes = 'routes';
+const css = 'style';
+const other='other';
 
 const FILES_TO_CACHE = [
     // '/',
@@ -59,7 +63,36 @@ self.addEventListener('activate', (event) => {
 
 
 self.addEventListener('fetch', (event) => {
- 
+    console.log('🚀 Service Worker: Fetch event triggered', event.request.url);
+
+    // Define variables for different request destinations
+    let imageRequests = [];
+    let scriptRequests = [];
+    let styleRequests = [];
+    let otherRequests = [];
+
+    // Filter based on req.destination
+    switch (event.request.destination) {
+        case 'image':
+            imageRequests.push(event.request);
+            break;
+        case 'script':
+            scriptRequests.push(event.request);
+            break;
+        case 'style':
+            styleRequests.push(event.request);
+            break;
+        default:
+            otherRequests.push(event.request);
+            break;
+    }
+
+    // Log the categorized requests
+    console.log('Image Requests:', imageRequests);
+    console.log('Script Requests:', scriptRequests);
+    console.log('Style Requests:', styleRequests);
+    console.log('Other Requests:', otherRequests);
+
     // Only handle same-origin requests
     if (!event.request.url.startsWith(self.location.origin)) {
         return;
@@ -79,20 +112,18 @@ self.addEventListener('fetch', (event) => {
         caches.match(event.request).then((cachedResponse) => {
             if (cachedResponse) {
                 console.log('✅ Serving from Cache:', event.request.url);
-                
                 return cachedResponse;
             }
 
             // If not in cache, fetch from network and cache it
             return fetch(event.request).then((response) => {
-                // Clone the response before using it
                 const responseToCache = response.clone();
                 
                 if (response.status === 200) {
                     caches.open(CACHE_NAME).then((cache) => {
                         cache.put(event.request, responseToCache);
                         console.log('📥 Cached after Network Fetch:', event.request.url);
-                        console.log('🚀 Service Worker: Fetch event trigger', event);
+                        console.log('🚀 Service Worker: Fetch event triggered', event);
                     });
                 }
                 return response;
