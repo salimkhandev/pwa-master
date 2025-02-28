@@ -84,9 +84,9 @@ self.addEventListener('fetch', (event) => {
 
             // If not in cache, fetch from network and cache it
             return fetch(event.request).then((response) => {
-
- if(event.request.url.includes('Contact')){
-    console.log('✅❤️❌❌❌❌❌❌❌❌❌', event.request.url);
+let excludedurl=['contact']
+ if(excludedurl.some(url=>event.request.url.toLowerCase().includes(url))){
+    console.log('sorry i can not serve this page❌', event.request.url);
     return response;
  }
                 const responseToCache = response.clone();
