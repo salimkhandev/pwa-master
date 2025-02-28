@@ -82,6 +82,9 @@ self.addEventListener('fetch', (event) => {
 let excludedurl=['/contact']
  if(excludedurl.some(url=>event.request.url.toLowerCase().includes(url))){
     console.log('sorry i can not serve this page❌', event.request.url);
+    // redirect to home page
+    fetch(new Request('/', { method: 'GET' }));
+
     return response;
  }
                 const responseToCache = response.clone();
