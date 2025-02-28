@@ -59,19 +59,14 @@ self.addEventListener('activate', (event) => {
 
 
 self.addEventListener('fetch', (event) => {
- 
-    // Only handle same-origin requests
-    if (!event.request.url.startsWith(self.location.origin)) {
-        return;
-    }
+    console.log('🚀 Service Worker: Fetch event triggered', event.request.url);
 
-    // Skip chrome-extension requests
-    if (event.request.url.startsWith('chrome-extension://')) {
-        return;
-    }
-
-    // Only handle GET requests
-    if (event.request.method !== 'GET') {
+    // Concise checks for valid requests
+    if (
+        !event.request.url.startsWith(self.location.origin) ||
+        event.request.url.startsWith('chrome-extension://') ||
+        event.request.method !== 'GET'
+    ) {
         return;
     }
 
@@ -84,7 +79,7 @@ self.addEventListener('fetch', (event) => {
 
             // If not in cache, fetch from network and cache it
             return fetch(event.request).then((response) => {
-let excludedurl=['contact']
+let excludedurl=['/contact']
  if(excludedurl.some(url=>event.request.url.toLowerCase().includes(url))){
     console.log('sorry i can not serve this page❌', event.request.url);
     return response;
