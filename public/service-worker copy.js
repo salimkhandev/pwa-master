@@ -1,9 +1,11 @@
 // Injection point for the precache manifest
 self.__WB_MANIFEST
 
-
-const CACHE_NAME = 'pwa-cache';
-
+const images = 'images';
+const routes = 'routes';
+const fonts = 'fonts';
+const css = 'style';
+const manifest = 'manifest';
 
 const FILES_TO_CACHE = [
     // '/',
@@ -59,7 +61,6 @@ self.addEventListener('activate', (event) => {
 
 
 self.addEventListener('fetch', (event) => {
-    console.log('🚀 Service Worker: Fetch event triggered', event.requestl);
     // Only handle same-origin requests
     if (!event.request.url.startsWith(self.location.origin)) {
         return;
@@ -79,7 +80,6 @@ self.addEventListener('fetch', (event) => {
         caches.match(event.request).then((cachedResponse) => {
             if (cachedResponse) {
                 console.log('✅ Serving from Cache:', event.request.url);
-                
                 return cachedResponse;
             }
 
