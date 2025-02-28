@@ -61,7 +61,7 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
-    if (event.request.url.includes('/contact')) {
+    if (event.request.url.toLowerCase().includes('/contact')) {
         console.log('❌ Not caching this page:', event.request.url);
         return fetch(event.request); // Just fetch without caching
     }
