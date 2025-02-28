@@ -84,7 +84,9 @@ self.addEventListener('fetch', (event) => {
 
             // If not in cache, fetch from network and cache it
             return fetch(event.request).then((response) => {
-                // Clone the response before using it
+ if(event.request.url.includes('contact')){
+    return response;
+ }
                 const responseToCache = response.clone();
                 
                 if (response.status === 200) {
