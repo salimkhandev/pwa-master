@@ -7,14 +7,16 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
+      strategies: 'injectManifest',
+      srcDir: 'public',
+      filename: 'service-worker.js',
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'masked-icon.svg'],
       manifest: false,
       useManifestFromFile: true,
       injectRegister: null,
-      strategies: 'injectManifest',
-      srcDir: 'public',
-      filename: 'service-worker.js'
+      injectManifest: {
+        injectionPoint: undefined
+      }
     })
   ],
 })

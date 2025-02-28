@@ -1,3 +1,6 @@
+// Injection point for the precache manifest
+self.__WB_MANIFEST
+
 const CACHE_NAME = 'vite-react-cache-v7';
 const FILES_TO_CACHE = [
     // '/',
