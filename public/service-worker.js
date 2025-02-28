@@ -59,7 +59,7 @@ self.addEventListener('activate', (event) => {
 
 
 self.addEventListener('fetch', (event) => {
-    console.log('🚀 Service Worker: Fetch event triggered', event.requestl);
+    console.log('🚀 Service Worker: Fetch event triggered', event.request);
     // Only handle same-origin requests
     if (!event.request.url.startsWith(self.location.origin)) {
         return;
