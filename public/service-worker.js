@@ -79,14 +79,16 @@ self.addEventListener('fetch', (event) => {
 
             // If not in cache, fetch from network and cache it
             return fetch(event.request).then((response) => {
-let excludedurl=['/contact']
- if(excludedurl.some(url=>event.request.url.toLowerCase().includes(url))){
-    console.log('sorry i can not serve this page❌', event.request.url);
-    // redirect to home page
-    fetch(new Request('/', { method: 'GET' }));
+                const excludedUrls = ['/contact', '/admin', '/private-data']; // Excluded paths
+                const requestUrl = event.request.url.toLowerCase();
 
-    return response;
- }
+                if (excludedUrls.some(url => requestUrl.includes(url))) {
+                    console.log('🚫 Sorry, I cannot serve this page❌', event.request.url);
+
+                    // Redirect to home page
+                    event.respondWith(fetch('/')); // Redirect user to home
+                    return;
+                }
                 const responseToCache = response.clone();
                 
                 if (response.status === 200) {
