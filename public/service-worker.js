@@ -70,6 +70,12 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
+    // Prevent caching for the /contact page
+    if (event.request.url.includes('/contact')) {
+        console.log('❌ Not caching this page:', event.request.url);
+        return fetch(event.request); // Just fetch without caching
+    }
+
     event.respondWith(
         caches.match(event.request).then((cachedResponse) => {
             if (cachedResponse) {
@@ -77,28 +83,21 @@ self.addEventListener('fetch', (event) => {
                 return cachedResponse;
             }
 
-            // If not in cache, fetch from network and cache it
+            // If not in cache, fetch from network
             return fetch(event.request).then((response) => {
-let excludedurl=['/contact']
- if(excludedurl.some(url=>event.request.url.toLowerCase().includes(url))){
-    console.log('sorry i can not serve this page❌', event.request.url);
-
-
-    return response;
- }
                 const responseToCache = response.clone();
                 
                 if (response.status === 200) {
                     caches.open(CACHE_NAME).then((cache) => {
                         cache.put(event.request, responseToCache);
                         console.log('📥 Cached after Network Fetch:', event.request.url);
-                        console.log('🚀 Service Worker: Fetch event trigger', event);
                     });
                 }
                 return response;
             }).catch(() => {
                 console.log('❌ Network failed & No Cache:', event.request.url);
-                return new Response('Offline & not cached', { status: 503 });
+                // Return the home page if offline
+                return caches.match('/'); // Assuming '/' is your home page
             });
         })
     );
