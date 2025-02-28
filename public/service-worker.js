@@ -120,9 +120,12 @@ self.addEventListener('fetch', (event) => {
 
             // If not in cache, fetch from network and cache it
             return fetch(event.request).then((response) => {
+                // Clone the response before using it
+                const responseToCache = response.clone();
+                
                 if (response.status === 200) {
                     caches.open(CACHE_NAME).then((cache) => {
-                        cache.put(event.request, response.clone());
+                        cache.put(event.request, responseToCache);
                         console.log('📥 Cached after Network Fetch:', event.request.url);
                     });
                 }

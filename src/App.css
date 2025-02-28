@@ -1,5 +1,6 @@
 /* Google Fonts */
-/* @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Poppins:wght@400;500;600;700;800&family=Montserrat:wght@400;500;600;700;800&display=swap');
+
 :root {
   --primary-color: #2563eb;
   --secondary-color: #1e40af;
@@ -16,19 +17,23 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: var(--font-primary);  /* Set default font */
 }
 
 body {
   background-color: var(--background-color);
   color: var(--text-color);
   line-height: 1.6;
+  font-family: var(--font-primary);  /* Ensure body has the primary font */
 }
 
 .app {
   min-height: 100vh;
-  font-family: "Anton", sans-serif;
-  font-weight: 400 !important;
+  font-family: var(--font-heading);  /* Use CSS variable */
+  font-weight: 400;  /* Removed !important as it's not needed */
   font-style: normal;
+  display: flex;  /* Added missing display flex */
+  flex-direction: column;
 }
 
 /* Navbar Styles */
