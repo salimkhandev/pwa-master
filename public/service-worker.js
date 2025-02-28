@@ -61,7 +61,6 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
     console.log('🚀 Service Worker: Fetch event triggered', event.request.url);
 
-    // Concise checks for valid requests
     if (
         !event.request.url.startsWith(self.location.origin) ||
         event.request.url.startsWith('chrome-extension://') ||
@@ -70,8 +69,7 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
-    // Prevent caching for the /contact page
-    if (event.request.url.toLowerCase().includes('/contact')) {
+    if (event.request.url.includes('/contact')) {
         console.log('❌ Not caching this page:', event.request.url);
         return fetch(event.request); // Just fetch without caching
     }
@@ -83,7 +81,6 @@ self.addEventListener('fetch', (event) => {
                 return cachedResponse;
             }
 
-            // If not in cache, fetch from network
             return fetch(event.request).then((response) => {
                 const responseToCache = response.clone();
                 
@@ -96,8 +93,7 @@ self.addEventListener('fetch', (event) => {
                 return response;
             }).catch(() => {
                 console.log('❌ Network failed & No Cache:', event.request.url);
-                // Return the home page if offline
-                return caches.match('/'); // Assuming '/' is your home page
+                return caches.match('/'); // Return home page if offline
             });
         })
     );
