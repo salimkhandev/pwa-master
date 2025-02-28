@@ -2,6 +2,7 @@ import React, { lazy, Suspense, useEffect, useState } from 'react'
 import { Link, Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 import './App.css'
 
+
 // Lazy-loaded components
 const About = lazy(() => import('./components/About'))
 const Contact = lazy(() => import('./components/Contact'))
