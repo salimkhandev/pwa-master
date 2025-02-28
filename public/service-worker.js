@@ -6,17 +6,9 @@ const CACHE_NAME = 'pwa-cache1';
 
 
 const FILES_TO_CACHE = [
-    // '/',
-    // '/index.html',
-    // '/src/index.css',
-    // '/src/App.css',
-    // '/manifest.json',
-    // '/icons-pwa/android-chrome-192x192.png',
-    // '/icons-pwa/android-chrome-512x512.png',
-    // '/icons-pwa/apple-touch-icon.png',
-    // '/icons-pwa/favicon-16x16.png',
-    // '/icons-pwa/favicon-32x32.png',
-    // '/icons-pwa/favicon.ico'
+    '/',
+    '/index.html',
+    '/fallback.html',
 ];
 
 // Install event: Cache assets
@@ -93,7 +85,7 @@ self.addEventListener('fetch', (event) => {
                 return response;
             }).catch(() => {
                 console.log('❌ Network failed & No Cache:', event.request.url);
-                return caches.match('/'); // Return home page if offline
+                return caches.match('/fallback.html'); // Return home page if offline
             });
         })
     );
