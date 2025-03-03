@@ -2,6 +2,7 @@ import React, { lazy, Suspense, useEffect, useState } from 'react'
 import { Link, Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 import './App.css'
 
+import { ContextProvider } from './components/ContextAPI';
 
 // Lazy-loaded components
 const About = lazy(() => import('./components/About'))
@@ -52,6 +53,9 @@ function App() {
   };
 
   return (
+    <ContextProvider>
+
+    
     <React.Fragment>
       <Router>
         <div className="app">
@@ -83,6 +87,7 @@ function App() {
         </div>
       </Router>
     </React.Fragment>
+    </ContextProvider>
   )
 }
 

@@ -1,7 +1,9 @@
 import React from 'react';
+import { useContextAPI } from './ContextAPI';
 
 
 const About = () => {
+  const { value, setValue } = useContextAPI();
   const team = [
     {
       name: "John Doe",
@@ -32,7 +34,7 @@ const About = () => {
           marginBottom: '1rem',
           fontFamily: 'Montserrat, sans-serif'
         }}>
-          About Us
+          About Us {value}
         </h1>
         <p style={{ 
           fontSize: '1.1rem', 
