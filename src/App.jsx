@@ -67,7 +67,7 @@ function App() {
               <Route path="/" element={<Suspense fallback={<div>Loading...</div>}><Home /></Suspense>} />
               <Route path="/about" element={<Suspense fallback={<div>Loading...</div>}><About /></Suspense>} />
               <Route path="/contact" element={<Suspense fallback={<div>Loading...</div>}><Contact /></Suspense>} />
-              <Route path="*" element={<Offline />} /> {/* Catch-all route */}
+              <Route path="/offline" element={<Offline />} /> {/* Catch-all route */}
 
             </Routes>
           </div>
