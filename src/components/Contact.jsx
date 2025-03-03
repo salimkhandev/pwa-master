@@ -4,24 +4,6 @@ import { useEffect } from 'react';
 
 
 const Contact = () => {
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const checkOnlineStatus = () => {
-      if (!navigator.onLine) {
-        navigate("/offline"); // Redirect if offline
-      }
-    };
-
-    checkOnlineStatus(); // Check once when the component loads
-
-    // Listen for network changes
-    window.addEventListener("offline", checkOnlineStatus);
-
-    return () => {
-      window.removeEventListener("offline", checkOnlineStatus);
-    };
-  }, [navigate]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
