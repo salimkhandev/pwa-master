@@ -83,8 +83,13 @@ self.addEventListener('fetch', (event) => {
                 return response;
             })
             .catch((error) => {
-                console.log('❌ Network failed & No Cache:', event.request.url);
-                return caches.match('/public/offline.html');
+                // Handle network errors or other fetch failures
+                return new Response('', {
+                    status: 302,
+                    headers: {
+                        'Location': '/fallback' // Replace with your error page path
+                    }
+                });
             })
         })
     );
