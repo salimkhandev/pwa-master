@@ -9,8 +9,7 @@ const About = lazy(() => import('./components/About'))
 const Contact = lazy(() => import('./components/Contact'))
 const Home = lazy(() => import('./components/Home'))
 import Offline from './components/Offline'
-import { useContextAPI } from './components/ContextAPI';
-import { useNavigate, useLocation } from "react-router-dom";
+
 
 
 function App() {
