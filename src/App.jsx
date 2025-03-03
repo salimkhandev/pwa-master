@@ -9,9 +9,14 @@ const About = lazy(() => import('./components/About'))
 const Contact = lazy(() => import('./components/Contact'))
 const Home = lazy(() => import('./components/Home'))
 import Offline from './components/Offline'
+import { useContextAPI } from './components/ContextAPI';
+import { useNavigate, useLocation } from "react-router-dom";
 
 
 function App() {
+
+ 
+
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [isIOSDevice, setIsIOSDevice] = useState(false);
   const [isAndroid, setIsAndroid] = useState(false);
@@ -57,7 +62,7 @@ function App() {
 
     
     <React.Fragment>
-      <Router>
+      {/* <Router> */}
         <div className="app">
           <nav className="navbar">
             <ul>
@@ -85,7 +90,7 @@ function App() {
             </button>
           )}
         </div>
-      </Router>
+      {/* </Router> */}
     </React.Fragment>
     </ContextProvider>
   )
