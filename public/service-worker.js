@@ -85,7 +85,7 @@ self.addEventListener('fetch', (event) => {
                 return response;
             }).catch(() => {
                 console.log('❌ Network failed & No Cache:', event.request.url);
-                return caches.match('/fallback'); // Return home page if offline
+                return caches.match('/offline.html'); // Return home page if offline
             });
         })
     );
