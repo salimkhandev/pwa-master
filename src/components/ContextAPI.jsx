@@ -8,7 +8,9 @@ export const ContextProvider = ({ children }) => {
     const navigate = useNavigate();
     const location = useLocation();
     const onlinePathsOnly = ['/call','/message','/contact'];
-    const isOnline = onlinePathsOnly.includes(location.pathname);
+    // window.location.pathname use this
+    const pathname = window.location.pathname;
+    const isOnline = onlinePathsOnly.includes(pathname);
 
 
     useEffect(() => {
