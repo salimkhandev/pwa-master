@@ -7,7 +7,7 @@ import './App.css'
 const About = lazy(() => import('./components/About'))
 const Contact = lazy(() => import('./components/Contact'))
 const Home = lazy(() => import('./components/Home'))
-const Offline=import('./components/Offline')
+const Offline=lazy(() => import('./components/Offline'))
 
 function App() {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
@@ -59,6 +59,7 @@ function App() {
               <li><Link to="/">Home</Link></li>
               <li><Link to="/about">About</Link></li>
               <li><Link to="/contact">Contact</Link></li>
+              <li><Link to="/offline">Offline</Link></li>
             </ul>
           </nav>
 
@@ -67,7 +68,7 @@ function App() {
               <Route path="/" element={<Suspense fallback={<div>Loading...</div>}><Home /></Suspense>} />
               <Route path="/about" element={<Suspense fallback={<div>Loading...</div>}><About /></Suspense>} />
               <Route path="/contact" element={<Suspense fallback={<div>Loading...</div>}><Contact /></Suspense>} />
-              <Route path="/offline" element={<Offline />} /> {/* Catch-all route */}
+              <Route path="/offline" element={<Suspense fallback={<div>Loading...</div>}><Offline /></Suspense>} /> {/* Catch-all route */}
 
             </Routes>
           </div>
