@@ -1,12 +1,12 @@
 import { createContext, useContext,useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 const Context = createContext();
 
 export const ContextProvider = ({ children }) => {
     const navigate = useNavigate();
-    const location = useLocation();
+
     const onlinePathsOnly = ['/call','/message','/contact'];
     // window.location.pathname use this
     const pathname = window.location.pathname;
@@ -17,7 +17,7 @@ export const ContextProvider = ({ children }) => {
         if (isOnline && !navigator.onLine) {
             navigate("/offline");
         }
-    }, [isOnline, navigate, location.pathname]);
+    }, [isOnline, navigate, pathname]);
    
 
     return (
