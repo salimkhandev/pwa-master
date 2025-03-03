@@ -9,6 +9,10 @@ const FILES_TO_CACHE = [
     '/',
     '/index.html',
     '/offline.html',
+    '/main.js',
+    '/style.css',
+    
+    
 ];
 
 // Install event: Cache assets
