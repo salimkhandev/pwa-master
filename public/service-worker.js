@@ -63,6 +63,9 @@ self.addEventListener('fetch', (event) => {
 
     if (event.request.url.toLowerCase().includes('/contact')) {
         console.log('❌ Not caching this page:', event.request.url);
+        if (!navigator.onLine) {
+            return caches.match('/offline.html'); // Return home page if offline
+        }
         return fetch(event.request); // Just fetch without caching
     }
 
