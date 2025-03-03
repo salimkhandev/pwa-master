@@ -5,8 +5,10 @@ self.__WB_MANIFEST
 const CACHE_NAME = 'pwa-cache1';
 
 
-const OFFLINE_PAGES = [
-    '/public/offline.html',
+const FILES_TO_CACHE = [
+    '/',
+    '/index.html',
+    '/fallback',
 ];
 
 // Install event: Cache assets
@@ -15,7 +17,7 @@ self.addEventListener('install', (event) => {
         caches.open(CACHE_NAME).then(async (cache) => {
             console.log('🚀 Service Worker: Installation Started');
             // Cache files one by one to handle failures gracefully
-            for (const file of OFFLINE_PAGES) {
+            for (const file of FILES_TO_CACHE) {
                 try {
                     await cache.add(new Request(file, { cache: 'reload' }));
                     console.log('✅ Cached Successfully:', file);
@@ -61,8 +63,7 @@ self.addEventListener('fetch', (event) => {
 
     if (event.request.url.toLowerCase().includes('/contact')) {
         console.log('❌ Not caching this page:', event.request.url);
-        return caches.match('/public/offline.html');
-        // return fetch(event.request); // Just fetch without caching
+        return fetch(event.request); // Just fetch without caching
     }
 
     event.respondWith(
@@ -82,11 +83,10 @@ self.addEventListener('fetch', (event) => {
                     });
                 }
                 return response;
-            })
-            .catch((error) => {
+            }).catch(() => {
                 console.log('❌ Network failed & No Cache:', event.request.url);
-                return caches.match('/public/offline.html');
-            })
+                return caches.match('/fallback'); // Return home page if offline
+            });
         })
     );
 });
