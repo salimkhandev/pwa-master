@@ -22,10 +22,10 @@ export const ContextProvider = ({ children }) => {
                 navigate("/offline"); // ✅ Prevent infinite navigation loop
             }
         }
-        addEventListener('online',()=>{
+        window.addEventListener('online',()=>{
             setOnline(true)
         })
-        addEventListener('offline',()=>{
+        window.addEventListener('offline',()=>{
             setOnline(false)
         })
     }, [isOnline, navigate, pathname]);
