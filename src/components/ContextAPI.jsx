@@ -16,10 +16,16 @@ export const ContextProvider = ({ children }) => {
 
 
     useEffect(() => {
-        console.log('netAvail',netAvail,isOnline);
+        console.log('netAvail',netAvail,'isOfflineRoute',isOnline);
         if (isOnline &&  !netAvail){
             navigate("/offline");
         }
+        window.addEventListener('online',()=>{
+            setNetAvail(true);
+        });
+        window.addEventListener('offline',()=>{
+            setNetAvail(false);
+        });
     }, [isOnline, navigate, pathname,netAvail]);
    
 
