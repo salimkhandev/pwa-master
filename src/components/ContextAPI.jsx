@@ -1,47 +1,30 @@
-import { createContext, useContext, useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { useNetwork } from 'react-use';
+import { createContext, useContext, useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useIsOnline } from 'react-use-is-online';
 
 const Context = createContext();
 
 export const ContextProvider = ({ children }) => {
-    const {online} = useNetwork();
-    console.log('isOnline',online);
-    const [value,setValue] = useState('Hello World');
-    // const [netAvail, setNetAvail] = useState()
+    const { isOnline, isOffline, error } = useIsOnline();
+    console.log("isOnline:", isOnline);
+
+    const [value, setValue] = useState("Hello World");
     const navigate = useNavigate();
 
-    const onlinePathsOnly = ['/call','/message','/contact'];
-    // window.location.pathname use this
-    const pathname = useLocation().pathname;    
-    const offlinePaths = onlinePathsOnly.includes(pathname);
-
+    const onlinePathsOnly = ["/call", "/message", "/contact"];
+    const pathname = useLocation().pathname;
+    const isOfflineRestrictedPage = onlinePathsOnly.includes(pathname);
 
     useEffect(() => {
-//         console.log('netAvail',netAvail,'isOfflineRoute',isOnline);
-//         window.addEventListener('online', () => {
-// setNetAvail(true)
-//         })
-//         window.addEventListener('offline', () => {
-// setNetAvail(false)
-//         })
-            if (offlinePaths && !online){
-            navigate("/offline");
+        if (!isOnline && isOfflineRestrictedPage) {
+            if (pathname !== "/offline") {
+                navigate("/offline"); // ✅ Prevent infinite navigation loop
+            }
         }
-        const checkInternet = async () => {
-            // try {
-            //     const response = await fetch("https://www.google.com", { mode: "no-cors" });
-            //     setNetAvail(true);
-            // } catch (error) {
-            //     setNetAvail(false);
-            // }
-        };
-        checkInternet()
-    }, [online, navigate, pathname]);
-   
+    }, [isOnline, navigate, pathname]);
 
     return (
-        <Context.Provider value={{online ,value,setValue}}>
+        <Context.Provider value={{ isOnline, value, setValue }}>
             {children}
         </Context.Provider>
     );
