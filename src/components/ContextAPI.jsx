@@ -1,41 +1,43 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-
+import { useNetwork } from 'react-use';
 
 const Context = createContext();
 
 export const ContextProvider = ({ children }) => {
+    const isOnline = useNetwork();
+
     const [value,setValue] = useState('Hello World');
-    const [netAvail, setNetAvail] = useState()
+    // const [netAvail, setNetAvail] = useState()
     const navigate = useNavigate();
 
     const onlinePathsOnly = ['/call','/message','/contact'];
     // window.location.pathname use this
     const pathname = useLocation().pathname;    
-    const isOnline = onlinePathsOnly.includes(pathname);
+    const offlinePaths = onlinePathsOnly.includes(pathname);
 
 
     useEffect(() => {
-        console.log('netAvail',netAvail,'isOfflineRoute',isOnline);
-        window.addEventListener('online', () => {
-setNetAvail(true)
-        })
-        window.addEventListener('offline', () => {
-setNetAvail(false)
-        })
-        if (isOnline && !netAvail){
+//         console.log('netAvail',netAvail,'isOfflineRoute',isOnline);
+//         window.addEventListener('online', () => {
+// setNetAvail(true)
+//         })
+//         window.addEventListener('offline', () => {
+// setNetAvail(false)
+//         })
+        if (offlinePaths && !isOnline){
             navigate("/offline");
         }
         const checkInternet = async () => {
-            try {
-                const response = await fetch("https://www.google.com", { mode: "no-cors" });
-                setNetAvail(true);
-            } catch (error) {
-                setNetAvail(false);
-            }
+            // try {
+            //     const response = await fetch("https://www.google.com", { mode: "no-cors" });
+            //     setNetAvail(true);
+            // } catch (error) {
+            //     setNetAvail(false);
+            // }
         };
         checkInternet()
-    }, [isOnline, navigate, pathname,netAvail]);
+    }, [isOnline, navigate, pathname]);
    
 
     return (
