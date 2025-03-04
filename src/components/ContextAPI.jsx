@@ -5,7 +5,8 @@ import { useIsOnline } from 'react-use-is-online';
 const Context = createContext();
 
 export const ContextProvider = ({ children }) => {
-    const { isOnline, isOffline, error } = useIsOnline();
+    // const { isOnline, isOffline, error } = useIsOnline();
+    const [isOnline,setOnline]=useState(false)
     console.log("isOnline:", isOnline);
 
     const [value, setValue] = useState("Hello World");
@@ -16,12 +17,18 @@ export const ContextProvider = ({ children }) => {
     const isOfflineRestrictedPage = onlinePathsOnly.includes(pathname);
 
     useEffect(() => {
-        if (isOffline && isOfflineRestrictedPage) {
+        if (!isOnline && isOfflineRestrictedPage) {
             if (pathname !== "/offline") {
                 navigate("/offline"); // ✅ Prevent infinite navigation loop
             }
         }
-    }, [isOnline, navigate, pathname,isOffline]);
+        addEventListener('online',()=>{
+            setOnline(true)
+        })
+        addEventListener('offline',()=>{
+            setOnline(false)
+        })
+    }, [isOnline, navigate, pathname]);
 
     return (
         <Context.Provider value={{ isOnline, value, setValue }}>
