@@ -2,7 +2,7 @@
 self.__WB_MANIFEST
 
 
-const CACHE_NAME = 'pwa-cache2';
+const CACHE_NAME = 'pwa-cache3';
 
 
 const FILES_TO_CACHE = [

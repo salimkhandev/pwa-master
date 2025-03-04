@@ -16,16 +16,19 @@ export const ContextProvider = ({ children }) => {
 
 
     useEffect(() => {
+        checkInternet()
         console.log('netAvail',netAvail,'isOfflineRoute',isOnline);
         if (isOnline &&  !netAvail){
             navigate("/offline");
         }
-        window.addEventListener('online',()=>{
-            setNetAvail(true);
-        });
-        window.addEventListener('offline',()=>{
-            setNetAvail(false);
-        });
+        const checkInternet = async () => {
+            try {
+                const response = await fetch("https://www.google.com", { mode: "no-cors" });
+                setNetAvail(true);
+            } catch (error) {
+                setNetAvail(false);
+            }
+        };
     }, [isOnline, navigate, pathname,netAvail]);
    
 
