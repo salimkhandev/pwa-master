@@ -91,7 +91,6 @@ self.addEventListener('fetch', (event) => {
             }).catch(() => {
                 console.log('❌ Network failed & No Cache:', event.request.url);
                 
-            
             });
         })
     );

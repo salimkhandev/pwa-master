@@ -1,5 +1,5 @@
 import { createContext, useContext,useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate ,useLocation} from 'react-router-dom';
 
 
 const Context = createContext();
@@ -9,7 +9,7 @@ export const ContextProvider = ({ children }) => {
 
     const onlinePathsOnly = ['/call','/message','/contact'];
     // window.location.pathname use this
-    const pathname = window.location.pathname;
+    const pathname = useLocation().pathname;    
     const isOnline = onlinePathsOnly.includes(pathname);
 
 
