@@ -16,9 +16,8 @@ export const ContextProvider = ({ children }) => {
 
 
     useEffect(() => {
-        checkInternet()
         console.log('netAvail',netAvail,'isOfflineRoute',isOnline);
-        if (isOnline &&  !netAvail){
+        if (isOnline && !netAvail){
             navigate("/offline");
         }
         const checkInternet = async () => {
@@ -29,6 +28,7 @@ export const ContextProvider = ({ children }) => {
                 setNetAvail(false);
             }
         };
+        checkInternet()
     }, [isOnline, navigate, pathname,netAvail]);
    
 
