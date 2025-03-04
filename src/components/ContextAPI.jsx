@@ -1,48 +1,43 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useIsOnline } from 'react-use-is-online';
 
 const Context = createContext();
 
 export const ContextProvider = ({ children }) => {
-    const [isOnline, setOnline] = useState(navigator.onLine); // Initialize with current online status
+    // const { isOnline, isOffline, error } = useIsOnline();
+    const [isOnline,setOnline]=useState(false)
+    console.log("isOnline:", isOnline);
+
     const [value, setValue] = useState("Hello World");
     const navigate = useNavigate();
-    const location = useLocation();
 
     const onlinePathsOnly = ["/call", "/message", "/contact"];
-    const isOfflineRestrictedPage = onlinePathsOnly.includes(location.pathname);
+    const pathname = useLocation().pathname;
+    const isOfflineRestrictedPage = onlinePathsOnly.includes(pathname);
 
     useEffect(() => {
-        const checkOnlineStatus = async () => {
-            try {
-                const response = await fetch('https://www.google.com', { method: 'HEAD' });
-                setOnline(response.ok);
-            } catch (error) {
-                setOnline(false);
+        if (!isOnline && isOfflineRestrictedPage) {
+            if (pathname !== "/offline") {
+                navigate("/offline"); // ✅ Prevent infinite navigation loop
             }
-        };
-
-        const handleOnline = () => setOnline(true);
-        const handleOffline = () => setOnline(false);
-
-        // Check online status initially
-        checkOnlineStatus();
-
-        // Add event listeners for online/offline events
-        window.addEventListener('online', handleOnline);
-        window.addEventListener('offline', handleOffline);
-
-        // Redirect if offline and on a restricted page
-        if (!isOnline && isOfflineRestrictedPage && location.pathname !== "/offline") {
-            navigate("/offline");
         }
+        //write code req to check fetch google online or offline
+        const res=await fetch('https://www.google.com')
+        if(res.status===200){
+            setOnline(true)
+        }else{
+            setOnline(false)
+        }
+        
 
-        // Cleanup event listeners
-        return () => {
-            window.removeEventListener('online', handleOnline);
-            window.removeEventListener('offline', handleOffline);
-        };
-    }, [isOnline, isOfflineRestrictedPage, navigate, location.pathname]);
+        window.addEventListener('online',()=>{
+            setOnline(true)
+        })
+        window.addEventListener('offline',()=>{
+            setOnline(false)
+        })
+    }, [isOnline, navigate, pathname]);
 
     return (
         <Context.Provider value={{ isOnline, value, setValue }}>
