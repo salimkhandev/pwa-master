@@ -16,12 +16,12 @@ export const ContextProvider = ({ children }) => {
     const isOfflineRestrictedPage = onlinePathsOnly.includes(pathname);
 
     useEffect(() => {
-        if (!isOnline && isOfflineRestrictedPage) {
+        if (isOffline && isOfflineRestrictedPage) {
             if (pathname !== "/offline") {
                 navigate("/offline"); // ✅ Prevent infinite navigation loop
             }
         }
-    }, [isOnline, navigate, pathname]);
+    }, [isOnline, navigate, pathname,isOffline]);
 
     return (
         <Context.Provider value={{ isOnline, value, setValue }}>
