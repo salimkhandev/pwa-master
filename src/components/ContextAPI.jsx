@@ -5,8 +5,8 @@ import { useNetwork } from 'react-use';
 const Context = createContext();
 
 export const ContextProvider = ({ children }) => {
-    const isOnline = useNetwork();
-
+    const {online} = useNetwork();
+    console.log('isOnline',online);
     const [value,setValue] = useState('Hello World');
     // const [netAvail, setNetAvail] = useState()
     const navigate = useNavigate();
@@ -25,7 +25,7 @@ export const ContextProvider = ({ children }) => {
 //         window.addEventListener('offline', () => {
 // setNetAvail(false)
 //         })
-        if (offlinePaths && !isOnline){
+            if (offlinePaths && !online){
             navigate("/offline");
         }
         const checkInternet = async () => {
@@ -37,11 +37,11 @@ export const ContextProvider = ({ children }) => {
             // }
         };
         checkInternet()
-    }, [isOnline, navigate, pathname]);
+    }, [online, navigate, pathname]);
    
 
     return (
-        <Context.Provider value={{isOnline ,value,setValue}}>
+        <Context.Provider value={{online ,value,setValue}}>
             {children}
         </Context.Provider>
     );
