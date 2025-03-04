@@ -3,7 +3,7 @@ import { useContextAPI } from './ContextAPI';
 
 
 const About = () => {
-  const { value, setValue } = useContextAPI();
+  const { value, setValue ,netAvail} = useContextAPI();
   const team = [
     {
       name: "John Doe",

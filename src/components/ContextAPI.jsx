@@ -6,6 +6,7 @@ const Context = createContext();
 
 export const ContextProvider = ({ children }) => {
     const [value,setValue] = useState('Hello World');
+    const [netAvail, setNetAvail] = useState(navigator.onLine)
     const navigate = useNavigate();
 
     const onlinePathsOnly = ['/call','/message','/contact'];
@@ -15,10 +16,11 @@ export const ContextProvider = ({ children }) => {
 
 
     useEffect(() => {
-        if (isOnline && !navigator.onLine) {
+        console.log('netAvail',netAvail,isOnline);
+        if (isOnline &&  !netAvail){
             navigate("/offline");
         }
-    }, [isOnline, navigate, pathname]);
+    }, [isOnline, navigate, pathname,netAvail]);
    
 
     return (
