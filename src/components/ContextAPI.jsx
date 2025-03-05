@@ -9,6 +9,7 @@ export const ContextProvider = ({ children }) => {
     const navigate = useNavigate();
 
     const onlinePathsOnly = ["/call", "/message", "/contact"];
+    
     const pathname = useLocation().pathname;
     const isOfflineRestrictedPage = onlinePathsOnly.includes(pathname);
 
