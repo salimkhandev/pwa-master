@@ -21,7 +21,9 @@ export const ContextProvider = ({ children }) => {
 
         const checkInternet = async () => {
             fetch("https://www.google.com", { mode: "no-cors" }).then(res => {
+                console.log(res,'res');
                     setNetAvail(true);
+
                 }).catch(err => {
                     setNetAvail(false);
                 });}
