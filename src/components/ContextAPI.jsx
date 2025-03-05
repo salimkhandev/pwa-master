@@ -27,11 +27,13 @@ export const ContextProvider = ({ children }) => {
                 setNetAvail(false);
             }
         };
-        checkInternet()
+        checkInternet().then(() => {
+            if (!netAvail && isOfflineRestrictedPage) {
+                navigate("/offline");
+            }
+        });
 
-        if (!netAvail && isOfflineRestrictedPage) {
-            navigate("/offline");
-        }
+       
 
         return () => {
             window.removeEventListener('online', handleOnline);
