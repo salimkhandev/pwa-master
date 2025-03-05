@@ -20,20 +20,20 @@ export const ContextProvider = ({ children }) => {
         // window.addEventListener('offline', handleOffline);
 
         const checkInternet = async () => {
-            try {
-                const response = await fetch("https://api.ipify.org?format=json"); // Example of a CORS-enabled endpoint
-                if (response.ok) {
-                    console.log(response,'response');
-                    setNetAvail(true); // Internet is available
-                } else {
-                    setNetAvail(false); // Internet is not available
-                }
-            } catch (err) {
-                setNetAvail(false); // Handle network errors
-            }
-        };
             
+            return fetch("https://api.ipify.org?format=json").then((response) => {
+                if (response.ok) {
+                    console.log(response, "response");
+                    setNetAvail(true);
+                } else {
+                    setNetAvail(false);
+                }
+            }).catch(err => {
+                    setNetAvail(false); // Internet is not available
+                });
+        };
         checkInternet().then(() => {
+
             if (!netAvail && isOfflineRestrictedPage) {
                 navigate("/offline");
             }
