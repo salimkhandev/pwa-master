@@ -20,13 +20,12 @@ export const ContextProvider = ({ children }) => {
         window.addEventListener('offline', handleOffline);
 
         const checkInternet = async () => {
-            try {
-                const response = await fetch("https://www.google.com", { mode: "no-cors" });
-                setNetAvail(true);
-            } catch (error) {
-                setNetAvail(false);
-            }
-        };
+            fetch("https://www.google.com", { mode: "no-cors" }).then(res => {
+                    setNetAvail(true);
+                }).catch(err => {
+                    setNetAvail(false);
+                });}
+            
         checkInternet().then(() => {
             if (!netAvail && isOfflineRestrictedPage) {
                 navigate("/offline");
