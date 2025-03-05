@@ -20,13 +20,18 @@ export const ContextProvider = ({ children }) => {
         window.addEventListener('offline', handleOffline);
 
         const checkInternet = async () => {
-            fetch("https://www.google.com", { mode: "no-cors" }).then(res => {
-                console.log(res,'res');
-                    setNetAvail(true);
-
-                }).catch(err => {
-                    setNetAvail(false);
-                });}
+            try {
+                const response = await fetch("https://api.ipify.org?format=json"); // Example of a CORS-enabled endpoint
+                if (response.ok) {
+                    console.log(response,'response');
+                    setNetAvail(true); // Internet is available
+                } else {
+                    setNetAvail(false); // Internet is not available
+                }
+            } catch (err) {
+                setNetAvail(false); // Handle network errors
+            }
+        };
             
         checkInternet().then(() => {
             if (!netAvail && isOfflineRestrictedPage) {
