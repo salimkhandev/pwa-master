@@ -13,19 +13,12 @@ export const ContextProvider = ({ children }) => {
     const isOfflineRestrictedPage = onlinePathsOnly.includes(pathname);
 
     useEffect(() => {
-        const handleOnline = () => setNetAvail(true);
-        const handleOffline = () => setNetAvail(false);
-
-        window.addEventListener('online', handleOnline);
-        window.addEventListener('offline', handleOffline);
-
         const checkInternet = () => {
             return fetch("https://api.ipify.org?format=json")
-                .then(response => response.ok ? true : false)
+                .then(response => response.ok)
                 .catch(() => false);
         };
 
-        // Promise that resolves as soon as any method (API call or event) confirms status
         const detectNetwork = () => {
             return Promise.race([
                 new Promise(resolve => {
@@ -43,10 +36,6 @@ export const ContextProvider = ({ children }) => {
             }
         });
 
-        return () => {
-            window.removeEventListener('online', handleOnline);
-            window.removeEventListener('offline', handleOffline);
-        };
     }, [navigate, pathname, isOfflineRestrictedPage]);
 
     return (
