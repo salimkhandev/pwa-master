@@ -14,14 +14,14 @@ export const ContextProvider = ({ children }) => {
     const isOfflineRestrictedPage = onlinePathsOnly.includes(pathname);
 
     useEffect(() => {
-        console.log('netAvail',netAvail,'isOfflineRoute',isOnline);
+        console.log('netAvail',netAvail,'isOfflineRoute',isOfflineRestrictedPage);
         window.addEventListener('online', () => {
 setNetAvail(true)
         })
         window.addEventListener('offline', () => {
 setNetAvail(false)
         })
-        if (isOnline && !netAvail){
+        if (!netAvail && isOfflineRestrictedPage){
             navigate("/offline");
         }
         const checkInternet = async () => {
@@ -33,11 +33,11 @@ setNetAvail(false)
             }
         };
         checkInternet()
-    }, [isOnline, navigate, pathname,netAvail]);
+    }, [netAvail, navigate, pathname]);
    
 
     return (
-        <Context.Provider value={{isOnline ,value,setValue}}>
+        <Context.Provider value={{netAvail ,value,setValue}}>
             {children}
         </Context.Provider>
     );
