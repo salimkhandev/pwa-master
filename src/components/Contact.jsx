@@ -1,6 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
 
 
 const Contact = () => {
@@ -32,9 +30,9 @@ const Contact = () => {
         </p>
       </header>
 
-      <div className="card-grid" style={{ gridTemplateColumns: '1fr 1fr' }}>
+      <div className="card-grid" style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1rem' }}>
         {/* Contact Information */}
-        <div className="card slide-up">
+        <div className="card slide-up" style={{ gridColumn: 'span 1' }}>
           <div className="card-content">
             <h3>Contact Information</h3>
             <div style={{ marginTop: '1.5rem' }}>
@@ -56,7 +54,7 @@ const Contact = () => {
         </div>
 
         {/* Contact Form */}
-        <div className="card slide-up" style={{ animationDelay: '0.1s' }}>
+        <div className="card slide-up" style={{ gridColumn: 'span 1' }}>
           <div className="card-content">
             <h3>Send us a Message</h3>
             <form onSubmit={handleSubmit} style={{ marginTop: '1.5rem' }}>

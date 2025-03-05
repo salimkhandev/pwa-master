@@ -5,7 +5,7 @@ const Context = createContext();
 
 export const ContextProvider = ({ children }) => {
     const [value, setValue] = useState('Hello World');
-    const [netAvail, setNetAvail] = useState(navigator.onLine);
+    const [netAvail, setNetAvail] = useState();
     const navigate = useNavigate();
 
     const onlinePathsOnly = ["/call", "/message", "/contact"];

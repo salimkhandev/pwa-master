@@ -46,13 +46,13 @@ const About = () => {
         </p>
       </header>
 
-      <div className="card-grid">
+      <div className="card-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem' }}>
         {team.map((member, index) => (
           <div key={index} className="card slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
             <img 
               src={member.image} 
               alt={member.name}
-              style={{ height: '250px' }}
+              style={{ height: 'auto', maxWidth: '100%', width: '100%' }}
             />
             <div className="card-content">
               <h3>{member.name}</h3>
