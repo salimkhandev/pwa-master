@@ -1,11 +1,12 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useIsOnline } from 'react-use-is-online';
 
 const Context = createContext();
 
 export const ContextProvider = ({ children }) => {
-    const [isOnline, setOnline] = useState(navigator.onLine);
-    console.log("isOnline:", isOnline);
+    const { isOnline, isOffline, error } = useIsOnline();
+    console.log("isOnline:", online);
 
     const [value, setValue] = useState("Hello World");
     const navigate = useNavigate();
@@ -15,39 +16,12 @@ export const ContextProvider = ({ children }) => {
     const isOfflineRestrictedPage = onlinePathsOnly.includes(pathname);
 
     useEffect(() => {
-        const checkNetwork = async () => {
-            try {
-                const res = await fetch('https://www.google.com', { method: 'HEAD' });
-                if (res.ok) {
-                    setOnline(true);
-                } else {
-                    setOnline(false);
-                }
-            } catch (error) {
-                console.error('Network check failed:', error);
-                setOnline(false);
-            }
-        };
-
-        checkNetwork();
-
-        const handleOnline = () => setOnline(true);
-        const handleOffline = () => setOnline(false);
-
-        window.addEventListener('online', handleOnline);
-        window.addEventListener('offline', handleOffline);
-
         if (!isOnline && isOfflineRestrictedPage) {
             if (pathname !== "/offline") {
-                navigate("/offline");
+                navigate("/offline"); // ✅ Prevent infinite navigation loop
             }
         }
-
-        return () => {
-            window.removeEventListener('online', handleOnline);
-            window.removeEventListener('offline', handleOffline);
-        };
-    }, [navigate, pathname, isOfflineRestrictedPage,isOnline]);
+    }, [online, navigate, pathname]);
 
     return (
         <Context.Provider value={{ isOnline, value, setValue }}>
