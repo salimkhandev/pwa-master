@@ -1,12 +1,10 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useIsOnline } from 'react-use-is-online';
 
 const Context = createContext();
 
 export const ContextProvider = ({ children }) => {
-    // const { isOnline, isOffline, error } = useIsOnline();
-    const [isOnline,setOnline]=useState()
+    const [isOnline, setOnline] = useState(navigator.onLine);
     console.log("isOnline:", isOnline);
 
     const [value, setValue] = useState("Hello World");
@@ -17,32 +15,39 @@ export const ContextProvider = ({ children }) => {
     const isOfflineRestrictedPage = onlinePathsOnly.includes(pathname);
 
     useEffect(() => {
-        setOnline(navigator.onLine)
+        const checkNetwork = async () => {
+            try {
+                const res = await fetch('https://www.google.com', { method: 'HEAD' });
+                if (res.ok) {
+                    setOnline(true);
+                } else {
+                    setOnline(false);
+                }
+            } catch (error) {
+                console.error('Network check failed:', error);
+                setOnline(false);
+            }
+        };
+
+        checkNetwork();
+
+        const handleOnline = () => setOnline(true);
+        const handleOffline = () => setOnline(false);
+
+        window.addEventListener('online', handleOnline);
+        window.addEventListener('offline', handleOffline);
+
         if (!isOnline && isOfflineRestrictedPage) {
             if (pathname !== "/offline") {
-                navigate("/offline"); // ✅ Prevent infinite navigation loop
+                navigate("/offline");
             }
         }
-        //write code req to check fetch google online or offline
-         const  checkNetwork= async()=>{
-             const res=await fetch('https://www.google.com',{mode:'no-cors'})
-             if(res.status===200){
-                 setOnline(true)
-             }else{
-                 setOnline(false)
-             }
 
-         }
-        
-         checkNetwork()
-
-        window.addEventListener('online',()=>{
-            setOnline(true)
-        })
-        window.addEventListener('offline',()=>{
-            setOnline(false)
-        })
-    }, [isOnline, navigate, pathname]);
+        return () => {
+            window.removeEventListener('online', handleOnline);
+            window.removeEventListener('offline', handleOffline);
+        };
+    }, [navigate, pathname, isOfflineRestrictedPage]);
 
     return (
         <Context.Provider value={{ isOnline, value, setValue }}>
