@@ -39,8 +39,7 @@ export const ContextProvider = ({ children }) => {
                     navigate("/offline");
                 }
             }, 0);
-
-       
+                       });
 
         // return () => {
         //     window.removeEventListener('online', handleOnline);
