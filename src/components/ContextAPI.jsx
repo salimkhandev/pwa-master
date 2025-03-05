@@ -47,7 +47,7 @@ export const ContextProvider = ({ children }) => {
             window.removeEventListener('online', handleOnline);
             window.removeEventListener('offline', handleOffline);
         };
-    }, [navigate, pathname, isOfflineRestrictedPage]);
+    }, [navigate, pathname, isOfflineRestrictedPage,isOnline]);
 
     return (
         <Context.Provider value={{ isOnline, value, setValue }}>
