@@ -38,8 +38,8 @@ export const ContextProvider = ({ children }) => {
                 if (!netAvail && isOfflineRestrictedPage) {
                     navigate("/offline");
                 }
-            }, 0);
-                       });
+            }, 2000);
+        });
 
         // return () => {
         //     window.removeEventListener('online', handleOnline);
