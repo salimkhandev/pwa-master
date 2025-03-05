@@ -20,22 +20,25 @@ export const ContextProvider = ({ children }) => {
         // window.addEventListener('offline', handleOffline);
 
         const checkInternet = async () => {
-            
-            return fetch("https://api.ipify.org?format=json").then((response) => {
+            try {
+                const response = await fetch("https://api.ipify.org?format=json");
                 if (response.ok) {
                     console.log(response, "response");
                     setNetAvail(true);
+                    return true; // Return true if online
                 } else {
                     setNetAvail(false);
+                    return false; // Return false if not online
                 }
-            }).catch(err => {
-                    setNetAvail(false); // Internet is not available
-                });
+            } catch (err) {
+                setNetAvail(false); // Internet is not available
+                return false; // Return false on error
+            }
         };
 
-        checkInternet().then(() => {
+        checkInternet().then((isOnline) => {
             setTimeout(() => {
-                if (!netAvail && isOfflineRestrictedPage) {
+                if (!isOnline && isOfflineRestrictedPage) {
                     navigate("/offline");
                 }
             }, 2000);
