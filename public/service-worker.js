@@ -2,7 +2,7 @@
 self.__WB_MANIFEST
 
 
-const CACHE_NAME = 'pwa-cache6';
+const CACHE_NAME = 'pwa-cache7';
 
 
 const FILES_TO_CACHE = [
@@ -65,7 +65,7 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
-    if (event.request.url.toLowerCase().includes('/contact')) {
+    if (event.request.url.toLowerCase().includes('/nonono')) {
         console.log('❌ Not caching this page:', event.request.url);
         
         return fetch(event.request);
