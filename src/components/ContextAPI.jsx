@@ -13,11 +13,11 @@ export const ContextProvider = ({ children }) => {
     const isOfflineRestrictedPage = onlinePathsOnly.includes(pathname);
 
     useEffect(() => {
-        const handleOnline = () => setNetAvail(true);
-        const handleOffline = () => setNetAvail(false);
+        // const handleOnline = () => setNetAvail(true);
+        // const handleOffline = () => setNetAvail(false);
 
-        window.addEventListener('online', handleOnline);
-        window.addEventListener('offline', handleOffline);
+        // window.addEventListener('online', handleOnline);
+        // window.addEventListener('offline', handleOffline);
 
         const checkInternet = async () => {
             try {
@@ -41,10 +41,10 @@ export const ContextProvider = ({ children }) => {
 
        
 
-        return () => {
-            window.removeEventListener('online', handleOnline);
-            window.removeEventListener('offline', handleOffline);
-        };
+        // return () => {
+        //     window.removeEventListener('online', handleOnline);
+        //     window.removeEventListener('offline', handleOffline);
+        // };
     }, [navigate, pathname, isOfflineRestrictedPage]);
 
     return (
