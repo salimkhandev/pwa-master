@@ -41,10 +41,10 @@ export const ContextProvider = ({ children }) => {
 
        
 
-        // return () => {
-        //     window.removeEventListener('online', handleOnline);
-        //     window.removeEventListener('offline', handleOffline);
-        // };
+        return () => {
+            window.removeEventListener('online', handleOnline);
+            window.removeEventListener('offline', handleOffline);
+        };
     }, [navigate, pathname, isOfflineRestrictedPage]);
 
     return (
