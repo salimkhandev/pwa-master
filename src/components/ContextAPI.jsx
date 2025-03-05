@@ -6,7 +6,7 @@ const Context = createContext();
 
 export const ContextProvider = ({ children }) => {
     // const { isOnline, isOffline, error } = useIsOnline();
-    const [isOnline,setOnline]=useState(false)
+    const [isOnline,setOnline]=useState()
     console.log("isOnline:", isOnline);
 
     const [value, setValue] = useState("Hello World");
@@ -17,19 +17,24 @@ export const ContextProvider = ({ children }) => {
     const isOfflineRestrictedPage = onlinePathsOnly.includes(pathname);
 
     useEffect(() => {
+        setOnline(navigator.onLine)
         if (!isOnline && isOfflineRestrictedPage) {
             if (pathname !== "/offline") {
                 navigate("/offline"); // ✅ Prevent infinite navigation loop
             }
         }
         //write code req to check fetch google online or offline
-        const res=await fetch('https://www.google.com')
-        if(res.status===200){
-            setOnline(true)
-        }else{
-            setOnline(false)
-        }
+         const  checkNetwork= async()=>{
+             const res=await fetch('https://www.google.com',{mode:'no-cors'})
+             if(res.status===200){
+                 setOnline(true)
+             }else{
+                 setOnline(false)
+             }
+
+         }
         
+         checkNetwork()
 
         window.addEventListener('online',()=>{
             setOnline(true)
