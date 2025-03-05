@@ -21,19 +21,13 @@ export const ContextProvider = ({ children }) => {
 
         const checkInternet = async () => {
             try {
-                const response = await fetch("https://www.google.com", { method: 'HEAD' });
-                if (response.ok) {
-                    setNetAvail(true);
-                } else {
-                    setNetAvail(false);
-                }
+                const response = await fetch("https://www.google.com", { mode: "no-cors" });
+                setNetAvail(true);
             } catch (error) {
-                console.error('Error checking internet:', error);
                 setNetAvail(false);
             }
         };
-
-        checkInternet();
+        checkInternet()
 
         if (!netAvail && isOfflineRestrictedPage) {
             navigate("/offline");
