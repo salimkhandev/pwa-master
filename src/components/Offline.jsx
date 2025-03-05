@@ -8,7 +8,6 @@ const Offline = () => {
     return (
         <div className={styles.offlineContainer}>
             <h1 className={styles.offlineTitle}>Oops!</h1>
-            <p className={styles.offlineText}>The page you are looking for does not exist.</p>
             <p className={styles.offlineText}>You might want to check your internet connection or return to the home page.</p>
             <Link to="/" className={styles.offlineLink}>Return to Home</Link>
         </div>
