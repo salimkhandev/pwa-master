@@ -13,34 +13,29 @@ export const ContextProvider = ({ children }) => {
     const isOfflineRestrictedPage = onlinePathsOnly.includes(pathname);
 
     useEffect(() => {
-
-
-        const checkInternet = async () => {
-            try {
-                const response = await fetch("https://api.ipify.org?format=json");
-                if (response.ok) {
-                    console.log(response, "response");
-                    setNetAvail(true);
-                    return true; // Return true if online
-                } else {
-                    setNetAvail(false);
-                    return false; // Return false if not online
-                }
-            } catch (err) {
-                setNetAvail(false); // Internet is not available
-                return false; // Return false on error
-            }
+        const checkInternet = () => {
+            return fetch("https://api.ipify.org?format=json")
+                .then(response => response.ok)
+                .catch(() => false);
         };
 
-        checkInternet().then((isOnline) => {
+        const detectNetwork = () => {
+            return Promise.race([
+                new Promise(resolve => {
+                    window.addEventListener('online', () => resolve(true), { once: true });
+                    window.addEventListener('offline', () => resolve(false), { once: true });
+                }),
+                checkInternet()
+            ]);
+        };
 
+        detectNetwork().then(isOnline => {
+            setNetAvail(isOnline);
             if (!isOnline && isOfflineRestrictedPage) {
                 navigate("/offline");
             }
-
         });
 
-   
     }, [navigate, pathname, isOfflineRestrictedPage]);
 
     return (
