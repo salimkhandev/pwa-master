@@ -1,12 +1,11 @@
-import { createContext, useContext,useEffect,useState } from 'react';
-import { useNavigate ,useLocation} from 'react-router-dom';
-
+import { createContext, useContext, useEffect, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const Context = createContext();
 
 export const ContextProvider = ({ children }) => {
-    const [value,setValue] = useState('Hello World');
-    const [netAvail, setNetAvail] = useState()
+    const [value, setValue] = useState('Hello World');
+    const [netAvail, setNetAvail] = useState(navigator.onLine);
     const navigate = useNavigate();
 
     const onlinePathsOnly = ["/call", "/message", "/contact"];
@@ -14,32 +13,40 @@ export const ContextProvider = ({ children }) => {
     const isOfflineRestrictedPage = onlinePathsOnly.includes(pathname);
 
     useEffect(() => {
+        const handleOnline = () => setNetAvail(true);
+        const handleOffline = () => setNetAvail(false);
 
-        setNetAvail(true)
-        console.log('netAvail',netAvail,'isOfflineRoute',isOfflineRestrictedPage);
-        window.addEventListener('online', () => {
-setNetAvail(true)
-        })
-        window.addEventListener('offline', () => {
-setNetAvail(false)
-        })
-        if (!netAvail && isOfflineRestrictedPage){
-            navigate("/offline");
-        }
+        window.addEventListener('online', handleOnline);
+        window.addEventListener('offline', handleOffline);
+
         const checkInternet = async () => {
             try {
-                const response = await fetch("https://www.google.com", { mode: "no-cors" });
-                setNetAvail(true);
+                const response = await fetch("https://www.google.com", { method: 'HEAD' });
+                if (response.ok) {
+                    setNetAvail(true);
+                } else {
+                    setNetAvail(false);
+                }
             } catch (error) {
+                console.error('Error checking internet:', error);
                 setNetAvail(false);
             }
         };
-        checkInternet()
-    }, [netAvail, navigate, pathname]);
-   
+
+        checkInternet();
+
+        if (!netAvail && isOfflineRestrictedPage) {
+            navigate("/offline");
+        }
+
+        return () => {
+            window.removeEventListener('online', handleOnline);
+            window.removeEventListener('offline', handleOffline);
+        };
+    }, [navigate, pathname, isOfflineRestrictedPage]);
 
     return (
-        <Context.Provider value={{netAvail ,value,setValue}}>
+        <Context.Provider value={{ netAvail, value, setValue }}>
             {children}
         </Context.Provider>
     );
