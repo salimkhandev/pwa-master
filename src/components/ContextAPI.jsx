@@ -14,6 +14,8 @@ export const ContextProvider = ({ children }) => {
     const isOfflineRestrictedPage = onlinePathsOnly.includes(pathname);
 
     useEffect(() => {
+
+        setNetAvail(true)
         console.log('netAvail',netAvail,'isOfflineRoute',isOfflineRestrictedPage);
         window.addEventListener('online', () => {
 setNetAvail(true)
