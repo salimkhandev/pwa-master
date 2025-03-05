@@ -1,14 +1,11 @@
-import { createContext, useContext, useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useIsOnline } from 'react-use-is-online';
+import { createContext, useContext,useEffect,useState } from 'react';
+import { useNavigate ,useLocation} from 'react-router-dom';
+
 
 const Context = createContext();
 
 export const ContextProvider = ({ children }) => {
-    const { isOnline, isOffline, error } = useIsOnline();
-    console.log("isOnline:", online);
-
-    const [value, setValue] = useState("Hello World");
+    const [value,setValue] = useState('Hello World');
     const navigate = useNavigate();
 
     const onlinePathsOnly = ["/call", "/message", "/contact"];
@@ -24,7 +21,7 @@ export const ContextProvider = ({ children }) => {
     }, [online, navigate, pathname]);
 
     return (
-        <Context.Provider value={{ isOnline, value, setValue }}>
+        <Context.Provider value={{isOnline ,value,setValue}}>
             {children}
         </Context.Provider>
     );
