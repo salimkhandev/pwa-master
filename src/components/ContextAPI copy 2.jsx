@@ -19,28 +19,29 @@ export const ContextProvider = ({ children }) => {
         window.addEventListener('online', handleOnline);
         window.addEventListener('offline', handleOffline);
 
-        const checkInternet = () => {
-            return fetch("https://api.ipify.org?format=json")
-                .then(response => response.ok ? true : false)
-                .catch(() => false);
-        };
-
-        // Promise that resolves as soon as any method (API call or event) confirms status
-        const detectNetwork = () => {
-            return Promise.race([
-                new Promise(resolve => {
-                    window.addEventListener('online', () => resolve(true), { once: true });
-                    window.addEventListener('offline', () => resolve(false), { once: true });
-                }),
-                checkInternet()
-            ]);
-        };
-
-        detectNetwork().then(isOnline => {
-            setNetAvail(isOnline);
-            if (!isOnline && isOfflineRestrictedPage) {
-                navigate("/offline");
+        const checkInternet = async () => {
+            try {
+                const response = await fetch("https://api.ipify.org?format=json");
+                if (response.ok) {
+                    console.log(response, "response");
+                    setNetAvail(true);
+                    return true; // Return true if online
+                } else {
+                    setNetAvail(false);
+                    return false; // Return false if not online
+                }
+            } catch (err) {
+                setNetAvail(false); // Internet is not available
+                return false; // Return false on error
             }
+        };
+
+        checkInternet().then((isOnline) => {
+
+                if (!isOnline && isOfflineRestrictedPage) {
+                    navigate("/offline");
+                }
+            
         });
 
         return () => {
