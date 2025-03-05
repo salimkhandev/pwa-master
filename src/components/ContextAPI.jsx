@@ -32,12 +32,13 @@ export const ContextProvider = ({ children }) => {
                     setNetAvail(false); // Internet is not available
                 });
         };
-        checkInternet().then(() => {
 
-            if (!netAvail && isOfflineRestrictedPage) {
-                navigate("/offline");
-            }
-        });
+        checkInternet().then(() => {
+            setTimeout(() => {
+                if (!netAvail && isOfflineRestrictedPage) {
+                    navigate("/offline");
+                }
+            }, 0);
 
        
 
