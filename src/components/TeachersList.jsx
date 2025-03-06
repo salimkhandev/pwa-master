@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './TeachersList.css'; // Import external CSS
+// import './TeachersList.css'; // Import external CSS
 import teacherIcon from '../assets/react.svg'; // Placeholder icon
 
 const TeachersList = () => {
@@ -15,6 +15,8 @@ const TeachersList = () => {
                 setTeachers(response.data);
             } catch (err) {
                 setError('Failed to fetch teachers data');
+                console.log('Error',err);
+                
             } finally {
                 setLoading(false);
             }
