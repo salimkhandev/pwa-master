@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 const Context = createContext();
 
 export const ContextProvider = ({ children }) => {
-    const [value, setValue] = useState('Hello World');
+    const [value, setValue] = useState('❤️from contextAPI❤️');
     const [netAvail, setNetAvail] = useState();
     const navigate = useNavigate();
 
