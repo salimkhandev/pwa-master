@@ -1,6 +1,14 @@
 import { openDB } from 'idb';
 
-// ✅ Initialize IndexedDB
+// ✅ Request persistent storage permission
+const requestPersistentStorage = async () => {
+    if (navigator.storage && navigator.storage.persist) {
+        const isPersisted = await navigator.storage.persist();
+        console.log(isPersisted ? "✅ Persistent storage granted!" : "⚠️ Persistent storage denied!");
+    }
+};
+
+// ✅ Initialize IndexedDB with multiple object stores
 export const initDB = async () => {
     return openDB('myDatabase', 1, {
         upgrade(db) {
@@ -14,17 +22,5 @@ export const initDB = async () => {
     });
 };
 
-// ✅ Function to get data from IndexedDB
-export const getFromIndexedDB = async (storeName) => {
-    const db = await initDB();
-    return db.getAll(storeName);
-};
-
-// ✅ Function to save data to IndexedDB
-export const saveToIndexedDB = async (storeName, data) => {
-    const db = await initDB();
-    const tx = db.transaction(storeName, 'readwrite');
-    const store = tx.objectStore(storeName);
-    data.forEach((item) => store.put(item));
-    await tx.done;
-};
+// ✅ Run persistent storage request
+requestPersistentStorage();
