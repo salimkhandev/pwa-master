@@ -22,8 +22,13 @@ requestPersistentStorage();
 
 // Function to get data
 export const getFromIndexedDB = async () => {
-    const db = await dbPromise;
-    return db.getAll('dataStore');
+    try {
+        const db = await dbPromise;
+        return await db.getAll('dataStore');
+    } catch (error) {
+        console.error("Error getting data from IndexedDB:", error);
+        throw error; // Rethrow or handle as needed
+    }
 };
 
 // Function to save data
