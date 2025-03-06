@@ -33,9 +33,14 @@ export const getFromIndexedDB = async () => {
 
 // Function to save data
 export const saveToIndexedDB = async (data) => {
-    const db = await dbPromise;
-    const tx = db.transaction('dataStore', 'readwrite');
-    const store = tx.objectStore('dataStore');
-    data.forEach((item) => store.put(item));
-    await tx.done;
+    try {
+        const db = await dbPromise;
+        const tx = db.transaction('dataStore', 'readwrite');
+        const store = tx.objectStore('dataStore');
+        data.forEach((item) => store.put(item));
+        await tx.done;
+    } catch (error) {
+        console.error("Error saving data to IndexedDB:", error);
+        throw error; // Rethrow or handle as needed
+    }
 };
