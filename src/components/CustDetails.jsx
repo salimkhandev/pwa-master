@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { fetchData } from "../api/fetchData";
 
 const CustDetails = () => {
     const [custDetails, setCustDetails] = useState([]);
