@@ -8,19 +8,29 @@ const requestPersistentStorage = async () => {
     }
 };
 
-// ✅ Initialize IndexedDB with multiple object stores
-export const initDB = async () => {
-    return openDB('myDatabase', 2, {
-        upgrade(db) {
-            if (!db.objectStoreNames.contains('teachers')) {
-                db.createObjectStore('teachers', { keyPath: 'id' });
-            }
-            if (!db.objectStoreNames.contains('students')) {
-                db.createObjectStore('students', { keyPath: 'id' });
-            }
-        },
-    });
-};
+// ✅ Initialize IndexedDB
+const dbPromise = openDB('myDatabase', 1, {
+    upgrade(db) {
+        if (!db.objectStoreNames.contains('dataStore')) {
+            db.createObjectStore('dataStore', { keyPath: 'id' });
+        }
+    },
+});
 
 // ✅ Run persistent storage request
 requestPersistentStorage();
+
+// Function to get data
+export const getFromIndexedDB = async () => {
+    const db = await dbPromise;
+    return db.getAll('dataStore');
+};
+
+// Function to save data
+export const saveToIndexedDB = async (data) => {
+    const db = await dbPromise;
+    const tx = db.transaction('dataStore', 'readwrite');
+    const store = tx.objectStore('dataStore');
+    data.forEach((item) => store.put(item));
+    await tx.done;
+};
