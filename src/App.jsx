@@ -9,6 +9,7 @@ const About = lazy(() => import('./components/About'))
 const Contact = lazy(() => import('./components/Contact'))
 const Home = lazy(() => import('./components/Home'))
 import Offline from './components/Offline'
+import CustDetails from './components/CustDetails';
 
 
 
@@ -68,6 +69,7 @@ function App() {
               <li><Link to="/">Home</Link></li>
               <li><Link to="/about">About</Link></li>
               <li><Link to="/contact">Contact</Link></li>
+              <li><Link to="/custdetail">Customer Detail</Link></li>
             
             </ul>
           </nav>
@@ -78,6 +80,7 @@ function App() {
               <Route path="/about" element={<Suspense fallback={<div>Loading...</div>}><About /></Suspense>} />
               <Route path="/contact" element={<Suspense fallback={<div>Loading...</div>}><Contact /></Suspense>} />
               <Route path="/offline" element={<Offline />} /> {/* Catch-all route */}
+              <Route path="/custdetail" element={<CustDetails />} /> {/* Catch-all route */}
 
             </Routes>
           </div>
