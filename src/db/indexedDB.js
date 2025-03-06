@@ -10,7 +10,7 @@ const requestPersistentStorage = async () => {
 
 // ✅ Initialize IndexedDB with multiple object stores
 export const initDB = async () => {
-    return openDB('myDatabase', 1, {
+    return openDB('myDatabase', 2, {
         upgrade(db) {
             if (!db.objectStoreNames.contains('teachers')) {
                 db.createObjectStore('teachers', { keyPath: 'id' });

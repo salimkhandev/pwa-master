@@ -1,16 +1,16 @@
-import React, { lazy, Suspense, useEffect, useState } from 'react'
-import { Link, Route, BrowserRouter as Router, Routes } from 'react-router-dom'
-import './App.css'
+import React, { lazy, Suspense, useEffect, useState } from 'react';
+import { Link, Route, Routes } from 'react-router-dom';
+import './App.css';
 
 import { ContextProvider } from './components/ContextAPI';
+import CustDetails from './components/CustDetails';
+import Offline from './components/Offline';
+import TeachersList from './components/TeachersList';
 
 // Lazy-loaded components
 const About = lazy(() => import('./components/About'))
 const Contact = lazy(() => import('./components/Contact'))
 const Home = lazy(() => import('./components/Home'))
-import Offline from './components/Offline'
-import CustDetails from './components/CustDetails';
-import TeachersList from './components/TeachersList';
 
 
 

@@ -38,32 +38,50 @@ body {
 
 /* Navbar Styles */
 .navbar {
-  background-color: var(--card-background);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 1rem 2rem;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+  background-color: #333; /* Background color */
+  overflow: hidden; /* Clear floats */
 }
 
+/* Navbar links */
 .navbar ul {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 2rem;
-  list-style: none;
+  list-style-type: none; /* Remove bullet points */
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
+  display: flex; /* Use flexbox for layout */
+  flex-wrap: wrap; /* Allow wrapping on smaller screens */
+  justify-content: center; /* Center the links */
 }
 
+/* Navbar items */
+.navbar li {
+  flex: 1; /* Allow items to grow */
+  text-align: center; /* Center text */
+}
+
+/* Navbar links */
 .navbar a {
-  color: var(--text-color);
-  text-decoration: none;
-  font-weight: 500;
-  transition: color var(--transition-speed);
-  font-size: 1.1rem;
+  display: block; /* Make links block elements */
+  color: white; /* Text color */
+  text-align: center; /* Center text */
+  padding: 14px 16px; /* Padding */
+  text-decoration: none; /* Remove underline */
 }
 
+/* Change link color on hover */
 .navbar a:hover {
-  color: var(--primary-color);
+  background-color: #ddd; /* Light background on hover */
+  color: black; /* Dark text on hover */
+}
+
+/* Mobile styles */
+@media (max-width: 600px) {
+  .navbar ul {
+    flex-direction: column; /* Stack links vertically */
+  }
+
+  .navbar li {
+    width: 100%; /* Full width for each item */
+  }
 }
 
 /* Content Styles */
