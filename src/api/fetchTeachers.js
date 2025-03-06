@@ -1,23 +1,22 @@
 import { getTeachersFromDB, updateTeachersDB } from "../db/teachersDB";
 
-// const API_URL = "https://ghss-management-backend.vercel.app/TeachersList";
-const API_URL = "https://jsonplaceholder.typicode.com/posts";
-
+const API_URL = "https://ghss-management-backend.vercel.app/TeachersList";
 
 export const fetchTeachersFromAPI = async () => {
     try {
         const response = await fetch(API_URL);
         if (!response.ok) throw new Error("Failed to fetch teachers");
-        // if (!response.ok) throw new Error("Failed to fetch students");
-        return await response.json();
 
-        // // Convert JSON object to an array of objects
-        // const transformedArray = Object.entries(data).flatMap(([className, teachers]) =>
-        //     teachers.map(teacher => ({ className, ...teacher }))
-        // );
+        const data = await response.json();
 
+        // Convert JSON object to an array of objects
+        const transformedArray = Object.entries(data).flatMap(([className, teachers]) =>
+            teachers.map(teacher => ({ className, ...teacher }))
+        );
+
+       console.log(transformedArray, "transformedArray😒😒😒");
        
-        // return transformedArray;
+        return transformedArray;
     } catch (error) {
         console.error("API Fetch Error:", error);
         return null;
