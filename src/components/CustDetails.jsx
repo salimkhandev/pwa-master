@@ -1,27 +1,19 @@
-import { useEffect, useState } from 'react';
-
+import { useEffect, useState } from "react";
+import { fetchData } from "../api/fetchData";
 
 const CustDetails = () => {
     const [custDetails, setCustDetails] = useState([]);
 
-    const fetchData = async () => {
-        const response = await fetch('https://jsonplaceholder.typicode.com/posts');
-        const data = await response.json();
-        setCustDetails(data);
-    };
-
     useEffect(() => {
-        fetchData();
+        fetchData(setCustDetails);
     }, []);
 
     return (
         <div className="container">
             <h1>Customer Details</h1>
-            {custDetails.map((data, key) => (
-                <div className="post" key={key}>
-                    <h3>
-                        Title: {data.title}
-                    </h3>
+            {custDetails.map((data) => (
+                <div className="post" key={data.id}>
+                    <h3>Title: {data.title}</h3>
                     <p>Details: {data.body}</p>
                 </div>
             ))}
