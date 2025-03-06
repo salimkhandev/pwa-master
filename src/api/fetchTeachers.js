@@ -1,0 +1,52 @@
+import { getTeachersFromDB, updateTeachersDB } from "../db/teachersDB";
+
+// const API_URL = "https://ghss-management-backend.vercel.app/TeachersList";
+const API_URL = "https://jsonplaceholder.typicode.com/posts";
+
+
+export const fetchTeachersFromAPI = async () => {
+    try {
+        const response = await fetch(API_URL);
+        if (!response.ok) throw new Error("Failed to fetch teachers");
+        // if (!response.ok) throw new Error("Failed to fetch students");
+        return await response.json();
+
+        // // Convert JSON object to an array of objects
+        // const transformedArray = Object.entries(data).flatMap(([className, teachers]) =>
+        //     teachers.map(teacher => ({ className, ...teacher }))
+        // );
+
+       
+        // return transformedArray;
+    } catch (error) {
+        console.error("API Fetch Error:", error);
+        return null;
+    }
+};
+
+const hasDataChanged = (oldData, newData) => {
+    if (!oldData || oldData.length !== newData.length) return true;
+    return JSON.stringify(oldData) !== JSON.stringify(newData);
+};
+
+export const getTeachers = async(setTeachers) => {
+    const localData = await getTeachersFromDB();
+    const newData = await fetchTeachersFromAPI();
+    console.log(newData, "newData😒😒😒");
+    
+    if (localData.length > 0) {
+        setTeachers(localData);
+    }
+
+
+    // updateTeachersDB(newData);
+    if (!newData) return localData;
+    
+    if (hasDataChanged(localData, newData)) {
+        setTeachers(newData);
+        await updateTeachersDB(newData);
+        return newData;
+    }
+
+    return localData;
+};

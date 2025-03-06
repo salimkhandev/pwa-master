@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { fetchData } from "../api/fetchData";
+// import { fetchData } from "../api/fetchData";
+import { getStudents } from "../api/fetchStudents";
 
 const CustDetails = () => {
     const [custDetails, setCustDetails] = useState([]);
 
     useEffect(() => {
-        fetchData(setCustDetails);
+        getStudents(setCustDetails);
     }, []);
 
     return (

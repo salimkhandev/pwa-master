@@ -1,60 +1,49 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-// import './TeachersList.css'; // Import external CSS
-import teacherIcon from '../assets/react.svg'; // Placeholder icon
+import React, { useEffect, useState } from "react";
+import { getTeachers } from "../api/fetchTeachers"; // ✅ Use IndexedDB + API
+import teacherIcon from "../assets/react.svg"; // ✅ Placeholder image
 
 const TeachersList = () => {
-    const [teachers, setTeachers] = useState({});
+    const [teachers, setTeachers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const fetchTeachers = async () => {
+        const fetchData = async () => {
             try {
-                const response = await axios.get('https://ghss-management-backend.vercel.app/TeachersList');
-                setTeachers(response.data);
+                // const data = await getTeachers(); // ✅ Fetch from IndexedDB or API
+                getTeachers(setTeachers);
             } catch (err) {
-                setError('Failed to fetch teachers data');
-                console.log('Error',err);
-                
+                setError("Failed to fetch teachers data");
+                console.error("Error:", err);
             } finally {
                 setLoading(false);
             }
         };
-        fetchTeachers();
+        fetchData();
     }, []);
 
-    if (loading) {
-        return <div className="loading">Loading...</div>;
-    }
-
-    if (error) {
-        return <div className="error">{error}</div>;
-    }
+    if (loading) return <div className="loading">Loading...</div>;
+    if (error) return <div className="error">{error}</div>;
 
     return (
         <div className="teachers-container">
             <h2 className="teachers-title">Teachers List</h2>
 
-            {Object.keys(teachers).map((className, index) => (
-                <div key={index} className="class-section">
-                    <h3 className="class-name">{className}</h3>
-
-                    <div className="teachers-grid">
-                        {teachers[className].map((teacher, idx) => (
-                            <div key={idx} className="teacher-card">
-                                <img
-                                    src={teacher.profile_pic_url || teacherIcon}
-                                    alt="Teacher"
-                                    className="teacher-image"
-                                />
-                                <h4 className="teacher-name">{teacher.teacher_name}</h4>
-                                <p className="teacher-section">Section: {teacher.section_name}</p>
-                            </div>
-                        ))}
+            {teachers.length > 0 ? (
+                teachers.map((teacher, index) => (
+                    <div key={index} className="teacher-card">
+                        <img
+                            src={teacher.profile_pic_url || teacherIcon}
+                            alt="Teacher"
+                            className="teacher-image"
+                        />
+                        <h4 className="teacher-name">{teacher.teacher_name}</h4>
+                        <p className="teacher-section">Section: {teacher.section_name}</p>
                     </div>
-                </div>
-            ))}
+                ))
+            ) : (
+                <p>No teachers found</p>
+            )}
         </div>
     );
 };

@@ -1,36 +1,30 @@
 import { openDB } from 'idb';
 
-// ✅ Request persistent storage permission
-const requestPersistentStorage = async () => {
-    if (navigator.storage && navigator.storage.persist) {
-        const isPersisted = await navigator.storage.persist();
-        console.log(isPersisted ? "✅ Persistent storage granted!" : "⚠️ Persistent storage denied!");
-    }
-};
-
 // ✅ Initialize IndexedDB
-const dbPromise = openDB('myDatabase', 1, {
-    upgrade(db) {
-        if (!db.objectStoreNames.contains('dataStore')) {
-            db.createObjectStore('dataStore', { keyPath: 'id' });
-        }
-    },
-});
-
-// ✅ Run persistent storage request
-requestPersistentStorage();
-
-// Function to get data
-export const getFromIndexedDB = async () => {
-    const db = await dbPromise;
-    return db.getAll('dataStore');
+export const initDB = async () => {
+    return openDB('myDatabase', 1, {
+        upgrade(db) {
+            if (!db.objectStoreNames.contains('teachers')) {
+                db.createObjectStore('teachers', { keyPath: 'id' });
+            }
+            if (!db.objectStoreNames.contains('students')) {
+                db.createObjectStore('students', { keyPath: 'id' });
+            }
+        },
+    });
 };
 
-// Function to save data
-export const saveToIndexedDB = async (data) => {
-    const db = await dbPromise;
-    const tx = db.transaction('dataStore', 'readwrite');
-    const store = tx.objectStore('dataStore');
+// ✅ Function to get data from IndexedDB
+export const getFromIndexedDB = async (storeName) => {
+    const db = await initDB();
+    return db.getAll(storeName);
+};
+
+// ✅ Function to save data to IndexedDB
+export const saveToIndexedDB = async (storeName, data) => {
+    const db = await initDB();
+    const tx = db.transaction(storeName, 'readwrite');
+    const store = tx.objectStore(storeName);
     data.forEach((item) => store.put(item));
     await tx.done;
 };
