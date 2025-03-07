@@ -26,12 +26,16 @@ export default function Attendance() {
 
     const handleAttendance = async (id, status) => {
         try {
-            if ("caches" in window) {
-                const cacheName = "pwa-cache10"; // Update with your actual cache name
-                const cache = await caches.open(cacheName);
-                const deleted = await cache.delete("https://pwa-backend-123.vercel.app/attendance");
-                console.log(deleted ? "✅ Deleted /attendance from cache" : "⚠️ Not Found in cache");
-            }
+          
+                if ('caches' in window) {
+                    const cacheName = "pwa-cache10"; // Your actual cache name
+                    const cache = await caches.open(cacheName);
+                    const urlToDelete = "https://pwa-frontend-123.vercel.app/attendance"; // Use the exact URL
+                    const deleted = await cache.delete(urlToDelete);
+                    console.log(deleted ? "✅ Deleted from cache" : "⚠️ Not Found in cache");
+                }
+            
+
 
 
 
