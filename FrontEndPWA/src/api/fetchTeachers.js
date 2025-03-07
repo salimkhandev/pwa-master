@@ -1,5 +1,7 @@
-import { getTeachersFromDB, updateTeachersDB } from "../db/teachersDB";
+// import { getTeachersFromDB, updateTeachersDB } from "../db/teachersDB";
+import { getFromIndexedDB, saveToIndexedDB } from "./indexedDB";
 
+const STORE_NAME = "teachers";
 const API_URL = "https://ghss-management-backend.vercel.app/TeachersList";
 
 export const fetchTeachersFromAPI = async () => {
@@ -29,7 +31,7 @@ const hasDataChanged = (oldData, newData) => {
 };
 
 export const getTeachers = async (setTeachers) => {
-    const localData = await getTeachersFromDB();
+    const localData = await getFromIndexedDB(STORE_NAME);
     const newData = await fetchTeachersFromAPI();
     // console.log(newData, "newData😒😒😒");
 
@@ -43,7 +45,7 @@ export const getTeachers = async (setTeachers) => {
 
     if (hasDataChanged(localData, newData)) {
         setTeachers(newData);
-        await updateTeachersDB(newData);
+        await saveToIndexedDB(STORE_NAME, newData);
         return newData;
     }
 

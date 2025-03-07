@@ -1,7 +1,7 @@
-import { getStudentsFromDB, updateStudentsDB } from "../db/studentsDB";
-
+// import { getStudentsFromDB, updateStudentsDB } from "../db/studentsDB";
+import { getFromIndexedDB, saveToIndexedDB } from "./indexedDB";
 const API_URL = "https://jsonplaceholder.typicode.com/posts";
-
+const STORE_NAME = "students";
 // ✅ Fetch from API
 export const fetchStudentsFromAPI = async () => {
     try {
@@ -22,7 +22,7 @@ const hasDataChanged = (oldData, newData) => {
 
 // ✅ Get Students (From IndexedDB if No Change)
 export const getStudents = async (setCustDetails) => {
-    const localData = await getStudentsFromDB();
+    const localData = await getFromIndexedDB(STORE_NAME);
     const newData = await fetchStudentsFromAPI();
     if (localData.length > 0) {
         setCustDetails(localData);
@@ -33,7 +33,7 @@ export const getStudents = async (setCustDetails) => {
     if (hasDataChanged(localData, newData)) {
         setCustDetails(newData);
         console.log(newData, "students from fetchStudents😒😒😒");
-        await updateStudentsDB(newData);
+        await saveToIndexedDB(STORE_NAME, newData);
         return newData;
     }
 
