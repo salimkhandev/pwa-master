@@ -14,8 +14,8 @@ export const fetchTeachersFromAPI = async () => {
             teachers.map(teacher => ({ className, ...teacher }))
         );
 
-       console.log(transformedArray, "transformedArray😒😒😒");
-       
+        console.log(transformedArray, "transformedArray😒😒😒");
+
         return transformedArray;
     } catch (error) {
         console.error("API Fetch Error:", error);
@@ -28,11 +28,11 @@ const hasDataChanged = (oldData, newData) => {
     return JSON.stringify(oldData) !== JSON.stringify(newData);
 };
 
-export const getTeachers = async(setTeachers) => {
+export const getTeachers = async (setTeachers) => {
     const localData = await getTeachersFromDB();
     const newData = await fetchTeachersFromAPI();
     console.log(newData, "newData😒😒😒");
-    
+
     if (localData.length > 0) {
         setTeachers(localData);
     }
@@ -40,7 +40,7 @@ export const getTeachers = async(setTeachers) => {
 
     // updateTeachersDB(newData);
     if (!newData) return localData;
-    
+
     if (hasDataChanged(localData, newData)) {
         setTeachers(newData);
         await updateTeachersDB(newData);
