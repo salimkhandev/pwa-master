@@ -39,7 +39,7 @@ export const getStudentsStatus = async (setStudentsStatus) => {
 
             if (hasDataChanged(localData, newData)) {
                 setStudentsStatus(newData);
-                console.log(newData, "students status 😒😒😒");
+                console.log(newData, "new data added status to students 😒😒😒");
                 await saveToIndexedDB(STORE_NAME, newData);
             }
         } catch (error) {
