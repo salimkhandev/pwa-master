@@ -13,6 +13,13 @@ export const initDB = async () => {
         },
     });
 };
+const requestPersistentStorage = async () => {
+    if (navigator.storage && navigator.storage.persist) {
+        const isPersisted = await navigator.storage.persist();
+        console.log(isPersisted ? "✅ Persistent storage granted!" : "⚠️ Persistent storage denied!");
+    }
+};
+requestPersistentStorage();
 
 // ✅ Function to get data from IndexedDB
 export const getFromIndexedDB = async (storeName) => {
