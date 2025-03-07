@@ -1,9 +1,10 @@
 import React, { lazy, Suspense, useEffect, useState } from 'react';
-import { Link, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import './App.css';
 
 import { ContextProvider } from './components/ContextAPI';
 import CustDetails from './components/CustDetails';
+import Navbar from './components/Navbar';
 import Offline from './components/Offline';
 import TeachersList from './components/TeachersList';
 
@@ -61,30 +62,17 @@ function App() {
 
   return (
     <ContextProvider>
-
-    
-    <React.Fragment>
-      {/* <Router> */}
+      <React.Fragment>
         <div className="app">
-          <nav className="navbar">
-            <ul>
-              <li><Link to="/">Home</Link></li>
-              <li><Link to="/about">About</Link></li>
-              <li><Link to="/contact">Contact</Link></li>
-              <li><Link to="/custdetail">Customer Detail</Link></li>
-              <li><Link to="/teacherlist">Teachers</Link></li>
-            
-            </ul>
-          </nav>
-
+          <Navbar />
           <div className="content">
             <Routes>
               <Route path="/" element={<Suspense fallback={<div>Loading...</div>}><Home /></Suspense>} />
               <Route path="/about" element={<Suspense fallback={<div>Loading...</div>}><About /></Suspense>} />
               <Route path="/contact" element={<Suspense fallback={<div>Loading...</div>}><Contact /></Suspense>} />
-              <Route path="/offline" element={<Offline />} /> {/* Catch-all route */}
-              <Route path="/custdetail" element={<CustDetails />} /> {/* Catch-all route */}
-              <Route path="/teacherlist" element={<Suspense fallback={<div>Loading...</div>}><TeachersList /></Suspense>} /> {/* Catch-all route */}
+              <Route path="/offline" element={<Offline />} />
+              <Route path="/custdetail" element={<CustDetails />} />
+              <Route path="/teacherlist" element={<Suspense fallback={<div>Loading...</div>}><TeachersList /></Suspense>} />
             </Routes>
           </div>
 
@@ -95,8 +83,7 @@ function App() {
             </button>
           )}
         </div>
-      {/* </Router> */}
-    </React.Fragment>
+      </React.Fragment>
     </ContextProvider>
   )
 }

@@ -71,9 +71,13 @@
     font-size: 20px; /* Adjust title size for mobile */
   }
 
+  .teachers-grid {
+    grid-template-columns: 12fr; /* Stack cards vertically on mobile */
+  }
+
   .teacher-card {
-    padding: 15px; /* Increased padding for mobile */
-    margin: 10px 0; /* Added margin for spacing between cards */
+    padding: 123px; /* Increased padding for mobile */
+    margin: 10px 0; 
   }
 
   .teacher-image {
