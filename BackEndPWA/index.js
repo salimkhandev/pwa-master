@@ -36,13 +36,13 @@ app.get("/students", async (req, res) => {
 // 📌 2️⃣ Mark attendance (Present/Absent)
 app.post("/attendance", async (req, res) => {
     try {
-        const { student_id, status } = req.body;
-        console.log(student_id, status, "student_id, status😒😒😒");
+        const { id, status } = req.body;
+        console.log(id, status, "id, status😒😒😒");
         
 
         await pool.query(
             "INSERT INTO attendance (student_id, status) VALUES ($1, $2) ON CONFLICT (student_id, date) DO UPDATE SET status = EXCLUDED.status",
-            [student_id, status]
+            [id, status]
         );
 
         res.json({ message: "Attendance marked successfully" });

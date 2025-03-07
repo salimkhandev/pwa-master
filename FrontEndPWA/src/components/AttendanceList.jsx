@@ -27,7 +27,7 @@ export default function Attendance() {
     const handleAttendance = async (id, status) => {
         try {
             await axios.post("https://pwa-backend-123.vercel.app/attendance", {
-                student_id: id,
+                id: id,
                 status:status,
             });
             fetchData();
