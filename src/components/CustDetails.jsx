@@ -1,16 +1,12 @@
 import { useEffect, useState } from "react";
-import { getStudentsFromDB } from "../db/studentsDB";
+import {  getStudents } from "../db/studentsDB";
 const CustDetails = () => {
     const [custDetails, setCustDetails] = useState([]);
 
-    const fetchData = async () => {
-        const data = await getStudentsFromDB();
-        console.log(data, "data😒😒😒");
-        setCustDetails(data);
-    };
+    
 
     useEffect(() => {
-        fetchData(setCustDetails);
+        getStudents(setCustDetails);
     }, []);
 
     return (
