@@ -1,7 +1,7 @@
 import React from 'react';
 import { useContextAPI } from './ContextAPI';
 const Home = () => {
-  const { value, setValue } = useContextAPI();
+  const { value } = useContextAPI();
   const features = [
     {
       title: "Modern Design",
@@ -30,7 +30,7 @@ const Home = () => {
           fontFamily: 'Montserrat, sans-serif'
         }}
         >
-          Welcome to Our PWA {value}
+          Welcome to Our PWA
         </h1>
         <p style={{ 
           fontSize: '1.1rem', 
