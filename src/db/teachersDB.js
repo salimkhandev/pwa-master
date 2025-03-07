@@ -12,6 +12,6 @@ export const saveTeachersToDB = async (teachers) => saveToIndexedDB(STORE_NAME, 
 // export const updateTeachersDB = async (teachers) => updateTeachersDB(STORE_NAME, teachers);
 // nd update teachers in IndexedDB
 export const updateTeachersDB = async (teachers) => {
-  
+
     return saveToIndexedDB(STORE_NAME, teachers); // Correctly call saveToIndexedDB
 };
