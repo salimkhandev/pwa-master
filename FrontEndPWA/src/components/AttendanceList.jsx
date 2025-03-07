@@ -92,6 +92,8 @@ export default function Attendance() {
                                 </div>
                                 <span className="text-xs md:text-sm text-gray-600 min-w-[70px] text-right">
                                     {student.status}
+                                    {student.id}
+                                    {student.name}
                                 </span>
                             </div>
                         </li>
