@@ -17,7 +17,10 @@ export const fetchStudentsStatusFromAPI = async () => {
 // ✅ Compare if data changed
 const hasDataChanged = (oldData, newData) => {
     if (!oldData || oldData.length !== newData.length) return true;
-    return JSON.stringify(oldData) !== JSON.stringify(newData);
+
+    return oldData.some((item, index) => {
+        return Object.keys(item).some((key) => item[key] !== newData[index][key]);
+    });
 };
 
 // ✅ Get Students (From IndexedDB if No Change)
