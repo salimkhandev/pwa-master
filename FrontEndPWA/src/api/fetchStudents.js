@@ -1,5 +1,5 @@
 // import { getStudentsFromDB, updateStudentsDB } from "../db/studentsDB";
-import { getFromIndexedDB, saveToIndexedDB } from "./indexedDB";
+import { getFromIndexedDB, saveToIndexedDB } from "../db/indexedDB";
 const API_URL = "https://jsonplaceholder.typicode.com/posts";
 const STORE_NAME = "students";
 // ✅ Fetch from API

@@ -1,5 +1,5 @@
 // import { getTeachersFromDB, updateTeachersDB } from "../db/teachersDB";
-import { getFromIndexedDB, saveToIndexedDB } from "./indexedDB";
+import { getFromIndexedDB, saveToIndexedDB } from "../db/indexedDB";
 
 const STORE_NAME = "teachers";
 const API_URL = "https://ghss-management-backend.vercel.app/TeachersList";
