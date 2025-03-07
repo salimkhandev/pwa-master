@@ -12,7 +12,7 @@ export default function Attendance() {
 
     const fetchAttendance = async () => {
         try {
-            const res = await axios.get("http://localhost:3000/attendance");
+            const res = await axios.get("https://pwa-backend-123.vercel.app/attendance");
             setStudents(res.data);
             setError(null);
         } catch (err) {
@@ -23,7 +23,7 @@ export default function Attendance() {
 
     const handleAttendance = async (id, status) => {
         try {
-            await axios.post("http://localhost:3000/attendance", {
+            await axios.post("https://pwa-backend-123.vercel.app/attendance", {
                 student_id: id,
                 status,
             });
