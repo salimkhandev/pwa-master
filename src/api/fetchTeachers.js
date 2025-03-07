@@ -31,7 +31,7 @@ const hasDataChanged = (oldData, newData) => {
 export const getTeachers = async (setTeachers) => {
     const localData = await getTeachersFromDB();
     const newData = await fetchTeachersFromAPI();
-    console.log(newData, "newData😒😒😒");
+    // console.log(newData, "newData😒😒😒");
 
     if (localData.length > 0) {
         setTeachers(localData);

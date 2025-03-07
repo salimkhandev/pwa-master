@@ -28,7 +28,7 @@ export const getStudents = async (setCustDetails) => {
         setCustDetails(localData);
     }
 
-    // if (!newData) return localData; // Use local data if API fails
+    if (!newData) return localData; // Use local data if API fails
 
     if (hasDataChanged(localData, newData)) {
         setCustDetails(newData);
@@ -36,5 +36,5 @@ export const getStudents = async (setCustDetails) => {
         return newData;
     }
 
-    // return localData;
+    return localData;
 };
