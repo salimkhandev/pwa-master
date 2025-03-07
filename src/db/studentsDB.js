@@ -6,7 +6,7 @@ const STORE_NAME = "students";
 export const getTeachersFromDB = async () => getFromIndexedDB(STORE_NAME);
 
 // ✅ Save teachers to IndexedDB
-export const saveTeachersToDB = async (teachers) => saveToIndexedDB(STORE_NAME, teachers);
+export const saveStudentsToDB = async (students) => saveToIndexedDB(STORE_NAME, students);
 
 // ✅ Clear and update teachers in IndexedDB
 // export const updateTeachersDB = async (teachers) => updateTeachersDB(STORE_NAME, teachers);
