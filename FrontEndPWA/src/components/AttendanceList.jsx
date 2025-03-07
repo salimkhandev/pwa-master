@@ -26,6 +26,17 @@ export default function Attendance() {
 
     const handleAttendance = async (id, status) => {
         try {
+            async function deleteCachedAttendance() {
+                if ('caches' in window) {
+                    const cacheName = "pwa-cache10"; // Change to your actual cache name
+                    const cache = await caches.open(cacheName);
+                    const deleted = await cache.delete("/attendance"); // Or full URL if needed
+                    console.log(deleted ? "✅ Deleted /attendance from cache" : "⚠️ Not Found in cache");
+                }
+            }
+            deleteCachedAttendance();
+
+
             await axios.post("https://pwa-backend-123.vercel.app/attendance", {
                 student_id: id,
                 status: status
