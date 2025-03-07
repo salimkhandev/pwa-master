@@ -1,7 +1,7 @@
 // components/Attendance.jsx
 import axios from "axios";
-import { getStudentsStatus } from "../api/fetchStudentStatus";
 import { useEffect, useState } from "react";
+import { getStudentsStatus } from "../api/fetchStudentStatus";
 
 export default function Attendance() {
     const [students, setStudents] = useState([]);
@@ -27,8 +27,8 @@ export default function Attendance() {
     const handleAttendance = async (id, status) => {
         try {
             await axios.post("https://pwa-backend-123.vercel.app/attendance", {
-                id: id,
-                status:status,
+                student_id: id,
+                status: status
             });
             fetchData();
         } catch (err) {
