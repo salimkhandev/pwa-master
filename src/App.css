@@ -38,7 +38,8 @@ body {
 
 /* Navbar Styles */
 .navbar {
-  background-color: #333; /* Background color */
+  background-color: #444; /* Changed to a lighter background color */
+  padding: 1rem; /* Added padding for better spacing */
   overflow: hidden; /* Clear floats */
 }
 
@@ -65,12 +66,13 @@ body {
   text-align: center; /* Center text */
   padding: 14px 16px; /* Padding */
   text-decoration: none; /* Remove underline */
+  transition: background-color 0.3s; /* Smooth transition for background color */
 }
 
 /* Change link color on hover */
 .navbar a:hover {
-  background-color: #ddd; /* Light background on hover */
-  color: black; /* Dark text on hover */
+  background-color: #555; /* Darker background on hover */
+  color: #fff; /* Ensure text remains white on hover */
 }
 
 /* Mobile styles */

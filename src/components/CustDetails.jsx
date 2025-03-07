@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
-
+import { getStudentsFromDB } from "../db/studentsDB";
 const CustDetails = () => {
     const [custDetails, setCustDetails] = useState([]);
 
     const fetchData = async () => {
-        const response = await fetch('https://jsonplaceholder.typicode.com/posts');
-        const data = await response.json();
+        const data = await getStudentsFromDB();
         setCustDetails(data);
     };
 
