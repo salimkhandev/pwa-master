@@ -59,7 +59,7 @@ function App() {
     const { outcome } = await deferredPrompt.userChoice;
     console.log(`User response to the install prompt: ${outcome}`);
 
-    // Clear the saved prompt since it can't be used again
+    // Clear the saved prompt since it can't be used again here
     setDeferredPrompt(null);
   };
 
