@@ -76,6 +76,7 @@ function App() {
               <li><Link to="/about">About</Link></li>
               <li><Link to="/contact">Contact</Link></li>
               <li><Link to="/custdetail">Customer Detail</Link></li>
+              <li><Link to="/teacherlist">Teachers</Link></li>
             
             </ul>
           </nav>
@@ -87,7 +88,7 @@ function App() {
               <Route path="/contact" element={<Suspense fallback={<div>Loading...</div>}><Contact /></Suspense>} />
               <Route path="/offline" element={<Offline />} /> {/* Catch-all route */}
               <Route path="/custdetail" element={<CustDetails />} /> {/* Catch-all route */}
-
+              <Route path="/teacherlist" element={<Suspense fallback={<div>Loading...</div>}><TeachersList /></Suspense>} /> {/* Catch-all route */}
             </Routes>
           </div>
 
