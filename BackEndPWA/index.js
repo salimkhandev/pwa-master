@@ -37,6 +37,8 @@ app.get("/students", async (req, res) => {
 app.post("/attendance", async (req, res) => {
     try {
         const { student_id, status } = req.body;
+        console.log(student_id, status, "student_id, status😒😒😒");
+        
 
         await pool.query(
             "INSERT INTO attendance (student_id, status) VALUES ($1, $2) ON CONFLICT (student_id, date) DO UPDATE SET status = EXCLUDED.status",
