@@ -2,7 +2,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { getStudentsStatus } from "../api/fetchStudentStatus";
-
+import { CACHE_NAME } from "../../public/config";
 export default function Attendance() {
     const [students, setStudents] = useState([]);
     const [error, setError] = useState(null);
@@ -28,7 +28,7 @@ export default function Attendance() {
         try {
           
             if ('caches' in window) {
-                const cacheName = "pwa-cache10";
+                const cacheName = `${CACHE_NAME}`;
                 const urlToDelete = "https://pwa-frontend-123.vercel.app/attendance";
 
                 const cache = await caches.open(cacheName);

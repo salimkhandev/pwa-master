@@ -1,8 +1,7 @@
 // Injection point for the precache manifest
 self.__WB_MANIFEST
+import { CACHE_NAME } from './config';
 
-
-const CACHE_NAME = 'pwa-cache10';
 
 
 const FILES_TO_CACHE = [
