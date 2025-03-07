@@ -82,7 +82,7 @@ export default function Attendance() {
 
     return (
         <div className="mx-4 md:max-w-xl md:mx-auto p-4 md:p-6 bg-white shadow-lg rounded-lg mt-4 md:mt-10">
-            {value}
+            {<h5 className="text-xl  mb-4">{value}</h5>}
             <h2 className="text-xl md:text-2xl font-bold mb-4">📌 Mark Attendance</h2>
             {students.length === 0 ? (
                 <p className="text-gray-500">No students found</p>
