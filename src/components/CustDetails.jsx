@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import {  getStudents } from "../db/studentsDB";
+import { getStudents } from "../api/fetchStudents";
 const CustDetails = () => {
     const [custDetails, setCustDetails] = useState([]);
     const [loading, setLoading] = useState(true);
