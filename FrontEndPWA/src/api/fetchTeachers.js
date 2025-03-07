@@ -16,6 +16,8 @@ export const fetchTeachersFromAPI = async () => {
             teachers.map(teacher => ({ className, ...teacher }))
         );
 
+        // 🔥 Sort data by `id` in ascending order
+        transformedArray.sort((a, b) => a.id - b.id);
         console.log(transformedArray, "transformedArray😒😒😒");
 
         return transformedArray;
@@ -25,28 +27,34 @@ export const fetchTeachersFromAPI = async () => {
     }
 };
 
+
+// ✅ Compare if data changed
 const hasDataChanged = (oldData, newData) => {
     if (!oldData || oldData.length !== newData.length) return true;
-    return JSON.stringify(oldData) !== JSON.stringify(newData);
+    return JSON.stringify(oldData) !== JSON.stringify(newData); // Deep content check
 };
+
+
 
 export const getTeachers = async (setTeachers) => {
     const localData = await getFromIndexedDB(STORE_NAME);
-    const newData = await fetchTeachersFromAPI();
     // console.log(newData, "newData😒😒😒");
-
+    
     if (localData.length > 0) {
         setTeachers(localData);
     }
 
-
-    // updateTeachersDB(newData);
+    
+    
+    const newData = await fetchTeachersFromAPI();
     if (!newData) return localData;
 
     if (hasDataChanged(localData, newData)) {
         setTeachers(newData);
+        console.log(newData,'changed');
+        
         await saveToIndexedDB(STORE_NAME, newData);
-        return newData;
+        // return newData;
     }
 
     return localData;

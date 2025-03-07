@@ -33,6 +33,8 @@ const TeachersList = () => {
             {teachers.length > 0 ? (
                 teachers.map((teacher, index) => (
                     <div key={index} className="teacher-card">
+                        {/* print serical number */}
+                        <p className="teacher-serial">{index}</p>
                         <img
                             src={teacher.profile_pic_url || teacherIcon}
                             alt="Teacher"

@@ -17,35 +17,25 @@ export const fetchStudentsStatusFromAPI = async () => {
 // ✅ Compare if data changed
 const hasDataChanged = (oldData, newData) => {
     if (!oldData || oldData.length !== newData.length) return true;
-
-    return oldData.some((item, index) => {
-        return Object.keys(item).some((key) => item[key] !== newData[index][key]);
-    });
+    return JSON.stringify(oldData) !== JSON.stringify(newData); // Deep content check
 };
 
 // ✅ Get Students (From IndexedDB if No Change)
 export const getStudentsStatus = async (setStudentsStatus) => {
-    // Get local data and render immediately
     const localData = await getFromIndexedDB(STORE_NAME);
-    if (localData?.length > 0) {
+    if (localData.length > 0) {
         setStudentsStatus(localData);
     }
+    const newData = await fetchStudentsStatusFromAPI();
 
-    // Compare and update in the background
-    Promise.resolve().then(async () => {
-        try {
-            const newData = await fetchStudentsStatusFromAPI();
-            if (!newData) return;
+    if (!newData) return localData; // Use local data if API fails
 
-            if (hasDataChanged(localData, newData)) {
-                setStudentsStatus(newData);
-                console.log(newData, "new data added status to students 😒😒😒");
-                await saveToIndexedDB(STORE_NAME, newData);
-            }
-        } catch (error) {
-            console.error("Background update error:", error);
-        }
-    });
+    if (hasDataChanged(localData, newData)) {
+        setStudentsStatus(newData);
+        console.log(newData, "students status 😒😒😒");
+        await saveToIndexedDB(STORE_NAME, newData);
+        return newData;
+    }
 
     return localData;
 };
