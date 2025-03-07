@@ -10,5 +10,6 @@ export const saveStudentsToDB = async (students) => saveToIndexedDB(STORE_NAME, 
 
 // ✅ Clear and update students in IndexedDB
 export const updateStudentsDB = async (students) => {
+    console.log(students, "students😒😒😒");
     return saveToIndexedDB(STORE_NAME, students);
 };
