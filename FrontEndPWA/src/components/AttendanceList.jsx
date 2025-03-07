@@ -27,13 +27,27 @@ export default function Attendance() {
     const handleAttendance = async (id, status) => {
         try {
           
-                if ('caches' in window) {
-                    const cacheName = "pwa-cache10"; // Your actual cache name
-                    const cache = await caches.open(cacheName);
-                    const urlToDelete = "https://pwa-frontend-123.vercel.app/attendance"; // Use the exact URL
-                    const deleted = await cache.delete(urlToDelete);
-                    console.log(deleted ? "✅ Deleted from cache" : "⚠️ Not Found in cache");
+            if ('caches' in window) {
+                const cacheName = "pwa-cache10";
+                const urlToDelete = "https://pwa-frontend-123.vercel.app/attendance";
+
+                const cache = await caches.open(cacheName);
+
+                // ❌ Delete old cached response
+                const deleted = await cache.delete(urlToDelete);
+                console.log(deleted ? "✅ Deleted old cache" : "⚠️ Not Found in cache");
+
+                // 🔄 Fetch new data from server
+                const response = await fetch(urlToDelete);
+
+                if (response.ok) {
+                    // ✅ Store new response in cache
+                    await cache.put(urlToDelete, response.clone());
+                    console.log("✅ New data cached successfully!");
+                } else {
+                    console.error("❌ Failed to fetch new data");
                 }
+            }
             
 
 
