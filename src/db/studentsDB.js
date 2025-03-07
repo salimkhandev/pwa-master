@@ -2,17 +2,14 @@ import { getFromIndexedDB, saveToIndexedDB } from "./indexedDB";
 
 const STORE_NAME = "students";
 
-// ✅ Get teachers from IndexedDB
-export const getTeachersFromDB = async () => getFromIndexedDB(STORE_NAME);
+// ✅ Get students from IndexedDB
+export const getStudentsFromDB = async () => getFromIndexedDB(STORE_NAME);
 
-// ✅ Save teachers to IndexedDB
+// ✅ Save students to IndexedDB
 export const saveStudentsToDB = async (students) => saveToIndexedDB(STORE_NAME, students);
 
-// ✅ Clear and update teachers in IndexedDB
-// export const updateTeachersDB = async (teachers) => updateTeachersDB(STORE_NAME, teachers);
-// nd update teachers in IndexedDB
-export const updateTeachersDB = async (students) => {
+// ✅ Clear and update students in IndexedDB
+export const updateStudentsDB = async (students) => {
     console.log(students, "students😒😒😒");
-
-    return saveToIndexedDB(STORE_NAME, students); // Correctly call saveToIndexedDB
+    return saveToIndexedDB(STORE_NAME, students);
 };
