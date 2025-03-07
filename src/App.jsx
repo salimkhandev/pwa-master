@@ -11,7 +11,11 @@ import TeachersList from './components/TeachersList';
 const About = lazy(() => import('./components/About'))
 const Contact = lazy(() => import('./components/Contact'))
 const Home = lazy(() => import('./components/Home'))
-
+<<<<<<< HEAD
+=======
+import Offline from './components/Offline'
+import CustDetails from './components/CustDetails';
+>>>>>>> parent of 485814e (improved)
 
 
 
