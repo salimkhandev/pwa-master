@@ -60,7 +60,7 @@ export default function Attendance() {
                 <ul className="space-y-2">
                     {students.map((student) => (
                         <li
-                            key={student.student_id}
+                            key={student.id}
                             className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 p-3 border-b hover:bg-gray-50"
                         >
                             <span className="font-medium text-sm md:text-base">
