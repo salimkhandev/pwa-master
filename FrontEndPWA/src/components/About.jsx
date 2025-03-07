@@ -35,7 +35,7 @@ const About = () => {
           marginBottom: '1rem',
           fontFamily: 'Montserrat, sans-serif'
         }}>
-          About Us {value}
+          About Us
         </h1>
        
         <p style={{ 
