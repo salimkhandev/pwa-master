@@ -32,6 +32,7 @@ export const getStudents = async (setCustDetails) => {
 
     if (hasDataChanged(localData, newData)) {
         setCustDetails(newData);
+        console.log(newData, "students from fetchStudents😒😒😒");
         await updateStudentsDB(newData);
         return newData;
     }
