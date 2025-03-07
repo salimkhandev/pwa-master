@@ -5,6 +5,7 @@ const CustDetails = () => {
 
     const fetchData = async () => {
         const data = await getStudentsFromDB();
+        console.log(data, "data😒😒😒");
         setCustDetails(data);
     };
 
