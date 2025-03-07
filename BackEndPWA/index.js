@@ -53,7 +53,7 @@ app.post("/attendance", async (req, res) => {
 app.get("/attendance", async (req, res) => {
     try {
         const result = await pool.query(`
-      SELECT s.student_id, s.name, COALESCE(a.status, 'Not Marked') AS status
+      SELECT s.student_id as id, s.name, COALESCE(a.status, 'Not Marked') AS status
       FROM students s
       LEFT JOIN (
         SELECT DISTINCT ON (student_id) student_id, status FROM attendance ORDER BY student_id, date DESC

@@ -22,7 +22,6 @@ const requestPersistentStorage = async () => {
         console.log(isPersisted ? "✅ Persistent storage granted!" : "⚠️ Persistent storage denied!");
     }
 };
-requestPersistentStorage();
 
 // ✅ Function to get data from IndexedDB
 export const getFromIndexedDB = async (storeName) => {
@@ -38,3 +37,5 @@ export const saveToIndexedDB = async (storeName, data) => {
     data.forEach((item) => store.put(item));
     await tx.done;
 };
+
+    requestPersistentStorage();

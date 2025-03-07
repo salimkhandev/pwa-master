@@ -75,7 +75,7 @@ export default function Attendance() {
                                                 ? "bg-green-500 text-white"
                                                 : "bg-gray-300 hover:bg-green-400 hover:text-white"
                                         }`}
-                                        onClick={() => handleAttendance(student.student_id, "Present")}
+                                        onClick={() => handleAttendance(student.id, "Present")}
                                     >
                                         Present
                                     </button>
@@ -85,7 +85,7 @@ export default function Attendance() {
                                                 ? "bg-red-500 text-white"
                                                 : "bg-gray-300 hover:bg-red-400 hover:text-white"
                                         }`}
-                                        onClick={() => handleAttendance(student.student_id, "Absent")}
+                                        onClick={() => handleAttendance(student.id, "Absent")}
                                     >
                                         Absent
                                     </button>
