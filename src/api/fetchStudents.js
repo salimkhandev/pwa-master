@@ -36,5 +36,5 @@ export const getStudents = async (setCustDetails) => {
         return newData;
     }
 
-    return localData;
+    // return localData;
 };
