@@ -1,0 +1,91 @@
+.teachers-container {
+  max-width: 100%; /* Use full width on mobile */
+  margin: auto;
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.teachers-title {
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.teachers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(90%, 1fr)); /* Adjusted for mobile */
+  gap: 15px;
+}
+
+.teacher-card {
+  background: white;
+  padding: 15px;
+  border-radius: 12px; /* Increased border radius for a classic look */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.teacher-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.teacher-image {
+  width: 80px; /* Adjusted size for better visibility */
+  height: 80px; /* Adjusted size for better visibility */
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.teacher-name {
+  font-size: 18px;
+  font-weight: bold;
+  color: #444;
+}
+
+.teacher-section {
+  font-size: 14px;
+  color: #777;
+}
+
+.loading {
+  text-align: center;
+  font-size: 18px;
+  color: #555;
+  margin-top: 50px;
+}
+
+.error {
+  text-align: center;
+  color: red;
+  font-size: 18px;
+  margin-top: 50px;
+}
+
+/* Mobile Styles */
+@media (max-width: 600px) {
+  .teachers-title {
+    font-size: 20px; /* Adjust title size for mobile */
+  }
+
+  .teacher-card {
+    padding: 15px; /* Increased padding for mobile */
+    margin: 10px 0; /* Added margin for spacing between cards */
+  }
+
+  .teacher-image {
+    width: 60px; /* Adjusted image size for mobile */
+    height: 60px; /* Adjusted image size for mobile */
+  }
+
+  .teacher-name {
+    font-size: 16px; /* Adjusted font size for better readability */
+  }
+
+  .teacher-section {
+    font-size: 12px; /* Adjusted font size for better readability */
+  }
+} 

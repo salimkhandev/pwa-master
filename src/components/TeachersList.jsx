@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getTeachers } from "../api/fetchTeachers"; // ✅ Use IndexedDB + API
 import teacherIcon from "../assets/react.svg"; // ✅ Placeholder image
+import "../components/CustDetails.css";
 
 const TeachersList = () => {
     const [teachers, setTeachers] = useState([]);
