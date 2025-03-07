@@ -1,25 +1,28 @@
 // components/Attendance.jsx
 import axios from "axios";
+import { getStudentsStatus } from "../api/fetchStudentStatus";
 import { useEffect, useState } from "react";
 
 export default function Attendance() {
     const [students, setStudents] = useState([]);
     const [error, setError] = useState(null);
-
-    useEffect(() => {
-        fetchAttendance();
-    }, []);
-
-    const fetchAttendance = async () => {
+    const [loading, setLoading] = useState(true);
+    const fetchData = async () => {
         try {
-            const res = await axios.get("https://pwa-backend-123.vercel.app/attendance");
-            setStudents(res.data);
-            setError(null);
+            // const data = await getTeachers(); // ✅ Fetch from IndexedDB or API
+            getStudentsStatus(setStudents);
         } catch (err) {
-            setError("Failed to fetch attendance data");
-            console.error("Fetch error:", err);
+            setError("Failed to fetch teachers data");
+            console.error("Error:", err);
+        } finally {
+            setLoading(false);
         }
     };
+    useEffect(() => {
+        
+        fetchData();
+    }, []);
+
 
     const handleAttendance = async (id, status) => {
         try {
@@ -27,7 +30,7 @@ export default function Attendance() {
                 student_id: id,
                 status,
             });
-            fetchAttendance();
+            fetchData();
         } catch (err) {
             setError("Failed to update attendance");
             console.error("Update error:", err);
@@ -40,6 +43,12 @@ export default function Attendance() {
                 {error}
             </div>
         );
+    }
+    if (loading) {
+        return <div className="mx-4 md:max-w-xl md:mx-auto p-4 md:p-6 bg-white shadow-lg rounded-lg mt-4 md:mt-10">
+            <h2 className="text-xl md:text-2xl font-bold mb-4">📌 Mark Attendance</h2>
+            <p className="text-gray-500">Loading...</p>
+        </div>
     }
 
     return (
