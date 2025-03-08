@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { getStudentsStatus } from "../api/fetchStudentStatus";
 import { CACHE_NAME } from "../../public/config";
 import { useContextAPI } from './ContextAPI';
-import { updateStudentById, isOfflineAttendanceTaken, getOfflineAttendanceStatus } from "../db/indexedDB";
+import { updateStudentById, isOfflineAttendanceTaken, getOfflineAttendanceStatus, deleteOfflineAttendanceStatus } from "../db/indexedDB";
 export default function Attendance() {
     const { value } = useContextAPI();
     const [students, setStudents] = useState([]);
@@ -23,29 +23,37 @@ export default function Attendance() {
         }
     };
     useEffect(() => {
-        getOfflineAttendanceStatus().then(async (attendanceData) => {
-            console.log('😂',attendanceData);
-        
-           
-            if(attendanceData.length > 0 && !value){
-                setIsPending(attendanceData.map(item => item.id));
-                // const status = [
-                //     { student_id: 1, status: "Absent" },
-                //     { student_id: 2, status: "Present" },
-                //     { student_id: 3, status: "Present" }
-                // ];
+        getOfflineAttendanceStatus().then(async (attendanceDatas) => {
+            console.log("🎯 Cleaned Data Before Sending:", attendanceDatas);
 
-                await axios.post("https://pwa-backend-123.vercel.app/attendance", attendanceData)
-                
-                fetchData();
+            if (attendanceDatas.length > 0 && value) {
+                const cleanedData = attendanceDatas.map(({ id, status }) => ({
+                    student_id: id,  // Renaming 'id' to 'student_id'
+                    status: status
+                }));
+
+                console.log("🚀 Sending Data:", cleanedData);
+
+                try {
+                    const response = await axios.post("https://pwa-backend-123.vercel.app/attendance", cleanedData);
+
+                    if (response.status === 200) {
+                        deleteOfflineAttendanceStatus(); // Run success function
+                        fetchData(); // Refresh after successful upload
+                    }
+                } catch (error) {
+                    console.error("❌ Error syncing attendance:", error);
+                    alert("❌ Failed to update attendance. Please try again.");
+                } // Refresh after successful upload
             }
         });
+
         fetchData();
         
     }, [value]);
 
 
-    const handleAttendance = async (id, status) => {
+    const handleAttendance = async (id, status) => {    
         try {
           
           if (value) {

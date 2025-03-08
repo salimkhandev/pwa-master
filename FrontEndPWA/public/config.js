@@ -1,1 +1,1 @@
-export const CACHE_NAME = 'pwa-cache12';
+export const CACHE_NAME = 'pwa-cache13';

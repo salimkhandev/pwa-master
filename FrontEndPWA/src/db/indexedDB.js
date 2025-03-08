@@ -96,6 +96,13 @@ export const getOfflineAttendanceStatus = async () => {
     const store = tx.objectStore('isOfflineAttendanceTaken');
     return store.getAll();
 };
-
+// delete the status of the offline attendance
+export const deleteOfflineAttendanceStatus = async () => {
+    const db = await initDB();
+    const tx = db.transaction('isOfflineAttendanceTaken', 'readwrite');
+    const store = tx.objectStore('isOfflineAttendanceTaken');
+    await store.clear();
+    await tx.done;
+};
 
     requestPersistentStorage();
