@@ -23,14 +23,26 @@ export default function Attendance() {
         }
     };
     useEffect(() => {
-        getOfflineAttendanceStatus().then((status) => {
-            console.log(status, "status");
-            if(status.length > 0){
-                setIsPending(status.map(item => item.id));
+        getOfflineAttendanceStatus().then(async (attendanceData) => {
+            console.log('😂',attendanceData);
+        
+           
+            if(attendanceData.length > 0 && !value){
+                setIsPending(attendanceData.map(item => item.id));
+                // const status = [
+                //     { student_id: 1, status: "Absent" },
+                //     { student_id: 2, status: "Present" },
+                //     { student_id: 3, status: "Present" }
+                // ];
+
+                await axios.post("https://pwa-backend-123.vercel.app/attendance", attendanceData)
+                
+                fetchData();
             }
         });
         fetchData();
-    }, []);
+        
+    }, [value]);
 
 
     const handleAttendance = async (id, status) => {

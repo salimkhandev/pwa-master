@@ -36,11 +36,11 @@ app.get("/students", async (req, res) => {
 
 app.post("/attendance", async (req, res) => {
     try {
-        let attendanceRecords = req.body;
+        let attendanceRecords = req.body; // Expecting an array directly
 
-        // If a single object is sent, convert it into an array
+        // Ensure the input is an array
         if (!Array.isArray(attendanceRecords)) {
-            attendanceRecords = [attendanceRecords];
+            attendanceRecords = [attendanceRecords]; // Convert single object to array
         }
 
         if (attendanceRecords.length === 0) {
@@ -48,9 +48,9 @@ app.post("/attendance", async (req, res) => {
         }
 
         // Prepare values for bulk insert
-        const values = attendanceRecords.map(({ student_id, status }) =>
-            `(${student_id}, '${status}', CURRENT_DATE)`
-        ).join(", ");
+        const values = attendanceRecords
+            .map(({ student_id, status }) => `(${student_id}, '${status}', CURRENT_DATE)`)
+            .join(", ");
 
         const query = `
             INSERT INTO attendance (student_id, status, date) 
@@ -71,6 +71,7 @@ app.post("/attendance", async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
+
 
 
 // 📌 3️⃣ Get students with their latest attendance status
