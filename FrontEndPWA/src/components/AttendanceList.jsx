@@ -61,28 +61,29 @@ export default function Attendance() {
     const handleAttendance = async (id, status) => {    
         try {
           
-          if (value) {
-            if ('caches' in window) {
-                const cacheName = `${CACHE_NAME}`;
-                const urlToDelete = "https://pwa-frontend-123.vercel.app/attendance";
+            
+        //   if (value) {
+        //     if ('caches' in window) {
+        //         const cacheName = `${CACHE_NAME}`;
+        //         const urlToDelete = "https://pwa-frontend-123.vercel.app/attendance";
 
-                const cache = await caches.open(cacheName);
+        //         const cache = await caches.open(cacheName);
 
-                // ❌ Delete old cached response
-                const deleted = await cache.delete(urlToDelete);
-                console.log(deleted ? "✅ Deleted old cache" : "⚠️ Not Found in cache");
+        //         // ❌ Delete old cached response
+        //         const deleted = await cache.delete(urlToDelete);
+        //         console.log(deleted ? "✅ Deleted old cache" : "⚠️ Not Found in cache");
 
-                // 🔄 Fetch new data from server
-                const response = await fetch(urlToDelete);
+        //         // 🔄 Fetch new data from server
+        //         const response = await fetch(urlToDelete);
 
-                if (response.ok) {
-                    // ✅ Store new response in cache
-                    await cache.put(urlToDelete, response.clone());
-                    console.log("✅ New data cached successfully!");
-                } else {
-                    console.error("❌ Failed to fetch new data");
-                }
-            }
+        //         if (response.ok) {
+        //             // ✅ Store new response in cache
+        //             await cache.put(urlToDelete, response.clone());
+        //             console.log("✅ New data cached successfully!");
+        //         } else {
+        //             console.error("❌ Failed to fetch new data");
+        //         }
+        //     }
             
 
             await axios.post("https://pwa-backend-123.vercel.app/attendance", {
