@@ -1,6 +1,6 @@
 // import { getStudentsFromDB, updateStudentsDB } from "../db/studentsDB";
 import { getFromIndexedDB, saveToIndexedDB, getOfflineAttendanceStatus } from "../db/indexedDB";
-import { useContextAPI } from '../components/ContextAPI';
+// import { useContextAPI } from '../components/ContextAPI';
 const API_URL = "https://pwa-backend-123.vercel.app/attendance";
 const STORE_NAME = "students-status";
 // ✅ Fetch from API
@@ -23,7 +23,7 @@ const hasDataChanged = (oldData, newData) => {
 };
 
 // ✅ Get Students (From IndexedDB if No Change)
-export const getStudentsStatus = async (setStudentsStatus) => {
+export const getStudentsStatus = async (setStudentsStatus,value) => {
     const localData = await getFromIndexedDB(STORE_NAME);
     if (localData.length > 0) {
         setStudentsStatus(localData);
@@ -34,8 +34,8 @@ export const getStudentsStatus = async (setStudentsStatus) => {
 
     getOfflineAttendanceStatus().then(async (attendanceDatas) => {
         
-        const { value } = useContextAPI();
-        if (attendanceDatas.length === 0 && value) {
+        // const { value } = useContextAPI();
+        if (attendanceDatas.length ===0 && value) {
             
             if (hasDataChanged(localData, newData)) {
                 

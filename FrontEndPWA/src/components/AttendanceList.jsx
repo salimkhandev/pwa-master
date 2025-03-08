@@ -14,7 +14,7 @@ export default function Attendance() {
     const fetchData = async () => {
         try {
             // const data = await getTeachers(); // ✅ Fetch from IndexedDB or API
-         getStudentsStatus(setStudents);
+         getStudentsStatus(setStudents,value);
         } catch (err) {
             setError("Failed to fetch teachers data");
             console.error("Error:", err);
