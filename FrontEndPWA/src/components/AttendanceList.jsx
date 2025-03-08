@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { getStudentsStatus } from "../api/fetchStudentStatus";
 import { CACHE_NAME } from "../../public/config";
 import { useContextAPI } from './ContextAPI';
-import { updateStudentById } from "../db/indexedDB";
+import { updateStudentById, isOfflineAttendanceTaken, getOfflineAttendanceStatus } from "../db/indexedDB";
 export default function Attendance() {
     const { value } = useContextAPI();
     const [students, setStudents] = useState([]);
@@ -23,7 +23,12 @@ export default function Attendance() {
         }
     };
     useEffect(() => {
-        
+        getOfflineAttendanceStatus().then((status) => {
+            console.log(status, "status");
+            if(status.length > 0){
+                setIsPending(status.map(item => item.id));
+            }
+        });
         fetchData();
     }, []);
 
@@ -63,6 +68,7 @@ export default function Attendance() {
             if(!value){
               updateStudentById(id, {status: status});
               setIsPending(prev => [...prev, id]);
+              isOfflineAttendanceTaken(id, status);
               fetchData();
             }
         } catch (err) {

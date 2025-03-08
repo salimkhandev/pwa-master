@@ -13,6 +13,9 @@ export const initDB = async () => {
             if (!db.objectStoreNames.contains('students-status')) {
                 db.createObjectStore('students-status', { keyPath: 'id' });
             }
+            if (!db.objectStoreNames.contains('isOfflineAttendanceTaken')) {
+                db.createObjectStore('isOfflineAttendanceTaken', { keyPath: 'id' });
+            }
         },
     });
 };
@@ -70,18 +73,29 @@ export const updateStudentById = async (id, updates) => {
     }
 };
 
-// Usage example:
-/*
-try {
-    await updateStudentById(studentId, {
-        status: "Present",
-        lastUpdated: new Date(),
-        // ... any other fields you want to update
-    });
-    // Update successful
-} catch (error) {
-    // Handle error
-}
-*/
+export const isOfflineAttendanceTaken = async (id, status) => {
+    try {
+        const db = await initDB();
+        const tx = db.transaction('isOfflineAttendanceTaken', 'readwrite');
+        const store = tx.objectStore('isOfflineAttendanceTaken');
+
+
+        await store.put({ id: id, status: status });
+        await tx.done;
+
+        return status;
+    } catch (error) {
+        console.error('Error updating student:', error);
+        throw error;
+    }
+};
+// get the status of the offline attendance
+export const getOfflineAttendanceStatus = async () => {
+    const db = await initDB();
+    const tx = db.transaction('isOfflineAttendanceTaken', 'readonly');
+    const store = tx.objectStore('isOfflineAttendanceTaken');
+    return store.getAll();
+};
+
 
     requestPersistentStorage();

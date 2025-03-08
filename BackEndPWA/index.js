@@ -34,30 +34,44 @@ app.get("/students", async (req, res) => {
     }
 });
 
-// 📌 2️⃣ Mark attendance (Present/Absent)
 app.post("/attendance", async (req, res) => {
     try {
-        const { student_id, status } = req.body;
-        console.log("Received:", student_id, status); // Debug log
+        let attendanceRecords = req.body;
 
-        const result = await pool.query(
-            `INSERT INTO attendance (student_id, status, date) 
-             VALUES ($1, $2, CURRENT_DATE) 
-             ON CONFLICT (student_id, date) 
-             DO UPDATE SET status = EXCLUDED.status
-             RETURNING *`,
-            [student_id, status]
-        );
+        // If a single object is sent, convert it into an array
+        if (!Array.isArray(attendanceRecords)) {
+            attendanceRecords = [attendanceRecords];
+        }
 
-        res.json({ 
+        if (attendanceRecords.length === 0) {
+            return res.status(400).json({ error: "Invalid input: No attendance records provided" });
+        }
+
+        // Prepare values for bulk insert
+        const values = attendanceRecords.map(({ student_id, status }) =>
+            `(${student_id}, '${status}', CURRENT_DATE)`
+        ).join(", ");
+
+        const query = `
+            INSERT INTO attendance (student_id, status, date) 
+            VALUES ${values} 
+            ON CONFLICT (student_id, date) 
+            DO UPDATE SET status = EXCLUDED.status
+            RETURNING *;
+        `;
+
+        const result = await pool.query(query);
+
+        res.json({
             message: "Attendance marked successfully",
-            data: result.rows[0]
+            data: result.rows
         });
     } catch (err) {
         console.error("Database error:", err);
         res.status(500).json({ error: err.message });
     }
 });
+
 
 // 📌 3️⃣ Get students with their latest attendance status
 app.get("/attendance", async (req, res) => {
