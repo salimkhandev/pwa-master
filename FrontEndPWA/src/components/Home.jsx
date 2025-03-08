@@ -30,7 +30,7 @@ const Home = () => {
           fontFamily: 'Montserrat, sans-serif'
         }}
         >
-          Welcome to Our PWA
+          Welcome to Our PWA Home Page
         </h1>
       
         <p style={{ 
