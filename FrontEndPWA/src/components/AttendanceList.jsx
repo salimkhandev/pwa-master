@@ -4,11 +4,13 @@ import { useEffect, useState } from "react";
 import { getStudentsStatus } from "../api/fetchStudentStatus";
 import { CACHE_NAME } from "../../public/config";
 import { useContextAPI } from './ContextAPI';
+import { updateStudentById } from "../db/indexedDB";
 export default function Attendance() {
     const { value } = useContextAPI();
     const [students, setStudents] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [isPending, setIsPending] = useState([]);
     const fetchData = async () => {
         try {
             // const data = await getTeachers(); // ✅ Fetch from IndexedDB or API
@@ -29,6 +31,7 @@ export default function Attendance() {
     const handleAttendance = async (id, status) => {
         try {
           
+          if (value) {
             if ('caches' in window) {
                 const cacheName = `${CACHE_NAME}`;
                 const urlToDelete = "https://pwa-frontend-123.vercel.app/attendance";
@@ -52,14 +55,17 @@ export default function Attendance() {
             }
             
 
-
-
-
             await axios.post("https://pwa-backend-123.vercel.app/attendance", {
                 student_id: id,
                 status: status
             });
-            fetchData();
+            fetchData();}
+            else{
+              updateStudentById(id, {status: status});
+              setIsPending(prev => [...prev, id]);
+            }
+
+
         } catch (err) {
             setError("Failed to update attendance");
             console.error("Update error:", err);
@@ -82,7 +88,7 @@ export default function Attendance() {
 
     return (
         <div className="mx-4 md:max-w-xl md:mx-auto p-4 md:p-6 bg-white shadow-lg rounded-lg mt-4 md:mt-10">
-            {<h5 className="text-xl  mb-4">{value}</h5>}
+            {<h5 className="text-xl  mb-4">{value?"You are online🟢":"You are offline🔴"}</h5>}
             <h2 className="text-xl md:text-2xl font-bold mb-4">📌 Mark Attendance</h2>
             {students.length === 0 ? (
                 <p className="text-gray-500">No students found</p>
@@ -121,7 +127,10 @@ export default function Attendance() {
                                     </button>
                                 </div>
                                 <span className="text-xs md:text-sm text-gray-600 min-w-[70px] text-right">
-                                    {student.status}
+                                    <div>
+                                        <h6><h5 className="inline-block">{student.status}</h5></h6>
+                                        {isPending.includes(student.id) && <h6><h5 className="inline-block">Pending</h5></h6>}
+                                    </div>
                                 </span>
                             </div>
                         </li>

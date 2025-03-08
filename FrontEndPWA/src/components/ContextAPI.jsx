@@ -32,7 +32,7 @@ export const ContextProvider = ({ children }) => {
 
         detectNetwork().then(isOnline => {
             setNetAvail(isOnline);
-            setValue(isOnline ? 'You are online🟢' : 'You are offline🔴');
+            setValue(isOnline ? true : false);
             if (!isOnline && isOfflineRestrictedPage) {
                 navigate("/offline");
             }

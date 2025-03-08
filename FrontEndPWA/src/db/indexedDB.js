@@ -38,4 +38,50 @@ export const saveToIndexedDB = async (storeName, data) => {
     await tx.done;
 };
 
+// update data in IndexedDB
+// ✅ Function to update specific student with multiple fields
+export const updateStudentById = async (id, updates) => {
+    try {
+        const db = await initDB();
+        const tx = db.transaction('students-status', 'readwrite');
+        const store = tx.objectStore('students-status');
+
+        // Get the existing student record
+        const student = await store.get(id);
+
+        if (!student) {
+            throw new Error(`Student with ID ${id} not found`);
+        }
+
+        // Update the student with new data
+        const updatedStudent = {
+            ...student,
+            ...updates
+        };
+
+        // Save the updated record
+        await store.put(updatedStudent);
+        await tx.done;
+
+        return updatedStudent;
+    } catch (error) {
+        console.error('Error updating student:', error);
+        throw error;
+    }
+};
+
+// Usage example:
+/*
+try {
+    await updateStudentById(studentId, {
+        status: "Present",
+        lastUpdated: new Date(),
+        // ... any other fields you want to update
+    });
+    // Update successful
+} catch (error) {
+    // Handle error
+}
+*/
+
     requestPersistentStorage();
