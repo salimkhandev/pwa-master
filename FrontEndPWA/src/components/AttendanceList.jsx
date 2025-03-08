@@ -1,20 +1,20 @@
 // components/Attendance.jsx
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { getStudentsStatus } from "../api/fetchStudentStatus";
 import { CACHE_NAME } from "../../public/config";
+import { getStudentsStatus } from "../api/fetchStudentStatus";
+import { deleteOfflineAttendanceStatus, getOfflineAttendanceStatus, isOfflineAttendanceTaken, updateStudentById } from "../db/indexedDB";
 import { useContextAPI } from './ContextAPI';
-import { updateStudentById, isOfflineAttendanceTaken, getOfflineAttendanceStatus, deleteOfflineAttendanceStatus } from "../db/indexedDB";
 export default function Attendance() {
     const { value } = useContextAPI();
     const [students, setStudents] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [isPending, setIsPending] = useState([]);
+    const [syncingLoading, setSyncingLoading] = useState(false);
     const fetchData = async () => {
         try {
             // const data = await getTeachers(); // ✅ Fetch from IndexedDB or API
-            getStudentsStatus(setStudents);
+         getStudentsStatus(setStudents);
         } catch (err) {
             setError("Failed to fetch teachers data");
             console.error("Error:", err);
@@ -35,20 +35,25 @@ export default function Attendance() {
                 console.log("🚀 Sending Data:", cleanedData);
 
                 try {
+                    setSyncingLoading(true);
                     const response = await axios.post("https://pwa-backend-123.vercel.app/attendance", cleanedData);
 
                     if (response.status === 200) {
                         deleteOfflineAttendanceStatus(); // Run success function
+                        setSyncingLoading(false);
                         fetchData(); // Refresh after successful upload
                     }
                 } catch (error) {
                     console.error("❌ Error syncing attendance:", error);
+                    // setSyncingLoading(false);
                     alert("❌ Failed to update attendance. Please try again.");
                 } // Refresh after successful upload
             }
         });
 
-        fetchData();
+// if(syncingLoading){
+    fetchData();
+// }
         
     }, [value]);
 
@@ -87,7 +92,6 @@ export default function Attendance() {
             fetchData();}
             if(!value){
               updateStudentById(id, {status: status});
-              setIsPending(prev => [...prev, id]);
               isOfflineAttendanceTaken(id, status);
               fetchData();
             }
@@ -113,7 +117,15 @@ export default function Attendance() {
 
     return (
         <div className="mx-4 md:max-w-xl md:mx-auto p-4 md:p-6 bg-white shadow-lg rounded-lg mt-4 md:mt-10">
-            {<h5 className="text-xl  mb-4">{value?"You are online🟢":"You are offline🔴"}</h5>}
+            <div className="flex items-center justify-between mb-4">
+                <h5 className="text-xl">{value ? "You are online🟢" : "You are offline🔴"}</h5>
+                {syncingLoading && (
+                    <div className="flex items-center gap-2">
+                        <div className="w-5 h-5 border-t-2 border-b-2 border-blue-500 rounded-full animate-spin"></div>
+                        <span className="text-sm text-blue-600 font-medium">Syncing offline data...</span>
+                    </div>
+                )}
+            </div>
             <h2 className="text-xl md:text-2xl font-bold mb-4">📌 Mark Attendance</h2>
             {students.length === 0 ? (
                 <p className="text-gray-500">No students found</p>
@@ -142,7 +154,7 @@ export default function Attendance() {
                                     </button>
                                     <button
                                         className={`px-2 py-1 md:px-3 md:py-1 rounded text-sm md:text-base transition-colors ${
-                                            student.status === "Absent"
+                                            student.status  === "Absent"
                                                 ? "bg-red-500 text-white"
                                                 : "bg-gray-300 hover:bg-red-400 hover:text-white"
                                         }`}
@@ -154,7 +166,6 @@ export default function Attendance() {
                                 <span className="text-xs md:text-sm text-gray-600 min-w-[70px] text-right">
                                     <div>
                                         <h6><h5 className="inline-block">{student.status}</h5></h6>
-                                        {isPending.includes(student.id) && <h6><h5 className="inline-block">Pending</h5></h6>}
                                     </div>
                                 </span>
                             </div>

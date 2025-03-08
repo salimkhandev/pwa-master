@@ -1,9 +1,11 @@
 // import { getStudentsFromDB, updateStudentsDB } from "../db/studentsDB";
-import { getFromIndexedDB, saveToIndexedDB } from "../db/indexedDB";
+import { getFromIndexedDB, saveToIndexedDB, getOfflineAttendanceStatus } from "../db/indexedDB";
+import { useContextAPI } from '../components/ContextAPI';
 const API_URL = "https://pwa-backend-123.vercel.app/attendance";
 const STORE_NAME = "students-status";
 // ✅ Fetch from API
 export const fetchStudentsStatusFromAPI = async () => {
+ 
     try {
         const response = await fetch(API_URL);
         if (!response.ok) throw new Error("Failed to fetch students");
@@ -30,12 +32,19 @@ export const getStudentsStatus = async (setStudentsStatus) => {
 
     if (!newData) return localData; // Use local data if API fails
 
-    if (hasDataChanged(localData, newData)) {
-        setStudentsStatus(newData);
-        console.log(newData, "students status 😒😒😒");
-        await saveToIndexedDB(STORE_NAME, newData);
-        return newData;
-    }
-
-    return localData;
+    getOfflineAttendanceStatus().then(async (attendanceDatas) => {
+        
+        const { value } = useContextAPI();
+        if (attendanceDatas.length === 0 && value) {
+            
+            if (hasDataChanged(localData, newData)) {
+                
+                setStudentsStatus(newData);
+                console.log(newData, "students status 😒😒😒");
+                await saveToIndexedDB(STORE_NAME, newData);
+                return newData;
+            }
+            
+            return localData;
+        }})
 };
