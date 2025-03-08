@@ -60,12 +60,11 @@ export default function Attendance() {
                 status: status
             });
             fetchData();}
-            else{
+            if(!value){
               updateStudentById(id, {status: status});
               setIsPending(prev => [...prev, id]);
+              fetchData();
             }
-
-
         } catch (err) {
             setError("Failed to update attendance");
             console.error("Update error:", err);
