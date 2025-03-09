@@ -15,6 +15,7 @@ body {
   display: flex;
   place-items: center;
   min-width: 320px;
+  margin-top: 10px;
   min-height: 100vh;
 }
 
