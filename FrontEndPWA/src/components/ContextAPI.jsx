@@ -22,6 +22,9 @@ export const ContextProvider = ({ children }) => {
 
         const detectNetwork = () => {
             return Promise.race([
+                // the bellow line added
+                Promise.resolve(navigator.onLine),
+
                 new Promise(resolve => {
                     window.addEventListener('online', () => resolve(true), { once: true });
                     window.addEventListener('offline', () => resolve(false), { once: true });
