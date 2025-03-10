@@ -75,5 +75,6 @@
             "url": "/contact",
             "icons": [{ "src": "/icons-pwa/android-chrome-192x192.png", "sizes": "192x192" }]
         }
-    ]
+    ],
+    "permissions": ["notifications"]
 } 

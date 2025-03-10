@@ -2,7 +2,10 @@
 self.__WB_MANIFEST
 // import { CACHE_NAME } from './config';
 // const CACHE_NAME = 'pwa-cache15';
-const CACHE_NAME = 'pwa-cache26';
+
+// Service Worker version
+const CACHE_VERSION = 'v1';
+const CACHE_NAME = `app-cache-${CACHE_VERSION}`;
 
 const FILES_TO_CACHE = [
     '/',
@@ -16,6 +19,8 @@ const FILES_TO_CACHE = [
 
 // Install event: Cache assets
 self.addEventListener('install', (event) => {
+    console.log('Service Worker installing.');
+    self.skipWaiting(); // Activate SW immediately
     event.waitUntil(
         caches.open(CACHE_NAME).then(async (cache) => {
             console.log('🚀 Service Worker: Installation Started');
@@ -31,11 +36,11 @@ self.addEventListener('install', (event) => {
             console.log('🎉 Service Worker: Installation Complete');
         })
     );
-    self.skipWaiting();
 });
 
 // Activate event: Clean up old caches
 self.addEventListener('activate', (event) => {
+    console.log('Service Worker activating.');
     event.waitUntil(
         caches.keys().then((cacheNames) => {
             return Promise.all(
@@ -49,7 +54,7 @@ self.addEventListener('activate', (event) => {
         })
     );
     console.log('💪 Service Worker: Activated');
-    return self.clients.claim();
+    return self.clients.claim(); // Take control immediately
 });
 
 
@@ -72,7 +77,7 @@ self.addEventListener('fetch', (event) => {
 
     event.respondWith(
         caches.match(event.request).then((cachedResponse) => {
-            if (cachedResponse) {
+            if (true) {
                 console.log('✅ Serving from Cache:', event.request.url);
                 return cachedResponse;
             }
@@ -93,4 +98,38 @@ self.addEventListener('fetch', (event) => {
             });
         })
     );
+});
+
+self.addEventListener('push', (event) => {
+    const options = {
+        body: event.data ? event.data.text() : 'New Notification',
+        icon: '/icons-pwa/android-chrome-192x192.png',
+        badge: '/icons-pwa/favicon-32x32.png',
+        vibrate: [100, 50, 100],
+        data: {
+            dateOfArrival: Date.now(),
+            primaryKey: '1'
+        },
+        actions: [
+            {
+                action: 'explore',
+                title: 'View Details'
+            },
+            {
+                action: 'close',
+                title: 'Close'
+            },
+        ]
+    };
+
+    event.waitUntil(
+        self.registration.showNotification('School Attendance System', options)
+    );
+});
+
+self.addEventListener('notificationclick', (event) => {
+    event.notification.close();
+    if (event.action === 'explore') {
+        self.clients.openWindow('/attendance');
+    }
 });

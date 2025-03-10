@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useNotification } from '../context/NotificationContext';
 import { useContextAPI } from './ContextAPI';
+import NotificationButton from './NotificationButton';
+
 const Home = () => {
   const { value } = useContextAPI();
+  const { showNotification } = useNotification();
   const features = [
     {
       title: "Modern Design",
@@ -20,40 +24,54 @@ const Home = () => {
     }
   ];
 
-  return (
-    <div className="fade-in">
-      <header className="text-center mb-12">
-        <h1 style={{ 
-          fontSize: '2.5rem', 
-          fontWeight: 700,
-          marginBottom: '1rem',
-          fontFamily: 'Montserrat, sans-serif'
-        }}
-        >
-          Welcome to Our PWA
-        </h1>
-      
-        <p style={{ 
-          fontSize: '1.1rem', 
-          color: '#64748b',
-          maxWidth: '600px',
-          margin: '0 auto'
-        }}>
-          Experience the power of modern web applications with our Progressive Web App
-        </p>
-      </header>
+  useEffect(() => {
+    // Listen for push messages from service worker
+    navigator.serviceWorker.addEventListener('message', (event) => {
+      if (event.data.type === 'PUSH_NOTIFICATION') {
+        const { title, body, type } = event.data.payload;
+        showNotification(`${title}: ${body}`, type || 'info');
+      }
+    });
+  }, [showNotification]);
 
-      <div className="card-grid">
-        {features.map((feature, index) => (
-          <div key={index} className="card slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
-            <img src={feature.image} alt={feature.title} />
-            <div className="card-content">
-              <h3>{feature.title}</h3>
-              <p>{feature.description}</p>
-   
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <div className="fade-in">
+        <header className="text-center mb-12">
+          <h1 style={{ 
+            fontSize: '2.5rem', 
+            fontWeight: 700,
+            marginBottom: '1rem',
+            fontFamily: 'Montserrat, sans-serif'
+          }}
+          >
+            Welcome to Our PWA
+          </h1>
+        
+          <p style={{ 
+            fontSize: '1.1rem', 
+            color: '#64748b',
+            maxWidth: '600px',
+            margin: '0 auto'
+          }}>
+            Experience the power of modern web applications with our Progressive Web App
+          </p>
+        </header>
+
+        <div className="card-grid">
+          {features.map((feature, index) => (
+            <div key={index} className="card slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
+              <img src={feature.image} alt={feature.title} />
+              <div className="card-content">
+                <h3>{feature.title}</h3>
+                <p>{feature.description}</p>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+      </div>
+      <div className="mt-6">
+        <NotificationButton />
       </div>
     </div>
   );

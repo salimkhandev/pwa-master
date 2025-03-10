@@ -3,13 +3,15 @@ import { Route, Routes } from 'react-router-dom';
 import './App.css';
 
 import Attendance from './components/AttendanceList';
+import Camera from './components/Camera';
 import { ContextProvider } from './components/ContextAPI';
 import CustDetails from './components/CustDetails';
 import Navbar from './components/Navbar';
+import NotificationButton from './components/NotificationButton';
 import Offline from './components/Offline';
 import TeachersList from './components/TeachersList';
-import Camera from './components/Camera';
-
+import { NotificationProvider } from './context/NotificationContext';
+import NotificationPreview from './components/NotificationPreview';
 // Lazy-loaded components
 const About = lazy(() => import('./components/About'))
 const Contact = lazy(() => import('./components/Contact'))
@@ -64,39 +66,43 @@ function App() {
   };
 
   return (
-    <ContextProvider>
-      <div className="min-h-screen bg-gray-50">
-        <Navbar />
-        <main className="pt-14 md:pl-64">
-          <div className="container mx-auto px-4 py-6">
-            <Suspense fallback={
-              <div className="flex justify-center items-center h-64">
-                <div className="w-12 h-12 border-t-4 border-b-4 border-indigo-500 rounded-full animate-spin"></div>
-              </div>
-            }>
-              <Routes>
-                <Route path="/" element={<Suspense fallback={<div>Loading...</div>}><Home /></Suspense>} />
-                <Route path="/about" element={<Suspense fallback={<div>Loading...</div>}><About /></Suspense>} />
-                <Route path="/contact" element={<Suspense fallback={<div>Loading...</div>}><Contact /></Suspense>} />
-                <Route path="/attendance" element={<Suspense fallback={<div>Loading...</div>}><Attendance /></Suspense>} />
-                <Route path="/offline" element={<Offline />} />
-                <Route path="/custdetail" element={<CustDetails />} />
-                <Route path="/teacherlist" element={<Suspense fallback={<div>Loading...</div>}><TeachersList /></Suspense>} />
-                <Route path="/attendance" element={<Attendance />} />
-                <Route path="/camera" element={<Camera />} />
-              </Routes>
-            </Suspense>
-          </div>
-        </main>
+    <NotificationProvider>
+      <ContextProvider>
+        <div className="min-h-screen bg-gray-50">
+          <Navbar />
+          <main className="pt-14 md:pl-64">
+            <div className="container mx-auto px-4 py-6">
+              <Suspense fallback={
+                <div className="flex justify-center items-center h-64">
+                  <div className="w-12 h-12 border-t-4 border-b-4 border-indigo-500 rounded-full animate-spin"></div>
+                </div>
+              }>
+                <Routes>
+                  <Route path="/" element={<Suspense fallback={<div>Loading...</div>}><Home /></Suspense>} />
+                  <Route path="/about" element={<Suspense fallback={<div>Loading...</div>}><About /></Suspense>} />
+                  <Route path="/contact" element={<Suspense fallback={<div>Loading...</div>}><Contact /></Suspense>} />
+                  <Route path="/attendance" element={<Suspense fallback={<div>Loading...</div>}><Attendance /></Suspense>} />
+                  <Route path="/offline" element={<Offline />} />
+                  <Route path="/custdetail" element={<CustDetails />} />
+                  <Route path="/teacherlist" element={<Suspense fallback={<div>Loading...</div>}><TeachersList /></Suspense>} />
+                  <Route path="/attendance" element={<Attendance />} />
+                  <Route path="/camera" element={<Camera />} />
+                  <Route path="/notification" element={<NotificationButton />} />
+                  <Route path="/notificationpreview" element={<NotificationPreview />} />
+                </Routes>
+              </Suspense>
+            </div>
+          </main>
 
-        {/* Install button section */}
-        {deferredPrompt && (
-          <button onClick={handleInstallClick} className="install-button">
-            Install App
-          </button>
-        )}
-      </div>
-    </ContextProvider>
+          {/* Install button section */}
+          {deferredPrompt && (
+            <button onClick={handleInstallClick} className="install-button">
+              Install App
+            </button>
+          )}
+        </div>
+      </ContextProvider>
+    </NotificationProvider>
   )
 }
 

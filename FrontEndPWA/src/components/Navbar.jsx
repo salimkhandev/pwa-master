@@ -12,7 +12,9 @@ const Navbar = () => {
     { to: "/custdetail", text: "Customers", icon: "👥" },
     { to: "/teacherlist", text: "Teachers", icon: "👨‍🏫" },
     { to: "/attendance", text: "Attendance", icon: "📋" },
-    { to: "/camera", text: "Camera", icon: "📸" }
+    { to: "/camera", text: "Camera", icon: "📸" },
+    { to: "/notification", text: "Notification", icon: "📱" },
+    { to: "/notificationpreview", text: "Notification Preview", icon: "📱" }
   ];
 
   return (
