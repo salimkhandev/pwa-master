@@ -11,7 +11,8 @@ const Navbar = () => {
     { to: "/contact", text: "Contact", icon: "📞" },
     { to: "/custdetail", text: "Customers", icon: "👥" },
     { to: "/teacherlist", text: "Teachers", icon: "👨‍🏫" },
-    { to: "/attendance", text: "Attendance", icon: "📋" }
+    { to: "/attendance", text: "Attendance", icon: "📋" },
+    { to: "/camera", text: "Camera", icon: "📸" }
   ];
 
   return (

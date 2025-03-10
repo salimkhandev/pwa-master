@@ -8,6 +8,7 @@ import CustDetails from './components/CustDetails';
 import Navbar from './components/Navbar';
 import Offline from './components/Offline';
 import TeachersList from './components/TeachersList';
+import Camera from './components/Camera';
 
 // Lazy-loaded components
 const About = lazy(() => import('./components/About'))
@@ -82,6 +83,7 @@ function App() {
                 <Route path="/custdetail" element={<CustDetails />} />
                 <Route path="/teacherlist" element={<Suspense fallback={<div>Loading...</div>}><TeachersList /></Suspense>} />
                 <Route path="/attendance" element={<Attendance />} />
+                <Route path="/camera" element={<Camera />} />
               </Routes>
             </Suspense>
           </div>
