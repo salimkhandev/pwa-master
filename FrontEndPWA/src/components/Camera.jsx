@@ -7,6 +7,36 @@ const Camera = () => {
     const [isCameraOn, setIsCameraOn] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [isMobile, setIsMobile] = useState(false);
+    const [facingMode, setFacingMode] = useState('environment'); // 'environment' for back, 'user' for front
+    const [hasMultipleCameras, setHasMultipleCameras] = useState(false);
+
+    // Check if device is mobile and has multiple cameras
+    useEffect(() => {
+        // Check if mobile device
+        const checkMobile = () => {
+            const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+            setIsMobile(isMobileDevice);
+        };
+
+        // Check for multiple cameras
+        const checkCameras = async () => {
+            if (!navigator.mediaDevices?.enumerateDevices) {
+                return;
+            }
+
+            try {
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                const videoDevices = devices.filter(device => device.kind === 'videoinput');
+                setHasMultipleCameras(videoDevices.length > 1);
+            } catch (err) {
+                console.error('Error checking cameras:', err);
+            }
+        };
+
+        checkMobile();
+        checkCameras();
+    }, []);
 
     // Stop camera function
     const stopCamera = () => {
@@ -18,13 +48,24 @@ const Camera = () => {
         }
     };
 
+    // Switch camera function
+    const switchCamera = async () => {
+        stopCamera();
+        setFacingMode(prevMode => prevMode === 'user' ? 'environment' : 'user');
+        await startCamera(prevMode => prevMode === 'user' ? 'environment' : 'user');
+    };
+
     // Start Camera
-    const startCamera = async () => {
+    const startCamera = async (requestedFacingMode = facingMode) => {
         setIsLoading(true);
         setError(null);
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({ 
-                video: { facingMode: 'environment' } // Use back camera by default
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: {
+                    facingMode: requestedFacingMode,
+                    width: { ideal: 1280 },
+                    height: { ideal: 720 }
+                }
             });
             videoRef.current.srcObject = stream;
             setIsCameraOn(true);
@@ -43,16 +84,16 @@ const Camera = () => {
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
         const ctx = canvas.getContext("2d");
+        
+        // Flip the image horizontally if using front camera
+        if (facingMode === 'user') {
+            ctx.translate(canvas.width, 0);
+            ctx.scale(-1, 1);
+        }
+        
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
         setCapturedImage(canvas.toDataURL("image/png"));
     };
-
-    // Clean up on unmount
-    useEffect(() => {
-        return () => {
-            stopCamera();
-        };
-    }, []);
 
     return (
         <div className="min-h-screen bg-gray-100 pt-16 px-4">
@@ -70,13 +111,53 @@ const Camera = () => {
                         </div>
                     )}
 
+                    {/* Camera Selection for Mobile */}
+                    {isMobile && hasMultipleCameras && (
+                        <div className="mb-4 flex justify-center">
+                            <div className="inline-flex rounded-lg border border-gray-200 p-1 bg-gray-50">
+                                <button
+                                    onClick={() => {
+                                        setFacingMode('environment');
+                                        if (isCameraOn) {
+                                            switchCamera();
+                                        }
+                                    }}
+                                    className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                                        facingMode === 'environment'
+                                            ? 'bg-white shadow text-indigo-600'
+                                            : 'text-gray-500 hover:text-gray-700'
+                                    }`}
+                                >
+                                    Back Camera
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        setFacingMode('user');
+                                        if (isCameraOn) {
+                                            switchCamera();
+                                        }
+                                    }}
+                                    className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                                        facingMode === 'user'
+                                            ? 'bg-white shadow text-indigo-600'
+                                            : 'text-gray-500 hover:text-gray-700'
+                                    }`}
+                                >
+                                    Front Camera
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
                     {/* Camera Preview Container */}
                     <div className="relative aspect-video bg-black rounded-lg overflow-hidden">
                         <video 
                             ref={videoRef} 
                             autoPlay 
                             playsInline 
-                            className={`w-full h-full object-cover ${isCameraOn ? 'opacity-100' : 'opacity-0'}`}
+                            className={`w-full h-full object-cover ${
+                                isCameraOn ? 'opacity-100' : 'opacity-0'
+                            } ${facingMode === 'user' ? 'scale-x-[-1]' : ''}`}
                         />
                         
                         {!isCameraOn && !isLoading && (
@@ -95,7 +176,7 @@ const Camera = () => {
                     {/* Camera Controls */}
                     <div className="mt-4 flex justify-center space-x-4">
                         <button
-                            onClick={isCameraOn ? stopCamera : startCamera}
+                            onClick={isCameraOn ? stopCamera : () => startCamera()}
                             className={`px-6 py-2 rounded-full font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all ${
                                 isCameraOn 
                                     ? 'bg-red-500 hover:bg-red-600 focus:ring-red-500 text-white' 
@@ -124,7 +205,9 @@ const Camera = () => {
                                 <img 
                                     src={capturedImage} 
                                     alt="Captured" 
-                                    className="w-full rounded-lg shadow-sm"
+                                    className={`w-full rounded-lg shadow-sm ${
+                                        facingMode === 'user' ? 'scale-x-[-1]' : ''
+                                    }`}
                                 />
                                 <div className="absolute top-2 right-2">
                                     <button
@@ -139,7 +222,6 @@ const Camera = () => {
                             </div>
                             <button
                                 onClick={() => {
-                                    // Add download functionality
                                     const link = document.createElement('a');
                                     link.download = 'captured-photo.png';
                                     link.href = capturedImage;
