@@ -3,7 +3,7 @@ self.__WB_MANIFEST
 // import { CACHE_NAME } from './config';
 // const CACHE_NAME = 'pwa-cache15';
 
-const CACHE_NAME = 'pwa-cache23';
+const CACHE_NAME = 'pwa-cache24';
 
 const FILES_TO_CACHE = [
     '/',

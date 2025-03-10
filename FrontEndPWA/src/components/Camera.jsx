@@ -1,17 +1,38 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const Camera = () => {
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
     const [capturedImage, setCapturedImage] = useState(null);
+    const [isCameraOn, setIsCameraOn] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    // Stop camera function
+    const stopCamera = () => {
+        const stream = videoRef.current?.srcObject;
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+            videoRef.current.srcObject = null;
+            setIsCameraOn(false);
+        }
+    };
 
     // Start Camera
     const startCamera = async () => {
+        setIsLoading(true);
+        setError(null);
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            const stream = await navigator.mediaDevices.getUserMedia({ 
+                video: { facingMode: 'environment' } // Use back camera by default
+            });
             videoRef.current.srcObject = stream;
+            setIsCameraOn(true);
         } catch (error) {
+            setError("Unable to access camera. Please make sure you've granted permission.");
             console.error("Error accessing camera:", error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -26,27 +47,114 @@ const Camera = () => {
         setCapturedImage(canvas.toDataURL("image/png"));
     };
 
+    // Clean up on unmount
+    useEffect(() => {
+        return () => {
+            stopCamera();
+        };
+    }, []);
+
     return (
-        <div className="flex flex-col items-center p-4">
-            <h1 className="text-xl font-bold mb-4">PWA Camera App 📸</h1>
+        <div className="min-h-screen bg-gray-100 pt-16 px-4">
+            <div className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden">
+                <div className="p-4">
+                    <h1 className="text-2xl font-bold text-gray-800 mb-4 flex items-center justify-center">
+                        <span className="mr-2">Camera</span>
+                        <span className="text-3xl">📸</span>
+                    </h1>
 
-            {/* Video Preview */}
-            <video ref={videoRef} autoPlay playsInline className="border rounded-lg w-full max-w-md" />
+                    {/* Error Message */}
+                    {error && (
+                        <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg text-sm">
+                            {error}
+                        </div>
+                    )}
 
-            {/* Capture Button */}
-            <button onClick={capturePhoto} className="mt-4 px-4 py-2 bg-blue-600 text-white rounded">
-                Capture Photo
+                    {/* Camera Preview Container */}
+                    <div className="relative aspect-video bg-black rounded-lg overflow-hidden">
+                        <video 
+                            ref={videoRef} 
+                            autoPlay 
+                            playsInline 
+                            className={`w-full h-full object-cover ${isCameraOn ? 'opacity-100' : 'opacity-0'}`}
+                        />
+                        
+                        {!isCameraOn && !isLoading && (
+                            <div className="absolute inset-0 flex items-center justify-center bg-gray-900 text-white">
+                                <span>Camera is off</span>
+                            </div>
+                        )}
+
+                        {isLoading && (
+                            <div className="absolute inset-0 flex items-center justify-center bg-gray-900 text-white">
+                                <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-white"></div>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Camera Controls */}
+                    <div className="mt-4 flex justify-center space-x-4">
+                        <button
+                            onClick={isCameraOn ? stopCamera : startCamera}
+                            className={`px-6 py-2 rounded-full font-medium focus:outline-none focus:ring-2 focus:ring-offset-2 transition-all ${
+                                isCameraOn 
+                                    ? 'bg-red-500 hover:bg-red-600 focus:ring-red-500 text-white' 
+                                    : 'bg-green-500 hover:bg-green-600 focus:ring-green-500 text-white'
+                            }`}
+                            disabled={isLoading}
+                        >
+                            {isLoading ? 'Starting...' : isCameraOn ? 'Stop Camera' : 'Start Camera'}
             </button>
 
-            {/* Captured Image */}
-            {capturedImage && <img src={capturedImage} alt="Captured" className="mt-4 border rounded-lg" />}
+                        {isCameraOn && (
+                            <button
+                                onClick={capturePhoto}
+                                className="px-6 py-2 bg-indigo-500 text-white rounded-full hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 font-medium transition-all"
+                            >
+                                Capture
+                            </button>
+                        )}
+                    </div>
 
-            {/* Start Camera Button */}
-            <button onClick={startCamera} className="mt-4 px-4 py-2 bg-green-600 text-white rounded">
-                Start Camera
+                    {/* Captured Image Preview */}
+                    {capturedImage && (
+                        <div className="mt-6">
+                            <h3 className="text-lg font-medium text-gray-900 mb-2">Captured Photo</h3>
+                            <div className="relative rounded-lg overflow-hidden">
+                                <img 
+                                    src={capturedImage} 
+                                    alt="Captured" 
+                                    className="w-full rounded-lg shadow-sm"
+                                />
+                                <div className="absolute top-2 right-2">
+                                    <button
+                                        onClick={() => setCapturedImage(null)}
+                                        className="p-2 bg-red-500 text-white rounded-full hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-all"
+                                    >
+                                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                            <button
+                                onClick={() => {
+                                    // Add download functionality
+                                    const link = document.createElement('a');
+                                    link.download = 'captured-photo.png';
+                                    link.href = capturedImage;
+                                    link.click();
+                                }}
+                                className="mt-3 w-full px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-800 font-medium transition-all"
+                            >
+                                Download Photo
             </button>
+                        </div>
+                    )}
+                </div>
 
             <canvas ref={canvasRef} className="hidden"></canvas>
+            </div>
         </div>
     );
 };
