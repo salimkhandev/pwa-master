@@ -4,15 +4,15 @@ self.__WB_MANIFEST
 // const CACHE_NAME = 'pwa-cache15';
 
 // Service Worker version
-const CACHE_VERSION = 'v1';
+const CACHE_VERSION = 'v3';
 const CACHE_NAME = `app-cache-${CACHE_VERSION}`;
 
 const FILES_TO_CACHE = [
-    // '/',
-    // '/index.html',
-    // '/offline.html',
-    // '/main.js',
-    // '/style.css',
+    '/',
+    '/index.html',
+    '/offline.html',
+    '/main.js',
+    '/style.css',
     
     
 ];
@@ -77,7 +77,8 @@ self.addEventListener('fetch', (event) => {
 
     event.respondWith(
         caches.match(event.request).then((cachedResponse) => {
-            if (true) {
+           
+            if (cachedResponse) {
                 console.log('✅ Serving from Cache:', event.request.url);
                 return cachedResponse;
             }
@@ -87,7 +88,7 @@ self.addEventListener('fetch', (event) => {
                 
                 if (response.status === 200) {
                     caches.open(CACHE_NAME).then((cache) => {
-                        cache.put(event.request, responseToCache);
+                        // cache.put(event.request, responseToCache);
                         console.log('📥 Cached after Network Fetch:', event.request.url);
                     });
                 }
