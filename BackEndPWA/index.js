@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser');
 const pool = require('./config/dbconfig');
 const app = express();
 const port = 3000;
+const notificationRoutes = require('./routes/notificationRoutes');
 
 app.use(cors());
 app.use(express.json());
@@ -14,6 +15,7 @@ app.use(cors({
     origin: [
         'https://ghss-management.vercel.app', // Production frontend
         'http://localhost:5173',
+        'http://localhost:3001',
         'https://pwa-frontend2-orcin.vercel.app',
         'https://pwa-frontend-123.vercel.app'
     ],
@@ -99,6 +101,23 @@ app.get("/attendance", async (req, res) => {
         console.error("Database error:", err);
         res.status(500).json({ error: err.message });
     }
+});
+
+app.use('/api/notifications', notificationRoutes);
+
+// Notification routes
+app.post('/api/notifications/subscribe', (req, res) => {
+    console.log('Subscription received:', req.body);
+    res.json({ message: 'Subscription received!' });
+});
+
+app.post('/api/notifications/send', (req, res) => {
+    console.log('Sending notification:', req.body);
+    res.json({ message: 'Notification sent!' });
+});
+app.get('/', (req, res) => {
+    console.log('Sending notification:', req.body);
+    res.json({ message: 'Notification sent!' });
 });
 
 app.listen(port, () => {
