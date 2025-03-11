@@ -14,9 +14,9 @@ webPush.setVapidDetails(
 );
 
 // First, drop the existing table (since it's not properly set up)
-const dropTableQuery = `
-    DROP TABLE IF EXISTS push_subscriptions;
-`;
+// const dropTableQuery = `
+//     DROP TABLE IF EXISTS push_subscriptions;
+// `;
 
 // Then create the table with proper constraints
 const createTableQuery = `
@@ -36,7 +36,7 @@ exports.subscribe = async (req, res) => {
         const subscription = req.body;
         
         // Drop and recreate table with proper constraints
-        await db.query(dropTableQuery);
+        // await db.query(dropTableQuery);
         await db.query(createTableQuery);
         
         // Then store subscription
