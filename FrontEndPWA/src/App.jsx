@@ -11,7 +11,6 @@ import NotificationButton from './components/NotificationButton';
 import Offline from './components/Offline';
 import TeachersList from './components/TeachersList';
 import { NotificationProvider } from './context/NotificationContext';
-import NotificationPreview from './components/NotificationPreview';
 // Lazy-loaded components
 const About = lazy(() => import('./components/About'))
 const Contact = lazy(() => import('./components/Contact'))
@@ -88,7 +87,6 @@ function App() {
                   <Route path="/attendance" element={<Attendance />} />
                   <Route path="/camera" element={<Camera />} />
                   <Route path="/notification" element={<NotificationButton />} />
-                  <Route path="/notificationpreview" element={<NotificationPreview />} />
                 </Routes>
               </Suspense>
             </div>

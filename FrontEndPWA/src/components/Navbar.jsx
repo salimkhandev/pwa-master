@@ -14,7 +14,6 @@ const Navbar = () => {
     { to: "/attendance", text: "Attendance", icon: "📋" },
     { to: "/camera", text: "Camera", icon: "📸" },
     { to: "/notification", text: "Notification", icon: "📱" },
-    { to: "/notificationpreview", text: "Notification Preview", icon: "📱" }
   ];
 
   return (

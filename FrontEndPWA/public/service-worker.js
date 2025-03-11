@@ -8,11 +8,11 @@ const CACHE_VERSION = 'v1';
 const CACHE_NAME = `app-cache-${CACHE_VERSION}`;
 
 const FILES_TO_CACHE = [
-    '/',
-    '/index.html',
-    '/offline.html',
-    '/main.js',
-    '/style.css',
+    // '/',
+    // '/index.html',
+    // '/offline.html',
+    // '/main.js',
+    // '/style.css',
     
     
 ];
