@@ -1,4 +1,5 @@
-const BACKEND_URL = 'http://localhost:3000';
+// const BACKEND_URL = 'http://localhost:3000';
+const BACKEND_URL = 'https://pwa-backend-123.vercel.app';
 const PUBLIC_VAPID_KEY = 'BDAcqYXV4SuunGqlTEsfrvyUF11s43wyDYZdtAPBN1iUw3zVPr4LrJJ_bD-ibBWe6C8fAosU7XBtLjgXkA0Prr8';
 
 export async function subscribeToPushNotifications() {
