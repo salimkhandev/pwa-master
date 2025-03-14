@@ -4,7 +4,7 @@ self.__WB_MANIFEST
 // const CACHE_NAME = 'pwa-cache15';
 
 // Service Worker version
-const CACHE_VERSION = 'v9';
+const CACHE_VERSION = 'v10';
 const CACHE_NAME = `app-cache-${CACHE_VERSION}`;
 
 const FILES_TO_CACHE = [
@@ -104,7 +104,7 @@ self.addEventListener('fetch', (event) => {
 self.addEventListener('push', (event) => {
     // Create full URLs for all images
     const iconUrl = new URL('./icons-pwa/android-chrome-192x192.png', self.location.origin).href;
-    const badgeUrl = new URL('./icons-pwa/favicon-32x32.png', self.location.origin).href;
+    const badgeUrl = new URL('./icons-pwa/favicon-16x16.png', self.location.origin).href;
     const imageUrl = new URL('./icons-pwa/android-chrome-512x512.png', self.location.origin).href;
     const actionIconUrl = new URL('./icons-pwa/favicon-32x32.png', self.location.origin).href;
 
@@ -117,7 +117,7 @@ self.addEventListener('push', (event) => {
     const options = {
         body: event.data ? event.data.text() : 'New Notification',
         icon: iconUrl,      // Using full URL
-        badge: badgeUrl,    // Using full URL
+        badge: badgeUrl,    // Using 16x16 favicon
         image: imageUrl,    // Using full URL
         vibrate: [500, 200, 500],
         requireInteraction: true,
@@ -134,7 +134,7 @@ self.addEventListener('push', (event) => {
             {
                 action: 'close',
                 title: 'Close',
-                icon: badgeUrl      // Using full URL
+                icon: badgeUrl      // Using 16x16 favicon
             },
         ]
     };
