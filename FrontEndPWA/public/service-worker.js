@@ -4,7 +4,7 @@ self.__WB_MANIFEST
 // const CACHE_NAME = 'pwa-cache15';
 
 // Service Worker version
-const CACHE_VERSION = 'v7';
+const CACHE_VERSION = 'v8';
 const CACHE_NAME = `app-cache-${CACHE_VERSION}`;
 
 const FILES_TO_CACHE = [
@@ -104,8 +104,8 @@ self.addEventListener('fetch', (event) => {
 self.addEventListener('push', (event) => {
     const options = {
         body: event.data ? event.data.text() : 'New Notification',
-        icon: './icons-pwa/favicon-32x32.png',
-        badge: './icons-pwa/favicon-16x16.png',
+        icon: './icons-pwa//android-chrome-192x192.png',
+        badge: './icons-pwa/favicon-32x32.png',
         image: './icons-pwa/android-chrome-512x512.png',
         vibrate: [500, 200, 500],
         requireInteraction: true,
