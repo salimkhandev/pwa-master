@@ -104,10 +104,11 @@ self.addEventListener('fetch', (event) => {
 self.addEventListener('push', (event) => {
     const options = {
         body: event.data ? event.data.text() : 'New Notification',
-        icon: '/icons-pwa/android-chrome-192x192.png',
-        badge: '/icons-pwa/favicon-16x16.png',
-        vibrate: [500, 200, 500], // Increased duration for more noticeable vibration
-        requireInteraction: true,  // Keep notification until user interacts
+        icon: './icons-pwa/android-chrome-192x192.png',
+        badge: './icons-pwa/favicon-16x16.png',
+        image: './icons-pwa/android-chrome-512x512.png',
+        vibrate: [500, 200, 500],
+        requireInteraction: true,
         data: {
             dateOfArrival: Date.now(),
             primaryKey: '1'
@@ -115,11 +116,13 @@ self.addEventListener('push', (event) => {
         actions: [
             {
                 action: 'explore',
-                title: 'View Details'
+                title: 'View Details',
+                icon: './icons-pwa/favicon-32x32.png'
             },
             {
                 action: 'close',
-                title: 'Close'
+                title: 'Close',
+                icon: './icons-pwa/favicon-16x16.png'
             },
         ]
     };
