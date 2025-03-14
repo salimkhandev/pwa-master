@@ -4,7 +4,7 @@ self.__WB_MANIFEST
 // const CACHE_NAME = 'pwa-cache15';
 
 // Service Worker version
-const CACHE_VERSION = 'v10';
+const CACHE_VERSION = 'v11';
 const CACHE_NAME = `app-cache-${CACHE_VERSION}`;
 
 const FILES_TO_CACHE = [
@@ -102,23 +102,22 @@ self.addEventListener('fetch', (event) => {
 });
 
 self.addEventListener('push', (event) => {
-    // Create full URLs for all images
-    const iconUrl = new URL('./icons-pwa/android-chrome-192x192.png', self.location.origin).href;
-    const badgeUrl = new URL('./icons-pwa/favicon-16x16.png', self.location.origin).href;
-    const imageUrl = new URL('./icons-pwa/android-chrome-512x512.png', self.location.origin).href;
-    const actionIconUrl = new URL('./icons-pwa/favicon-32x32.png', self.location.origin).href;
+    // Use the exact files from your directory
+    const iconUrl = new URL('icons-pwa/android-chrome-512x512.png', self.location.origin).href;
+    const badgeUrl = new URL('icons-pwa/badge.svg', self.location.origin).href;  // Using badge.svg
+    const appleIconUrl = new URL('icons-pwa/apple-touch-icon.png', self.location.origin).href;
 
-    // Log all URLs for debugging
-    console.log('Icon URL:', iconUrl);
-    console.log('Badge URL:', badgeUrl);
-    console.log('Image URL:', imageUrl);
-    console.log('Action Icon URL:', actionIconUrl);
+    console.log('Using images:', {
+        icon: iconUrl,
+        badge: badgeUrl,
+        appleIcon: appleIconUrl
+    });
 
     const options = {
         body: event.data ? event.data.text() : 'New Notification',
-        icon: iconUrl,      // Using full URL
-        badge: badgeUrl,    // Using 16x16 favicon
-        image: imageUrl,    // Using full URL
+        icon: iconUrl,                    // Large icon (512x512)
+        badge: badgeUrl,                  // Using SVG badge
+        image: appleIconUrl,              // Using apple touch icon for large image
         vibrate: [500, 200, 500],
         requireInteraction: true,
         data: {
@@ -129,12 +128,12 @@ self.addEventListener('push', (event) => {
             {
                 action: 'explore',
                 title: 'View Details',
-                icon: actionIconUrl  // Using full URL
+                icon: new URL('icons-pwa/favicon-16x16.png', self.location.origin).href
             },
             {
                 action: 'close',
                 title: 'Close',
-                icon: badgeUrl      // Using 16x16 favicon
+                icon: new URL('icons-pwa/favicon-16x16.png', self.location.origin).href
             },
         ]
     };
