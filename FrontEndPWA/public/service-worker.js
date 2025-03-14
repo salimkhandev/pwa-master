@@ -4,7 +4,7 @@ self.__WB_MANIFEST
 // const CACHE_NAME = 'pwa-cache15';
 
 // Service Worker version
-const CACHE_VERSION = 'v12';
+const CACHE_VERSION = 'v13';
 const CACHE_NAME = `app-cache-${CACHE_VERSION}`;
 
 const FILES_TO_CACHE = [
@@ -104,7 +104,7 @@ self.addEventListener('fetch', (event) => {
 self.addEventListener('push', (event) => {
     // Use the exact files from your directory
     const iconUrl = new URL('icons-pwa/android-chrome-512x512.png', self.location.origin).href;
-    const badgeUrl = new URL('icons-pwa/', self.location.origin).href;  // Using badge.svg
+    const badgeUrl = new URL('icons-pwa/badge.svg', self.location.origin).href;  // Using badge.svg
     const appleIconUrl = new URL('icons-pwa/apple-touch-icon.png', self.location.origin).href;
 
     console.log('Using images:', {
