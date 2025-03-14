@@ -1,6 +1,6 @@
 {
-    "name": "My PWA App",
-    "short_name": "PWA App",
+    "name": "School Attendance System",
+    "short_name": "Attendance",
     "description": "A Progressive Web App built with Vite and React",
     "start_url": "/",
     "display": "standalone",
@@ -76,5 +76,5 @@
             "icons": [{ "src": "/icons-pwa/android-chrome-192x192.png", "sizes": "192x192" }]
         }
     ],
-    "permissions": ["notifications"]
+    "permissions": ["notifications", "vibrate"]
 } 

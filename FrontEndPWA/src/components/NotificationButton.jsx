@@ -48,6 +48,16 @@ const NotificationButton = () => {
         }
     };
 
+    function testVibration() {
+        if ('vibrate' in navigator) {
+            // Test vibration directly
+            navigator.vibrate([200, 100, 200]);
+            console.log('Vibration triggered');
+        } else {
+            console.log('Vibration not supported');
+        }
+    }
+
     if (!isSupported) {
         return (
             <div className="text-red-500 text-sm p-2 bg-red-50 rounded-md">

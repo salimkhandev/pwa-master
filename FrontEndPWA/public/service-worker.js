@@ -4,7 +4,7 @@ self.__WB_MANIFEST
 // const CACHE_NAME = 'pwa-cache15';
 
 // Service Worker version
-const CACHE_VERSION = 'v5';
+const CACHE_VERSION = 'v6';
 const CACHE_NAME = `app-cache-${CACHE_VERSION}`;
 
 const FILES_TO_CACHE = [
@@ -102,11 +102,15 @@ self.addEventListener('fetch', (event) => {
 });
 
 self.addEventListener('push', (event) => {
+    // Check if vibration is supported
+    const canVibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
+    
     const options = {
         body: event.data ? event.data.text() : 'New Notification',
         icon: '/icons-pwa/android-chrome-192x192.png',
         badge: '/icons-pwa/favicon-16x16.png',
-        vibrate: [100, 50, 100],
+        // Only add vibration if supported
+        ...(canVibrate && { vibrate: [200, 100, 200] }), // Stronger vibration pattern
         data: {
             dateOfArrival: Date.now(),
             primaryKey: '1'
