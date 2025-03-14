@@ -11,9 +11,9 @@ if ('serviceWorker' in navigator) {
     immediate: true,
     swUrl: '/service-worker.js',
     onNeedRefresh() {
-      if (confirm('New content is available. Would you like to update?')) {
+      // if (confirm('New content is available. Would you like to update?')) {
         updateSW(true)
-      }
+      // }
     },
     onOfflineReady() {
       console.log('App ready to work offline')

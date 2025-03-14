@@ -68,6 +68,8 @@ exports.sendNotification = async (req, res) => {
         const { title, body } = req.body;
         
         const { rows: subscriptions } = await db.query('SELECT * FROM push_subscriptions');
+        console.log('subscriptions', subscriptions);
+        
         console.log('Found subscriptions:', subscriptions.length);
         
         if (!subscriptions || subscriptions.length === 0) {

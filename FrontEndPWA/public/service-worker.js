@@ -104,8 +104,8 @@ self.addEventListener('fetch', (event) => {
 self.addEventListener('push', (event) => {
     const options = {
         body: event.data ? event.data.text() : 'New Notification',
-        icon: '/icons-pwa/android-chrome-192x192.png',
-        badge: '/icons-pwa/favicon-32x32.png',
+        icon: '/FrontEndPWA/public/icons-pwa/android-chrome-192x192.png',
+        badge: '/FrontEndPWA/public/icons-pwa/favicon-16x16.png',
         vibrate: [100, 50, 100],
         data: {
             dateOfArrival: Date.now(),
@@ -134,3 +134,5 @@ self.addEventListener('notificationclick', (event) => {
         self.clients.openWindow('/attendance');
     }
 });
+console.log('Service worker updated v2'); // Change version
+

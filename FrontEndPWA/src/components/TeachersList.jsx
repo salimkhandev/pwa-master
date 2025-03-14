@@ -16,7 +16,7 @@ const TeachersList = () => {
             } catch (err) {
                 setError("Failed to fetch teachers data");
                 console.error("Error:", err);
-            } finally {
+            } finally { 
                 setLoading(false);
             }
         };
