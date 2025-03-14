@@ -104,7 +104,7 @@ self.addEventListener('fetch', (event) => {
 self.addEventListener('push', (event) => {
     const options = {
         body: event.data ? event.data.text() : 'New Notification',
-        icon: './icons-pwa/android-chrome-192x192.png',
+        icon: './icons-pwa/favicon-32x32.png',
         badge: './icons-pwa/favicon-16x16.png',
         image: './icons-pwa/android-chrome-512x512.png',
         vibrate: [500, 200, 500],
@@ -126,6 +126,10 @@ self.addEventListener('push', (event) => {
             },
         ]
     };
+
+    // For debugging - log the full URLs
+    console.log('Icon path:', new URL('./icons-pwa/favicon-32x32.png', self.location.origin).href);
+    console.log('Badge path:', new URL('./icons-pwa/favicon-16x16.png', self.location.origin).href);
 
     // Try to vibrate immediately when push is received
     if ('vibrate' in navigator) {
