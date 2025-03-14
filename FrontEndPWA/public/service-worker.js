@@ -4,7 +4,7 @@ self.__WB_MANIFEST
 // const CACHE_NAME = 'pwa-cache15';
 
 // Service Worker version
-const CACHE_VERSION = 'v8';
+const CACHE_VERSION = 'v9';
 const CACHE_NAME = `app-cache-${CACHE_VERSION}`;
 
 const FILES_TO_CACHE = [
@@ -102,11 +102,23 @@ self.addEventListener('fetch', (event) => {
 });
 
 self.addEventListener('push', (event) => {
+    // Create full URLs for all images
+    const iconUrl = new URL('./icons-pwa/android-chrome-192x192.png', self.location.origin).href;
+    const badgeUrl = new URL('./icons-pwa/favicon-32x32.png', self.location.origin).href;
+    const imageUrl = new URL('./icons-pwa/android-chrome-512x512.png', self.location.origin).href;
+    const actionIconUrl = new URL('./icons-pwa/favicon-32x32.png', self.location.origin).href;
+
+    // Log all URLs for debugging
+    console.log('Icon URL:', iconUrl);
+    console.log('Badge URL:', badgeUrl);
+    console.log('Image URL:', imageUrl);
+    console.log('Action Icon URL:', actionIconUrl);
+
     const options = {
         body: event.data ? event.data.text() : 'New Notification',
-        icon: './icons-pwa//android-chrome-192x192.png',
-        badge: './icons-pwa/favicon-32x32.png',
-        image: './icons-pwa/android-chrome-512x512.png',
+        icon: iconUrl,      // Using full URL
+        badge: badgeUrl,    // Using full URL
+        image: imageUrl,    // Using full URL
         vibrate: [500, 200, 500],
         requireInteraction: true,
         data: {
@@ -117,24 +129,15 @@ self.addEventListener('push', (event) => {
             {
                 action: 'explore',
                 title: 'View Details',
-                // icon: './icons-pwa/favicon-32x32.png'
+                icon: actionIconUrl  // Using full URL
             },
             {
                 action: 'close',
                 title: 'Close',
-                // icon: './icons-pwa/favicon-16x16.png'
+                icon: badgeUrl      // Using full URL
             },
         ]
     };
-
-    // For debugging - log the full URLs
-    console.log('Icon path:', new URL('./icons-pwa/favicon-32x32.png', self.location.origin).href);
-    console.log('Badge path:', new URL('./icons-pwa/favicon-16x16.png', self.location.origin).href);
-
-    // Try to vibrate immediately when push is received
-    if ('vibrate' in navigator) {
-        navigator.vibrate([500, 200, 500]);
-    }
 
     event.waitUntil(
         self.registration.showNotification('School Attendance System', options)
