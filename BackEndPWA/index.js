@@ -106,15 +106,15 @@ app.get("/attendance", async (req, res) => {
 app.use('/api/notifications', notificationRoutes);
 
 // Notification routes
-app.post('/api/notifications/subscribe', (req, res) => {
-    console.log('Subscription received:', req.body);
-    res.json({ message: 'Subscription received!' });
-});
+// app.post('/api/notifications/subscribe', (req, res) => {
+//     console.log('Subscription received:', req.body);
+//     res.json({ message: 'Subscription received!' });
+// });
 
-app.post('/api/notifications/send', (req, res) => {
-    console.log('Sending notification:', req.body);
-    res.json({ message: 'Notification sent!' });
-});
+// app.post('/api/notifications/send', (req, res) => {
+//     console.log('Sending notification:', req.body);
+//     res.json({ message: 'Notification sent!' });
+// });
 app.get('/', (req, res) => {
     console.log('Sending notification:', req.body);
     res.json({ message: 'Notification sent!' });

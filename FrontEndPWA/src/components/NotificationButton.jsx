@@ -65,6 +65,7 @@ const NotificationButton = () => {
             )}
             
             <button
+            
                 onClick={handleSubscribe}
                 disabled={loading || isSubscribed}
                 className={`px-4 py-2 rounded-lg font-medium transition-all ${

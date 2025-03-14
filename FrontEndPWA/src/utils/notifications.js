@@ -106,11 +106,13 @@ function urlBase64ToUint8Array(base64String) {
 }
 
 export async function sendTestNotification() {
+    
     try {
         const response = await fetch(`${BACKEND_URL}/api/notifications/send`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                
             },
             body: JSON.stringify({
                 title: 'Test Notification',

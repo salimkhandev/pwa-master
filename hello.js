@@ -1,0 +1,6 @@
+console.log(!!1);        // true (1 is truthy)
+console.log(!!0);        // false (0 is falsy)
+console.log(!!"Hello");  // true (Non-empty string is truthy)
+console.log(!!"");       // false (Empty string is falsy)
+console.log(!!null);     // false (null is falsy)
+console.log(!!undefined);// false (undefined is falsy)
