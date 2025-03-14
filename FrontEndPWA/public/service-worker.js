@@ -117,12 +117,12 @@ self.addEventListener('push', (event) => {
             {
                 action: 'explore',
                 title: 'View Details',
-                icon: './icons-pwa/favicon-32x32.png'
+                // icon: './icons-pwa/favicon-32x32.png'
             },
             {
                 action: 'close',
                 title: 'Close',
-                icon: './icons-pwa/favicon-16x16.png'
+                // icon: './icons-pwa/favicon-16x16.png'
             },
         ]
     };
