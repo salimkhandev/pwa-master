@@ -22,7 +22,7 @@ const NotificationButton = () => {
                 console.error('Subscription check failed:', err);
             }
         };
-
+      
         checkSubscription();
     }, []);
 
@@ -43,6 +43,7 @@ const NotificationButton = () => {
         try {
             await sendTestNotification();
             console.log('Test notification sent successfully');
+            testVibration();
         } catch (err) {
             setError('Failed to send test notification: ' + err.message);
         }
