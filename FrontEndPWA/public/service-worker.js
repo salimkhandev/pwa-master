@@ -17,6 +17,7 @@ const FILES_TO_CACHE = [
     
 ];
 
+
 // Install event: Cache assets
 self.addEventListener('install', (event) => {
     console.log('Service Worker installing.');
@@ -104,7 +105,7 @@ self.addEventListener('fetch', (event) => {
 self.addEventListener('push', (event) => {
     // Use the exact files from your directory
     const iconUrl = new URL('icons-pwa/android-chrome-512x512.png', self.location.origin).href;
-    const badgeUrl = new URL('icons-pwa/', self.location.origin).href;  // Using badge.svg
+const badgeUrl = new URL('icons-pwa/badge.png', self.location.origin).href;  // Using badge.svg
     const appleIconUrl = new URL('icons-pwa/apple-touch-icon.png', self.location.origin).href;
 
     console.log('Using images:', {
