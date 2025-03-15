@@ -4,7 +4,7 @@ self.__WB_MANIFEST
 // const CACHE_NAME = 'pwa-cache15';
 
 // Service Worker version
-const CACHE_VERSION = 'v14';
+const CACHE_VERSION = 'v16';
 const CACHE_NAME = `app-cache-${CACHE_VERSION}`;
 
 const FILES_TO_CACHE = [
@@ -103,9 +103,9 @@ self.addEventListener('fetch', (event) => {
 });
 
 self.addEventListener('push', (event) => {
-    // Use the exact files from your directory
-    const iconUrl = new URL('icons-pwa/android-chrome-512x512.png', self.location.origin).href;
-    const badgeUrl = new URL('icons-pwa/badge.png', self.location.origin).href;  // Using badge.svg
+    // Use colored icon for badge
+    const iconUrl = new URL('icons-pwa/android-chrome-192x192.png', self.location.origin).href;  // Changed to 192x192
+    const badgeUrl = new URL('icons-pwa/badge.png', self.location.origin).href;  // Using colored icon for badge
     const appleIconUrl = new URL('icons-pwa/apple-touch-icon.png', self.location.origin).href;
 
     console.log('Using images:', {
@@ -116,9 +116,9 @@ self.addEventListener('push', (event) => {
 
     const options = {
         body: event.data ? event.data.text() : 'New Notification',
-        icon: iconUrl,                    // Large icon (512x512)
-        badge: badgeUrl,                  // Using SVG badge
-        image: appleIconUrl,              // Using apple touch icon for large image
+        icon: iconUrl,                    // Main notification icon
+        badge: badgeUrl,                  // Using colored icon for badge
+        image: appleIconUrl,              // Large image
         vibrate: [500, 200, 500],
         requireInteraction: true,
         data: {
@@ -129,12 +129,12 @@ self.addEventListener('push', (event) => {
             {
                 action: 'explore',
                 title: 'View Details',
-                icon: new URL('icons-pwa/favicon-16x16.png', self.location.origin).href
+                icon: iconUrl  // Using same colored icon
             },
             {
                 action: 'close',
                 title: 'Close',
-                icon: new URL('icons-pwa/favicon-16x16.png', self.location.origin).href
+                icon: iconUrl  // Using same colored icon
             },
         ]
     };

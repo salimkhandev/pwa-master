@@ -8,7 +8,7 @@ const vapidKeys = {
 
 // Configure web-push with your VAPID keys
 webPush.setVapidDetails(
-    'mailto:test@test.com',  // Add a valid email here
+    'mailto:salimeg30@gmail.com',  // Add a valid email here
     vapidKeys.publicKey,
     vapidKeys.privateKey
 );
