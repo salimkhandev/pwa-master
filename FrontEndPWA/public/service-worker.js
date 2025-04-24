@@ -4,7 +4,7 @@ self.__WB_MANIFEST
 // const CACHE_NAME = 'pwa-cache15';
 
 // Service Worker version
-const CACHE_VERSION = 'v16';
+const CACHE_VERSION = 'v17';
 const CACHE_NAME = `app-cache-${CACHE_VERSION}`;
 
 const FILES_TO_CACHE = [
