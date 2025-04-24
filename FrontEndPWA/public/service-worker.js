@@ -90,7 +90,7 @@ self.addEventListener('fetch', (event) => {
                 
                 if (response.status === 200) {
                     caches.open(CACHE_NAME).then((cache) => {
-                        // cache.put(event.request, responseToCache);
+                        cache.put(event.request, responseToCache);
                         console.log('📥 Cached after Network Fetch:', event.request.url);
                     });
                 }
