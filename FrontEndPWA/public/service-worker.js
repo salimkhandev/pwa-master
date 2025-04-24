@@ -16,6 +16,7 @@ const FILES_TO_CACHE = [
     
     
 ];
+// ok
 
 
 // Install event: Cache assets
